@@ -2,6 +2,10 @@
 
 {% block title %}{{ issue.title }} - {{ blog_title }}{% endblock %}
 
+{% block canonical %}
+<link rel="canonical" href="{{ blog_url }}contents/blog/{{ issue.number }}.html" />
+{% endblock %}
+
 {% block content %}
 <article class="post full-post">
     <aside class="toc">

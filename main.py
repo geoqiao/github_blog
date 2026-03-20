@@ -13,6 +13,7 @@ import os
 import shutil
 import time
 from contextlib import contextmanager
+from datetime import datetime
 from pathlib import Path
 
 from feedgen.feed import FeedGenerator
@@ -52,6 +53,8 @@ def main(token: str, repo_name: str):
         save_articles_to_content_dir(issue, content=content)
 
     gen_rss_feed(issues_list)
+    gen_robots_txt()
+    gen_sitemap(issues_list, tags)
 
     tag_index = build_tag_index(issues_list)
     if tags:
@@ -371,6 +374,65 @@ def gen_rss_feed(issues: list[Issue]):
         fe.content(CDATA(markdown2html(issue.body)), type="html")
 
     fg.atom_file(config.content_dir / config.rss_atom_path)
+
+
+def gen_robots_txt():
+    """Generate robots.txt file."""
+    content = f"""User-agent: *
+Allow: /
+Sitemap: {config.blog_url}sitemap.xml
+"""
+    with open("robots.txt", "w", encoding="utf-8") as f:
+        f.write(content)
+
+
+def gen_sitemap(issues: list[Issue], tags: list[str]):
+    """Generate sitemap.xml file."""
+    base_url = config.blog_url
+    now = datetime.now().strftime("%Y-%m-%d")
+
+    sitemap_content = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+
+    # Home page (the one in contents/)
+    sitemap_content.append(
+        f"""  <url>
+    <loc>{base_url}contents/index.html</loc>
+    <lastmod>{now}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>"""
+    )
+
+    # Blog posts
+    for issue in issues:
+        lastmod = issue.updated_at.strftime("%Y-%m-%d")
+        sitemap_content.append(
+            f"""  <url>
+    <loc>{base_url}contents/{config.blog_dir}{issue.number}.html</loc>
+    <lastmod>{lastmod}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>"""
+        )
+
+    # Tag pages
+    for tag in tags:
+        sitemap_content.append(
+            f"""  <url>
+    <loc>{base_url}contents/tag/{tag}.html</loc>
+    <lastmod>{now}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>"""
+        )
+
+    sitemap_content.append("</urlset>")
+
+    with open("sitemap.xml", "w", encoding="utf-8") as f:
+        f.write("\n".join(sitemap_content))
 
 
 @contextmanager

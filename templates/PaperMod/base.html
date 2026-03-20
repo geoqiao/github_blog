@@ -7,6 +7,7 @@
     <meta name="google-site-verification" content="{{ google_search_verification }}" />
     <title>{% block title %}{{ blog_title }}{% endblock %}</title>
     <meta name="description" content="{{ meta_description }}">
+    {% block canonical %}{% endblock %}
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@300;400;700&display=swap"

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns="http://www.w3.org/2005/Atom"><id>https://geoqiao.github.io/</id><title>geoqiao's Blog</title><updated>2026-02-23T03:35:00.328071+00:00</updated><author><name>geoqiao</name><email>geoqiao@example.com</email></author><link href="https://geoqiao.github.io/" rel="alternate"/><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator><subtitle>1. 目前是一名金融行业贷后策略分析师；这里是我的个人空间，记录一些想记录的。
+<feed xmlns="http://www.w3.org/2005/Atom"><id>https://geoqiao.github.io/</id><title>geoqiao's Blog</title><updated>2026-03-20T14:09:08.801002+00:00</updated><author><name>geoqiao</name><email>geoqiao@example.com</email></author><link href="https://geoqiao.github.io/" rel="alternate"/><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator><subtitle>1. 目前是一名金融行业贷后策略分析师；这里是我的个人空间，记录一些想记录的。
 2. 这个网页基于GitHub Pages &amp; GitHub Actions 自动部署。
 3. 主体 main.py 自己完成，前端主题由AI生成。
 </subtitle><entry><id>https://geoqiao.github.io/blog/2.html</id><title>excel 学习经验分享</title><updated>2024-05-07T15:03:36+00:00</updated><content type="html"><![CDATA[<h2>描述</h2>
@@ -129,7 +129,7 @@ WHERE table1.column1 = &#x27;1&#x27;
 <p>否极泰来</p>
 <p>否极泰来</p>
 <p>否极泰来</p>
-]]></content><link href="https://geoqiao.github.io/blog/6.html"/><published>2023-07-15T03:34:29+00:00</published></entry><entry><id>https://geoqiao.github.io/blog/7.html</id><title>总得活着吧？</title><updated>2024-05-07T15:07:17+00:00</updated><content type="html"><![CDATA[<p>世俗价值都是禁不起推敲的，推敲下去觉得活着没意义。  </p>
+]]></content><link href="https://geoqiao.github.io/blog/6.html"/><published>2023-07-15T03:34:29+00:00</published></entry><entry><id>https://geoqiao.github.io/blog/7.html</id><title>总得活着吧？</title><updated>2026-02-23T03:48:01+00:00</updated><content type="html"><![CDATA[<p>世俗价值都是禁不起推敲的，推敲下去觉得活着没意义。  </p>
 <p>你越想意义就越痛苦。所以人们只能有两个选择，肉体自杀和哲学自杀。</p>
 <h2>哲学自杀</h2>
 <p>哲学自杀就是不再想这个问题了，老子选择信仰个宗教，伊斯兰或者马克思，或者世俗主义，或者纯粹享乐比谁啪的多，比谁赚得多…总之信个世俗价值的东西。你可以随便吃饭时候问一下同桌人，生活的意义是啥，别人不是笑你就是说想这干嘛，但他们是无法给出答案的。这就是所谓哲学自杀。人如果不愿放弃，继续思考，结果必然面对找不到意义的尴尬，也就是加缪的名词‘荒谬’，很可能走向虚无。</p>
@@ -142,7 +142,7 @@ WHERE table1.column1 = &#x27;1&#x27;
 <h2>知其不可为而为之</h2>
 <p>就比如，生活给了你一巴掌，让你去死；你不仅不能听它的，还得回它一巴掌，再加一句：操！生命的意义就在这句粗口里。</p>
 <p>知道人终有一死，但现在，我选择活。</p>
-]]></content><link href="https://geoqiao.github.io/blog/7.html"/><published>2023-07-15T14:40:01+00:00</published></entry><entry><id>https://geoqiao.github.io/blog/8.html</id><title>基于 GitHub issues 的个人 blog 搭建</title><updated>2024-11-17T08:01:14+00:00</updated><content type="html"><![CDATA[<h2>背景</h2>
+]]></content><link href="https://geoqiao.github.io/blog/7.html"/><published>2023-07-15T14:40:01+00:00</published></entry><entry><id>https://geoqiao.github.io/blog/8.html</id><title>基于 GitHub issues 的个人 blog 搭建</title><updated>2026-02-23T03:45:53+00:00</updated><content type="html"><![CDATA[<h2>背景</h2>
 <p>我最近碰到了以下问题：</p>
 <ol>
 <li>偶尔想写点东西，想有一个个人 blog</li>
@@ -167,7 +167,7 @@ WHERE table1.column1 = &#x27;1&#x27;
 <p>不过需要补充一点，按教程操作完成后需要把 GitHub Action 的读写权限打开。操作方式为 Settings - Actions - General - 勾选 Read and write permissions - save，如下图所示：</p>
 <h2>结语</h2>
 <p>以上就是全部内容，非常感谢 @yihong0618 老师的代码。</p>
-]]></content><link href="https://geoqiao.github.io/blog/8.html"/><published>2023-07-18T13:10:40+00:00</published></entry><entry><id>https://geoqiao.github.io/blog/9.html</id><title>What's on my Mac</title><updated>2024-05-07T15:08:29+00:00</updated><content type="html"><![CDATA[<p>和大多数人一样，拿到一台<span class="pangu"></span>MacBook<span class="pangu"></span>第一件事就是找各种软件，以下是我目前在用的一些。它们的整体使用体验都很不错，且部分软件可以联动形成 workflow ，供大家参考。</p>
+]]></content><link href="https://geoqiao.github.io/blog/8.html"/><published>2023-07-18T13:10:40+00:00</published></entry><entry><id>https://geoqiao.github.io/blog/9.html</id><title>What's on my Mac</title><updated>2026-02-23T03:45:43+00:00</updated><content type="html"><![CDATA[<p>和大多数人一样，拿到一台<span class="pangu"></span>MacBook<span class="pangu"></span>第一件事就是找各种软件，以下是我目前在用的一些。它们的整体使用体验都很不错，且部分软件可以联动形成 workflow ，供大家参考。</p>
 <h2>启动器类- Raycast</h2>
 <p>目前免费的启动器类<span class="pangu"></span>app，可以启动、替代很多软件。自带的窗口管理功能替代 magnet、rectangle 等等窗口管理软件；自带的文件搜索功能替代了访达；还有一系列提升工作效率的插件。不了解的人可以<a href="https://telegra.ph/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E7%94%A8raycast%E6%9B%BF%E4%BB%A3%E4%BA%86alfred-07-17">参考这里</a>。</p>
 <h2>自动切换输入法- Input Source Pro</h2>
@@ -198,7 +198,7 @@ WHERE table1.column1 = &#x27;1&#x27;
 <p>微信、telegram、VSCode、Chrome。。。</p>
 <p>office 被我卸载了，因为想学 pandas，强迫自己用 pandas 读表</p>
 <p>Report content on this page</p>
-]]></content><link href="https://geoqiao.github.io/blog/9.html"/><published>2023-07-29T06:20:29+00:00</published></entry><entry><id>https://geoqiao.github.io/blog/10.html</id><title>Shottr- 原生、轻巧且功能强大的免费macOS截图工具</title><updated>2024-10-21T14:43:31+00:00</updated><content type="html"><![CDATA[<p>| <a href="https://shottr.cc/">Shottr<span class="pangu"></span>官网</a></p>
+]]></content><link href="https://geoqiao.github.io/blog/9.html"/><published>2023-07-29T06:20:29+00:00</published></entry><entry><id>https://geoqiao.github.io/blog/10.html</id><title>Shottr- 原生、轻巧且功能强大的免费macOS截图工具</title><updated>2026-02-23T03:45:13+00:00</updated><content type="html"><![CDATA[<p>| <a href="https://shottr.cc/">Shottr<span class="pangu"></span>官网</a></p>
 <ul>
 <li>
 <p><strong>截图</strong>：不得不说，作为截图工具的基础功能，shottr 并没有特别出彩的地方，UI 也谈不上漂亮。但是基础的区域截图、顺序标记都有，操作起来也非常直觉。而且在其他同类<span class="pangu"></span>app<span class="pangu"></span>中要付费的滚动截图功能也是免费的。</p>
@@ -253,7 +253,7 @@ WHERE table1.column1 = &#x27;1&#x27;
 <h2>总结</h2>
 <p>以上就是全部内容，其实跟标题相关的就四五行。具体安装教程没有写，是因为真的和小时候下载安装游戏的流程一模一样。</p>
 <p>如果过程中碰到什么问题，可以及时 Google 搜索。当然，如果你愿意的话，可以直接在这个 issue 下面评论，我会尽快回复的。</p>
-]]></content><link href="https://geoqiao.github.io/blog/11.html"/><published>2023-07-30T11:09:46+00:00</published></entry><entry><id>https://geoqiao.github.io/blog/12.html</id><title>重器轻用-Obsidian</title><updated>2024-05-07T15:10:04+00:00</updated><content type="html"><![CDATA[<h2>什么是 Obsidian</h2>
+]]></content><link href="https://geoqiao.github.io/blog/11.html"/><published>2023-07-30T11:09:46+00:00</published></entry><entry><id>https://geoqiao.github.io/blog/12.html</id><title>重器轻用-Obsidian</title><updated>2026-02-23T03:45:00+00:00</updated><content type="html"><![CDATA[<h2>什么是 Obsidian</h2>
 <p>Obsidian 是一个个人知识管理和笔记应用程序，它使用<strong>Markdown</strong>语法来编写和格式化笔记，帮助用户组织、链接和探索知识。它支持<strong>双向链接</strong>、标签、搜索和<strong>插件扩展</strong>，并且完全本地化存储，让用户轻松构建和管理一个互相关联的知识网络。</p>
 <p>总结下来三个优点：</p>
 <ol>
@@ -469,7 +469,7 @@ if __name__ == &quot;__main__&quot;:
 <blockquote>
 <p>tips: 如果你安装了 VSCode，也可以在终端中输入<code>code &lt;file path&gt;</code>使用 VSCode 打开并修改对应文件</p>
 </blockquote>
-]]></content><link href="https://geoqiao.github.io/blog/16.html"/><published>2023-10-22T06:52:44+00:00</published></entry><entry><id>https://geoqiao.github.io/blog/17.html</id><title>App Defaults 2023</title><updated>2024-09-22T10:09:18+00:00</updated><content type="html"><![CDATA[<h1>背景</h1>
+]]></content><link href="https://geoqiao.github.io/blog/16.html"/><published>2023-10-22T06:52:44+00:00</published></entry><entry><id>https://geoqiao.github.io/blog/17.html</id><title>App Defaults 2023</title><updated>2026-02-23T03:44:20+00:00</updated><content type="html"><![CDATA[<h1>背景</h1>
 <p>一段时间之前写过一篇<a href="https://github.com/geoqiao/geoqiao.github.io/issues/9">what's on my mac</a>，推荐过一些自己使用的 Mac 应用。</p>
 <p>最近逛 Twitter 刷到<a href="https://defaults.rknight.me/">App Defaults</a>项目，这是一份 RSS 订阅清单，包含了很多播客作者的 App Defaults 文章，可以直接通过 OPML 文件订阅。</p>
 <p>这次一些软件发生了变化，对之前的文章做一个更新。</p>

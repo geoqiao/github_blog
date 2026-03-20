@@ -2,6 +2,10 @@
 
 {% block title %}标签: {{ tag_name }} - {{ blog_title }}{% endblock %}
 
+{% block canonical %}
+<link rel="canonical" href="{{ blog_url }}contents/tag/{{ tag_name }}.html" />
+{% endblock %}
+
 {% block content %}
 <section class="content-grid">
     <aside class="sidebar">
