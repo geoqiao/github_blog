@@ -411,7 +411,7 @@ def gen_sitemap(issues: list[Issue], tags: list[str]):
         lastmod = issue.updated_at.strftime("%Y-%m-%d")
         sitemap_content.append(
             f"""  <url>
-    <loc>{base_url}contents/{config.blog_dir}{issue.number}.html</loc>
+    <loc>{base_url}contents/{config.blog_dir}/{issue.number}.html</loc>
     <lastmod>{lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
