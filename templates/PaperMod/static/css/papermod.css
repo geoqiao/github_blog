@@ -122,9 +122,10 @@ html[data-theme='dark'] .pm-header {
 
 .content-grid {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 280px minmax(0, 1fr);
     gap: 2.5rem;
-    margin-top: 1.5rem
+    margin-top: 1.5rem;
+    width: 100%;
 }
 
 .posts-list .post {
@@ -287,17 +288,17 @@ html[data-theme='dark'] .tag {
 
 .post.full-post {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 280px minmax(0, 1fr);
     gap: 2.5rem;
-    align-items: start
-}
-
-.post.full-post .toc {
-    grid-column: 1
+    align-items: start;
+    width: 100%;
 }
 
 .post.full-post>main {
-    grid-column: 2
+    grid-column: 2;
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
 }
 
 .post-content {
@@ -306,6 +307,9 @@ html[data-theme='dark'] .tag {
     font-size: 16.5px;
     word-wrap: break-word;
     word-break: break-word;
+    overflow-wrap: break-word;
+    min-width: 0;
+    width: 100%;
 }
 
 .post-content img,
@@ -416,8 +420,17 @@ html[data-theme='dark'] .toc-link {
     color: #111827;
     padding: 1rem;
     border-radius: 8px;
-    overflow: auto;
+    overflow-x: auto;
     max-width: 100%;
+    width: 100%;
+    white-space: pre;
+    position: relative;
+}
+
+.post-content pre code {
+    white-space: pre;
+    word-break: normal;
+    word-wrap: normal;
 }
 
 html[data-theme='dark'] .post-content pre {
