@@ -1,7 +1,7 @@
 [project]
 name = "github-blog"
 version = "0.1.0"
-description = "Add your description here"
+description = "A robust GitHub Issue-based blog generator"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
@@ -14,13 +14,45 @@ dependencies = [
     "pypinyin>=0.55.0",
     "python-slugify>=8.0.4",
     "pyyaml>=6.0.2",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "structlog>=23.1.0",
+    "tenacity>=8.2.0",
 ]
 
 [dependency-groups]
-dev = []
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.1.0",
+    "pyright>=1.1.0",
+    "pre-commit>=3.5.0",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+    "B",  # flake8-bugbear
+]
+ignore = ["E501"] # 忽略行长限制
 
 [tool.pyright]
-venvPath = "."
-venv = ".venv"
-typeCheckingMode = "strict"
-# extraPaths = [".venv/lib/python3.11/site-packages"]
+typeCheckingMode = "basic"
+pythonVersion = "3.11"
+pythonPlatform = "Darwin"
+reportUnknownArgumentType = false
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+reportUnknownParameterType = false
+reportUnknownFunctionType = false
+reportMissingTypeStubs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "--cov=src --cov-report=term-missing"
