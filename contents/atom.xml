@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>https://geoqiao.github.io/</id>
   <title>geoqiao's Blog</title>
-  <updated>2026-03-21T09:54:42.762988+00:00</updated>
+  <updated>2026-03-21T09:58:27.325450+00:00</updated>
   <author>
     <name>geoqiao</name>
     <email>geoqiao@example.com</email>
@@ -1620,7 +1620,7 @@ ollama run qwen2.5-coder:7b # 安装 qwen2.5-coder:7b
   <entry>
     <id>https://geoqiao.github.io/contents/blog/32-python-vscode-vibe-coding.html</id>
     <title>Vibe Coding 实战后感 - github_blog with Trae</title>
-    <updated>2026-03-21T09:54:26+00:00</updated>
+    <updated>2026-03-21T09:58:10+00:00</updated>
     <content type="html"><![CDATA[<h2>TL:DR</h2>
 <p>我使用 Trae IDE 对我的 github_blog 项目做了一些迭代。与之前不同的是，这次完全<code>vibe coding</code>，没有手写一行代码。</p>
 <blockquote>
@@ -1644,7 +1644,7 @@ ollama run qwen2.5-coder:7b # 安装 qwen2.5-coder:7b
 <p>当然是让 AI 来帮我写前端！</p>
 <h3>Why Trae ?</h3>
 <ol>
-<li>GitHub Copilot：我日常工作中 GitHub Copilot 基本可以满足需求，但是免费版额度不读</li>
+<li>GitHub Copilot：我日常工作中 GitHub Copilot 基本可以满足需求，但是免费版额度不够</li>
 <li>Cursor：相当明星的产品，但是我只试用过，没有付费</li>
 <li><strong>价格</strong>：刷到 Trae 的一些博客，性价比很高，只要 7.5$一个月</li>
 <li>至于其他比如 Claude Code：我确实不是职业开发，感觉价格很高，但是我很难物尽其用</li>
