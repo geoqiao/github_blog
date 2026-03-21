@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="DRggZlykSzc8M9TyaS0BPSRE7Kvw8W9hHt5pZrIMm3Y" />
+    <title>Vibe Coding 实战后感 - github_blog with Trae - geoqiao's Blog</title>
+    <meta name="description" content="1. 目前是一名金融行业贷后策略分析师；这里是我的个人空间，记录一些想记录的。
+2. 这个网页基于GitHub Pages & GitHub Actions 自动部署。
+3. 主体 main.py 自己完成，前端主题由AI生成。
+">
+    
+<link rel="canonical" href="https://geoqiao.github.io/contents/blog/32-python-vscode-vibe-coding.html" />
+
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://geoqiao.github.io/contents/blog/32-python-vscode-vibe-coding.html">
+    <meta property="og:site_name" content="geoqiao's Blog">
+    <meta property="og:title" content="Vibe Coding 实战后感 - github_blog with Trae">
+    <meta property="og:description" content="标签: python, VSCode, vibe-coding">
+    <meta property="og:image"
+        content="https://geoqiao.github.io/templates/PaperMod/static/images/favicon.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://geoqiao.github.io/contents/blog/32-python-vscode-vibe-coding.html">
+    <meta name="twitter:title" content="Vibe Coding 实战后感 - github_blog with Trae">
+    <meta name="twitter:description" content="标签: python, VSCode, vibe-coding">
+    <meta name="twitter:image"
+        content="https://geoqiao.github.io/templates/PaperMod/static/images/favicon.png">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/templates/PaperMod/static/css/papermod.css">
+    <link rel="stylesheet" href="/templates/default_theme/static/css/prism.css">
+    <link rel="alternate" type="application/atom+xml" title="RSS" href="/contents/atom.xml">
+    <link rel="icon" type="image/png" href="/templates/PaperMod/static/images/favicon.png">
+</head>
+
+<body>
+    <header class="pm-header">
+        <nav class="container nav">
+            <a href="/" class="logo">
+                <img class="logo-avatar" src="/templates/PaperMod/static/images/favicon.png" alt="geoqiao's Blog">
+                <span>geoqiao's Blog</span>
+            </a>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" aria-label="Toggle theme">🌙</button>
+                <button class="menu-toggle" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="/contents/">Blog</a></li>
+                <li><a href="/contents/tags">Tag</a></li>
+                <li><a href="/contents/about.html">About</a></li>
+                <li><a href="/contents/atom.xml">RSS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        
+<article class="post full-post">
+    <aside class="toc">
+        <h4>目录</h4>
+        <nav id="toc"></nav>
+    </aside>
+    <main>
+        <h1 class="post-title">Vibe Coding 实战后感 - github_blog with Trae</h1>
+        <div class="post-meta">发布于 2026-03-21
+            
+            | 标签: <a href="/contents/tag/python.html" class="tag">python</a><a href="/contents/tag/VSCode.html" class="tag">VSCode</a><a href="/contents/tag/vibe-coding.html" class="tag">vibe-coding</a>
+            
+        </div>
+
+        <div class="post-content"><h2>TL:DR</h2>
+<p>我使用 Trae IDE 对我的 github_blog 项目做了一些迭代。与之前不同的是，这次完全<code>vibe coding</code>，没有手写一行代码。</p>
+<blockquote>
+<p>也许以后真的只需要自然语言编程，设置好明确的准出条件，剩下的就完全交给 AI 去做就好了。</p>
+</blockquote>
+<h2>为什么要迭代</h2>
+<p>正如项目<code>README.md</code>中所写：想要一个更好看的前端</p>
+<h3>一些背景</h3>
+<p>这个博客搭建在 GitHub Pages 上，由 Python、GitHub Actions 实现自动更新。</p>
+<p>逻辑很简单：</p>
+<ol>
+<li>写 issue</li>
+<li>GitHub Actions 捕捉每一次 issue 变更运行 python 脚本</li>
+<li>python 读取 issues，并将 issue 渲染为 HTML(Jinja2)</li>
+</ol>
+<p>但是有一个痛点：我不会写 JS 和 CSS。</p>
+<p>所以第一版前端界面长这样：</p>
+<img width="1280" height="747" alt="Image" src="https://github.com/user-attachments/assets/6ad6413e-d305-4f91-a279-626be0fc9cb5" />
+<p>我当然很不满意呀！</p>
+<h2>怎么做</h2>
+<p>当然是让 AI 来帮我写前端！</p>
+<h3>Why Trae ?</h3>
+<ol>
+<li>GitHub Copilot：我日常工作中 GitHub Copilot 基本可以满足需求，但是免费版额度不读</li>
+<li>Cursor：相当明星的产品，但是我只试用过，没有付费</li>
+<li><strong>价格</strong>：刷到 Trae 的一些博客，性价比很高，只要 7.5$一个月</li>
+<li>至于其他比如 Claude Code：我确实不是职业开发，感觉价格很高，但是我很难物尽其用</li>
+</ol>
+<h3>过程</h3>
+<p>整个过程其实很简单，<strong>给 Trae 一张图，然后让 Trae 自己改</strong>，我只需要每次点击确认。当然我不希望它随意改动我的主体 python 代码，担心它搞砸主体逻辑。</p>
+<ol>
+<li>10min 不到，整体的模板框架已经出来了，</li>
+<li>然后就是字体、颜色、暗黑模式、目录悬浮、缩进等等一些小需求的顶点优化</li>
+<li>回头一看，不到 2 个小时，前端就变成了下面这样，大呼牛逼 👍</li>
+</ol>
+<img width="3024" height="1964" alt="Image" src="https://github.com/user-attachments/assets/731f4455-f8d2-477e-8b12-fd0ec02acd46" />
+<h2>回顾</h2>
+<h3>自己确实落伍了</h3>
+<p>Trae 只是一个普通的 AI 编程工具而已，看风评远没有 Claude Code、Codex 等产品优秀。然而已经可以理解本地项目，并写一个符合项目规范的前端模板。</p>
+<h3>核心永远是：上下文和提示词</h3>
+<blockquote>
+<p>纯主观感受，不一定对</p>
+</blockquote>
+<p>不管是 system prompt、还是 skills，本质上都是提示词工程，只不过在实现工程上变得更有巧思。让大模型可以读取特定的提示词，提升某方面的能力。</p>
+<p>MCP 和 web search 可以通过工具调用的方式增加特定方面的上下文，让模型做的选择更加符合现状，而不是瞎猜。</p>
+<h3>痛点在回滚和环境隔离</h3>
+<p>虽然 Trae 已经有 sand-box 隔离，但是一旦它搞错，或者自己想回滚的时候，一些实际发生的命令是不可逆的。比如创建、删除文件。刚开始没有提醒它用<code>uv</code>，结果在系统 python 环境下，用<code>PIP</code>装了一堆乱七八糟的库.</p>
+<p>这些终端命令实打实的运行在自己的系统上，风险真是很大。也许后面会演变出一个专门隔离 agent 的系统，直到项目完全符合准出才应用到生产环境？</p>
+</div>
+
+        <div id="comments">
+            <script src="https://utteranc.es/client.js" repo="geoqiao/geoqiao.github.io"
+                issue-number="32" theme="github-light" crossorigin="anonymous" async></script>
+        </div>
+    </main>
+</article>
+
+    </main>
+
+    <footer class="pm-footer">
+        <div class="container">
+            <p id="site-year">&copy; <span id="year"></span> geoqiao's Blog</p>
+        </div>
+    </footer>
+
+    <script src="/templates/PaperMod/static/js/papermod.js"></script>
+    <!-- prism is reused from default theme -->
+    <script src="/templates/default_theme/static/js/prism.js"></script>
+</body>
+
+</html>
