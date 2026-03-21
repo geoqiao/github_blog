@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any
 
 from feedgen.feed import FeedGenerator
@@ -35,7 +36,13 @@ class RenderService:
             google_search_verification=settings.google_search_console.content,
         )
 
-    def render_index(self, issues: list[Issue], tags: list[str], pagination: dict[str, Any], issue_slugs: dict[int, str]) -> str:
+    def render_index(
+        self,
+        issues: list[Issue],
+        tags: list[str],
+        pagination: dict[str, Any],
+        issue_slugs: dict[int, str],
+    ) -> str:
         template = self.env.get_template("index.html")
         return template.render(
             issues=issues,
@@ -52,7 +59,13 @@ class RenderService:
             google_search_verification=settings.google_search_console.content,
         )
 
-    def render_tag_page(self, tag: str, issues: list[Issue], tags: list[str], issue_slugs: dict[int, str]) -> str:
+    def render_tag_page(
+        self,
+        tag: str,
+        issues: list[Issue],
+        tags: list[str],
+        issue_slugs: dict[int, str],
+    ) -> str:
         template = self.env.get_template("tag.html")
         return template.render(
             tag_name=tag,
@@ -73,7 +86,9 @@ class RenderService:
         fg = FeedGenerator()
         fg.id(str(settings.blog.url))
         fg.title(settings.blog.title)
-        fg.author({"name": settings.blog.author.name, "email": settings.blog.author.email})
+        fg.author(
+            {"name": settings.blog.author.name, "email": settings.blog.author.email}
+        )
         fg.link(href=str(settings.blog.url), rel="alternate")
         fg.description(settings.blog.description)
 
@@ -91,3 +106,32 @@ class RenderService:
             fe.content(CDATA(self.markdown_to_html(issue.body or "")), type="html")
 
         return fg.atom_str(pretty=True).decode("utf-8")
+
+    def render_sitemap(
+        self, issues: list[Issue], issue_slugs: dict[int, str], tags: list[str]
+    ) -> str:
+        # 显式加载 SEO 模板目录
+        seo_env = Environment(loader=FileSystemLoader("templates/seo"))
+        template = seo_env.get_template("sitemap.xml.j2")
+
+        blog_items = []
+        for issue in issues:
+            blog_items.append(
+                {
+                    "slug": issue_slugs[issue.number],
+                    "lastmod": issue.updated_at.strftime("%Y-%m-%d"),
+                }
+            )
+
+        return template.render(
+            base_url=str(settings.blog.url).rstrip("/"),
+            blog_dir=str(settings.blog.blog_dir).strip("/"),
+            blog_items=blog_items,
+            tags=tags,
+            now=datetime.now().strftime("%Y-%m-%d"),
+        )
+
+    def render_robots(self) -> str:
+        seo_env = Environment(loader=FileSystemLoader("templates/seo"))
+        template = seo_env.get_template("robots.txt.j2")
+        return template.render(base_url=str(settings.blog.url).rstrip("/"))

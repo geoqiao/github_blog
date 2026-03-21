@@ -51,8 +51,23 @@ class BlogGenerator:
             # 渲染标签页
             self._generate_tag_pages(issues, tags, issue_slugs)
 
-            # 生成 RSS/Sitemap/Robots (逻辑略，按需补全)
-            # ...
+            # 生成 RSS
+            rss_content = self.render.generate_rss(issues, issue_slugs)
+            (settings.blog.content_dir / settings.blog.rss_atom_path).write_text(
+                rss_content, encoding="utf-8"
+            )
+
+            # 生成 Sitemap
+            sitemap_content = self.render.render_sitemap(issues, issue_slugs, tags)
+            (settings.blog.content_dir / "sitemap.xml").write_text(
+                sitemap_content, encoding="utf-8"
+            )
+
+            # 生成 Robots.txt
+            robots_content = self.render.render_robots()
+            (settings.blog.content_dir / "robots.txt").write_text(
+                robots_content, encoding="utf-8"
+            )
 
             logger.info("generation_completed")
         except Exception as e:
