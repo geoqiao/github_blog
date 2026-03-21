@@ -394,11 +394,7 @@ def gen_rss_feed(issues: list[Issue], issue_slugs: dict[int, str]):
         blog_dir_str = str(config.blog_dir).strip("/")
         url = f"{config.blog_url.rstrip('/')}/contents/{blog_dir_str}/{slug}.html"
         fe.id(url)
-        # 使用新的标题格式：ID + Tags
-        issue_tags = (
-            " ".join([label.name for label in issue.labels]) if issue.labels else ""
-        )
-        fe.title(f"{issue.number} {issue_tags}".strip())
+        fe.title(issue.title)
         fe.link(href=url)
         fe.description(issue.body[:100])
         fe.published(issue.created_at)
