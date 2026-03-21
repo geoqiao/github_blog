@@ -424,42 +424,51 @@ html[data-theme='dark'] .toc-link {
 
 /* Code block refinement */
 .post-content pre {
-    background: #f5f2f0;
+    background: #f8f9fb;
     color: #111827;
-    padding: 1rem;
-    border-radius: 8px;
+    padding: 1.25rem;
+    border-radius: 12px;
     overflow-x: auto;
     max-width: 100%;
     width: 100%;
     white-space: pre;
     position: relative;
+    border: 1px solid #e5e7eb;
+    margin: 1.5rem 0;
+    font-size: 14.5px;
+    line-height: 1.6;
 }
 
 .post-content pre code {
     white-space: pre;
     word-break: normal;
     word-wrap: normal;
+    font-family: inherit;
 }
 
 html[data-theme='dark'] .post-content pre {
-    background: #0b1220;
-    color: #e6eef8
+    background: #0d1117;
+    color: #e6eef8;
+    border-color: #30363d;
 }
 
 .post-content code {
-    background: rgba(15, 23, 42, 0.04);
+    background: rgba(15, 23, 42, 0.05);
+    color: #e83e8c;
     padding: 0.2em 0.4em;
-    border-radius: 4px
+    border-radius: 6px;
+    font-size: 0.9em;
 }
 
 html[data-theme='dark'] .post-content code {
-    background: rgba(15, 23, 42, 0.6);
-    color: #e6eef8
+    background: rgba(110, 118, 129, 0.2);
+    color: #88c0d0;
 }
 
 .post-content pre>code {
     background: transparent;
-    padding: 0
+    padding: 0;
+    color: inherit;
 }
 
 /* Override Prism specifics inside posts for better contrast */
