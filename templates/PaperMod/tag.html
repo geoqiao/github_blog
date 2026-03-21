@@ -3,8 +3,12 @@
 {% block title %}标签: {{ tag_name }} - {{ blog_title }}{% endblock %}
 
 {% block canonical %}
-<link rel="canonical" href="{{ blog_url }}contents/tag/{{ tag_name }}.html" />
+<link rel="canonical" href="{{ blog_url.rstrip('/') }}/contents/tag/{{ tag_name }}.html" />
 {% endblock %}
+
+{% block og_title %}标签: {{ tag_name }}{% endblock %}
+{% block og_url %}{{ blog_url.rstrip('/') }}/contents/tag/{{ tag_name }}.html{% endblock %}
+{% block twitter_title %}标签: {{ tag_name }}{% endblock %}
 
 {% block content %}
 <section class="content-grid">

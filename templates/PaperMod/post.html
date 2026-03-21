@@ -3,8 +3,17 @@
 {% block title %}{{ issue.title }} - {{ blog_title }}{% endblock %}
 
 {% block canonical %}
-<link rel="canonical" href="{{ blog_url }}contents/blog/{{ slug }}.html" />
+<link rel="canonical" href="{{ blog_url.rstrip('/') }}/contents/blog/{{ slug }}.html" />
 {% endblock %}
+
+{% block og_type %}article{% endblock %}
+{% block og_url %}{{ blog_url.rstrip('/') }}/contents/blog/{{ slug }}.html{% endblock %}
+{% block og_title %}{{ issue.title }}{% endblock %}
+{% block og_description %}标签: {% for label in issue.labels %}{{ label.name }}{% if not loop.last %}, {% endif %}{% endfor %}{% endblock %}
+
+{% block twitter_url %}{{ blog_url.rstrip('/') }}/contents/blog/{{ slug }}.html{% endblock %}
+{% block twitter_title %}{{ issue.title }}{% endblock %}
+{% block twitter_description %}标签: {% for label in issue.labels %}{{ label.name }}{% if not loop.last %}, {% endif %}{% endfor %}{% endblock %}
 
 {% block content %}
 <article class="post full-post">

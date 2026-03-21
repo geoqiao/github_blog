@@ -284,6 +284,7 @@ def render_tag_page(
         rss_atom_path=config.rss_atom_path,
         author_name=config.author_name,
         meta_description=meta_description,
+        google_search_verification=config.google_search_verification,
     )
 
 
@@ -313,6 +314,7 @@ def render_tags_index(tags: list[str], tag_index: dict[str, list[Issue]]) -> str
         rss_atom_path=config.rss_atom_path,
         author_name=config.author_name,
         meta_description=meta_description,
+        google_search_verification=config.google_search_verification,
     )
 
 
@@ -360,6 +362,7 @@ def render_issue_body(issue: Issue, slug: str) -> str:
         blog_url=config.blog_url,
         rss_atom_path=config.rss_atom_path,
         meta_description=meta_description,
+        google_search_verification=config.google_search_verification,
     )
 
 

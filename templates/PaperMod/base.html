@@ -6,8 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="{{ google_search_verification }}" />
     <title>{% block title %}{{ blog_title }}{% endblock %}</title>
-    <meta name="description" content="{{ meta_description }}">
+    <meta name="description" content="{% block description %}{{ meta_description }}{% endblock %}">
     {% block canonical %}{% endblock %}
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}{{ blog_url }}{% endblock %}">
+    <meta property="og:site_name" content="{{ blog_title }}">
+    <meta property="og:title" content="{% block og_title %}{{ blog_title }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ meta_description }}{% endblock %}">
+    <meta property="og:image"
+        content="{% block og_image %}{{ blog_url.rstrip('/') }}/templates/PaperMod/static/images/favicon.png{% endblock %}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="{% block twitter_url %}{{ blog_url }}{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ blog_title }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ meta_description }}{% endblock %}">
+    <meta name="twitter:image"
+        content="{% block twitter_image %}{{ blog_url.rstrip('/') }}/templates/PaperMod/static/images/favicon.png{% endblock %}">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@300;400;700&display=swap"
