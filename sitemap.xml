@@ -3,14 +3,14 @@
   
   <url>
     <loc>https://geoqiao.github.io/</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
     <priority>1.0</priority>
   </url>
 
   
   <url>
     <loc>https://geoqiao.github.io/contents/</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
     <priority>0.8</priority>
   </url>
 
@@ -176,17 +176,22 @@
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/DataAnalysis.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/RSS.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/RandomThoughts.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geoqiao.github.io/contents/tag/SQL.html</loc>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
@@ -196,37 +201,42 @@
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/VMware.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/VSCode.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/blog.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/copilot.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/cs50p.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/macapp.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/obsidian.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geoqiao.github.io/contents/tag/office-excel.html</loc>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
@@ -236,17 +246,22 @@
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/python.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/summary.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/travel.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geoqiao.github.io/contents/tag/vibe-coding.html</loc>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
   <url>
@@ -256,7 +271,7 @@
   
   <url>
     <loc>https://geoqiao.github.io/contents/tag/vim.html</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-22</lastmod>
   </url>
   
 </urlset>

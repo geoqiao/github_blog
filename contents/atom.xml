@@ -2,7 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>https://geoqiao.github.io/</id>
   <title>geoqiao's Blog</title>
+<<<<<<< HEAD
   <updated>2026-03-21T10:02:56.451857+00:00</updated>
+=======
+  <updated>2026-03-21T16:57:01.858473+00:00</updated>
+>>>>>>> 12aa022 (feat: 集成 Landing Page 模板并统一全站等宽字体)
   <author>
     <name>geoqiao</name>
     <email>geoqiao@example.com</email>

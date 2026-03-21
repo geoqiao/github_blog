@@ -25,12 +25,20 @@ html[data-theme='dark'] {
     --divider: #0f172a;
 }
 
+@font-face {
+    font-family: "sans-chinese";
+    src: local("WenQuanYi Micro Hei"), local("PingFang SC"), local("Noto Sans SC"), local("Noto Sans CJK SC"), local("Source Han Sans CN"), local("Microsoft YaHei"), local("PingFang TC"), local("Noto Sans TC"), local("Noto Sans CJK TC"), local("Source Han Sans TW"), local("Microsoft JhengHei"), local("sans-serif");
+    unicode-range: U+2000-FFFF
+}
+
 body {
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", sans-chinese, monospace;
     line-height: 1.75;
     background: var(--bg);
     color: var(--text);
-    margin: 0
+    margin: 0;
+    font-size: 16px;
+    overflow-wrap: break-word;
 }
 
 .container {

@@ -26,13 +26,11 @@
     <meta name="twitter:image"
         content="{% block twitter_image %}{{ blog_url.rstrip('/') }}/templates/PaperMod/static/images/favicon.png{% endblock %}">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@300;400;700&display=swap"
-        rel="stylesheet">
     <link rel="stylesheet" href="/templates/PaperMod/static/css/papermod.css">
     <link rel="stylesheet" href="/templates/default_theme/static/css/prism.css">
     <link rel="alternate" type="application/atom+xml" title="RSS" href="/contents/{{ rss_atom_path }}">
     <link rel="icon" type="image/png" href="/templates/PaperMod/static/images/favicon.png">
+    {% block extra_head %}{% endblock %}
 </head>
 
 <body>

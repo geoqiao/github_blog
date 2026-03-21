@@ -13,11 +13,19 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: "sans-chinese";
+  src: local("WenQuanYi Micro Hei"), local("PingFang SC"), local("Noto Sans SC"), local("Noto Sans CJK SC"), local("Source Han Sans CN"), local("Microsoft YaHei"), local("PingFang TC"), local("Noto Sans TC"), local("Noto Sans CJK TC"), local("Source Han Sans TW"), local("Microsoft JhengHei"), local("sans-serif");
+  unicode-range: U+2000-FFFF
+}
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", sans-chinese, monospace;
   line-height: 1.6;
   color: var(--text-color);
   background-color: var(--background-color);
+  font-size: 16px;
+  overflow-wrap: break-word;
 }
 
 .container {
@@ -290,7 +298,7 @@ footer {
   background-color: #f6f8fa;
   padding: 0.2em 0.4em;
   border-radius: 3px;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", sans-chinese, monospace;
 }
 
 /* 表格样式 */
@@ -373,7 +381,7 @@ footer {
   background-color: #f6f8fa;
   padding: 0.2em 0.4em;
   border-radius: 3px;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", sans-chinese, monospace;
   word-break: break-all;
   overflow-wrap: break-word;
 }

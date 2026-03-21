@@ -49,6 +49,10 @@ class BlogGenerator:
             tags = self._collect_tags(issues)
             self._generate_index(issues, tags, issue_slugs)
 
+            # 渲染主页 (landing page)
+            home_content = self.render.render_home()
+            Path("index.html").write_text(home_content, encoding="utf-8")
+
             # 渲染标签页
             self._generate_tag_pages(issues, tags, issue_slugs)
 

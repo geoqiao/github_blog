@@ -1,198 +1,161 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="GeoQiao 的个人博客，分享 Python 学习、金融数据分析及折腾记录。这里记录了我作为金融数据分析师的成长历程和技术实践。" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="DRggZlykSzc8M9TyaS0BPSRE7Kvw8W9hHt5pZrIMm3Y" />
-    <title>GeoQiao</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/" />
-    <style>
-        body {
-            background-color: #fff;
-            color: #212121
-        }
+    <title>geoqiao's Blog</title>
+    <meta name="description" content="1. 目前是一名金融行业贷后策略分析师；这里是我的个人空间，记录一些想记录的。
+2. 这个网页基于GitHub Pages & GitHub Actions 自动部署。
+3. 主体 main.py 自己完成，前端主题由AI生成。
+">
+    
 
-        body a {
-            color: #1e70bf;
-            text-decoration: none
-        }
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://geoqiao.github.io/">
+    <meta property="og:site_name" content="geoqiao's Blog">
+    <meta property="og:title" content="geoqiao's Blog">
+    <meta property="og:description" content="1. 目前是一名金融行业贷后策略分析师；这里是我的个人空间，记录一些想记录的。
+2. 这个网页基于GitHub Pages & GitHub Actions 自动部署。
+3. 主体 main.py 自己完成，前端主题由AI生成。
+">
+    <meta property="og:image"
+        content="https://geoqiao.github.io/templates/PaperMod/static/images/favicon.png">
 
-        body a:visited {
-            color: #1e70bf
-        }
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://geoqiao.github.io/">
+    <meta name="twitter:title" content="geoqiao's Blog">
+    <meta name="twitter:description" content="1. 目前是一名金融行业贷后策略分析师；这里是我的个人空间，记录一些想记录的。
+2. 这个网页基于GitHub Pages & GitHub Actions 自动部署。
+3. 主体 main.py 自己完成，前端主题由AI生成。
+">
+    <meta name="twitter:image"
+        content="https://geoqiao.github.io/templates/PaperMod/static/images/favicon.png">
 
-        body a:hover {
-            text-decoration: underline
-        }
+    <link rel="stylesheet" href="/templates/PaperMod/static/css/papermod.css">
+    <link rel="stylesheet" href="/templates/default_theme/static/css/prism.css">
+    <link rel="alternate" type="application/atom+xml" title="RSS" href="/contents/atom.xml">
+    <link rel="icon" type="image/png" href="/templates/PaperMod/static/images/favicon.png">
+    
+<style>
+    .home-container {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        text-align: center;
+    }
 
-        body code:not(pre>code) {
-            background-color: #212121;
-            color: #fff
-        }
+    .profile-photo {
+        border: 1px solid #eee;
+        max-width: 160px;
+        padding: 2px;
+        border-radius: 50%;
+        margin-bottom: 2rem;
+    }
 
-        body figcaption {
-            color: #666
-        }
+    .about-section {
+        text-align: left;
+        margin-bottom: 2rem;
+    }
 
-        html {
-            height: 100%
-        }
+    .about-section h2 {
+        margin-bottom: 1rem;
+    }
 
-        @font-face {
-            font-family: "sans-chinese";
-            src: local("WenQuanYi Micro Hei"), local("PingFang SC"), local("Noto Sans SC"), local("Noto Sans CJK SC"), local("Source Han Sans CN"), local("Microsoft YaHei"), local("PingFang TC"), local("Noto Sans TC"), local("Noto Sans CJK TC"), local("Source Han Sans TW"), local("Microsoft JhengHei"), local("sans-serif");
-            unicode-range: U+2000-FFFF
-        }
+    .about-content {
+        line-height: 1.6;
+    }
 
-        body {
-            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", sans-chinese, monospace;
-            font-size: 16px;
-            line-height: 1.4;
-            margin: 0;
-            min-height: 100%;
-            overflow-wrap: break-word
-        }
+    .links-section {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 3rem;
+        font-size: 1.1rem;
+    }
 
-        .post-meta {
-            text-align: right
-        }
+    .links-section a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+    }
 
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            margin-top: 3rem
-        }
+    .links-section a:hover {
+        text-decoration: underline;
+    }
 
-        p {
-            margin: 1rem 0
-        }
+    .footer-note {
+        margin-top: 4rem;
+        opacity: 0.6;
+        font-size: 0.9rem;
+    }
+</style>
 
-        li {
-            margin: 0.4rem 0
-        }
-
-        *:target {
-            background: yellow
-        }
-
-        .w {
-            max-width: 640px;
-            margin: 0 auto;
-            padding: 4rem 2rem
-        }
-
-        .toc {
-            border: thin solid black;
-            padding: 1rem
-        }
-
-        pre {
-            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", sans-chinese, monospace;
-            background: black;
-            padding: 1em;
-            overflow-x: auto;
-            color: white
-        }
-
-        table {
-            width: 100%
-        }
-
-        table,
-        th,
-        td {
-            border: thin solid black;
-            border-collapse: collapse;
-            padding: 0.4rem
-        }
-
-        code:not(pre>code) {
-            padding: 0.1em 0.2em;
-            font-size: 90%
-        }
-
-        code.has-jax {
-            -webkit-font-smoothing: antialiased;
-            background: inherit !important;
-            border: none !important;
-            font-size: 100%
-        }
-
-        code {
-            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", sans-chinese, monospace
-        }
-
-        blockquote {
-            font-style: normal;
-            margin-left: 32px;
-            border-left: 4px solid #CCC;
-            padding-left: 8px
-        }
-
-        img {
-            max-width: 100%;
-            display: block;
-            margin: 0 auto
-        }
-
-        figcaption {
-            text-align: center;
-            opacity: 0.5
-        }
-
-        /* div.about-content {
-            text-align: justify;
-            padding: 20px;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        } */
-        .about-content {
-            text-align: left;
-            display: inline-block;
-            vertical-align: top;
-            margin: 0 auto;
-        }
-    </style>
 </head>
 
-<body a="auto">
-    <main class="page-content" aria-label="Content">
-        <div class="w">
-            <header style="margin: 0 auto">
-                <h1 style="height:0px;visibility:hidden">GeoQiao</h1>
-                <!-- <img style="max-width: 233px;" src="./logo2.jpg" alt="title: GeoQiao"> -->
-            </header>
-            <br>
-            <div style="margin: 0 auto;">
-                <img style="border: 1px solid #eee; max-width: 160px; padding: 2px; border-radius: 50%;"
-                    src="./templates/PaperMod/static/images/favicon.png" alt="profile photo">
+<body>
+    <header class="pm-header">
+        <nav class="container nav">
+            <a href="/" class="logo">
+                <img class="logo-avatar" src="/templates/PaperMod/static/images/favicon.png" alt="geoqiao's Blog">
+                <span>geoqiao's Blog</span>
+            </a>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" aria-label="Toggle theme">🌙</button>
+                <button class="menu-toggle" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
             </div>
-            <br>
-            <!-- <div style="text-align:center;"> -->
-            <div class="about-content">
-                <h2>About me:</h2>
-                目前是一名金融行业的数据分析师、取数工具人、调包侠，寻找数据中虚无缥缈的 insights <br />
-                最近两年对 Python 非常感兴趣，是一件难得坚持了很久还没放弃的事情。
-                我会以小白视角，分享我的学习折腾记录，期望满足自己的`写 blog 虚荣心`的同时，对想学Python的同学造成一些阻碍😂<br />
-            </div>
-            <br>
-            <div style="text-align:center;">
-                <p><a href="https://geoqiao.github.io/contents/">Blog</a></p>
-                <p><a href="https://github.com/geoqiao">GitHub</a></p>
-                <p><a href="https://x.com/geoqiao">Twitter</a></p>
-            </div>
-            <br>
-            <br>
-            <div style="text-align:center;">
-                <p>@GeoQiao'blog</a></p>
-            </div>
+
+            <ul class="nav-links">
+                <li><a href="/contents/">Blog</a></li>
+                <li><a href="/contents/tags">Tag</a></li>
+                <li><a href="/contents/about.html">About</a></li>
+                <li><a href="/contents/atom.xml">RSS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        
+<div class="home-container">
+    <div class="profile-section">
+        <img class="profile-photo" src="/templates/PaperMod/static/images/favicon.png" alt="profile photo">
+    </div>
+
+    <div class="about-section">
+        <h2>About me:</h2>
+        <div class="about-content">
+            1. 目前是一名金融行业贷后策略分析师；这里是我的个人空间，记录一些想记录的。<br />2. 这个网页基于GitHub Pages & GitHub Actions 自动部署。<br />3. 主体 main.py 自己完成，前端主题由AI生成。<br />
         </div>
+    </div>
+
+    <div class="links-section">
+        <a href="/contents/">Blog</a>
+        <a href="https://github.com/geoqiao">GitHub</a>
+        <a href="https://x.com/geoqiao">Twitter</a>
+    </div>
+
+    <div class="footer-note">
+        <p>@GeoQiao'blog</p>
+    </div>
+</div>
+
     </main>
+
+    <footer class="pm-footer">
+        <div class="container">
+            <p id="site-year">&copy; <span id="year"></span> geoqiao's Blog</p>
+        </div>
+    </footer>
+
+    <script src="/templates/PaperMod/static/js/papermod.js"></script>
+    <!-- prism is reused from default theme -->
+    <script src="/templates/default_theme/static/js/prism.js"></script>
 </body>
 
 </html>

@@ -59,6 +59,19 @@ class RenderService:
             google_search_verification=settings.google_search_console.content,
         )
 
+    def render_home(self) -> str:
+        template = self.env.get_template("home.html")
+        return template.render(
+            blog_title=settings.blog.title,
+            github_name=settings.github.name,
+            github_repo=settings.github.repo,
+            blog_url=str(settings.blog.url),
+            rss_atom_path=settings.blog.rss_atom_path,
+            author_name=settings.blog.author.name,
+            meta_description=settings.blog.description,
+            google_search_verification=settings.google_search_console.content,
+        )
+
     def render_tag_page(
         self,
         tag: str,

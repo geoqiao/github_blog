@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ blog_title }}{% endblock %}
+
+{% block extra_head %}
+<style>
+    .home-container {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        text-align: center;
+    }
+
+    .profile-photo {
+        border: 1px solid #eee;
+        max-width: 160px;
+        padding: 2px;
+        border-radius: 50%;
+        margin-bottom: 2rem;
+    }
+
+    .about-section {
+        text-align: left;
+        margin-bottom: 2rem;
+    }
+
+    .about-section h2 {
+        margin-bottom: 1rem;
+    }
+
+    .about-content {
+        line-height: 1.6;
+    }
+
+    .links-section {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 3rem;
+        font-size: 1.1rem;
+    }
+
+    .links-section a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .links-section a:hover {
+        text-decoration: underline;
+    }
+
+    .footer-note {
+        margin-top: 4rem;
+        opacity: 0.6;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <div class="profile-section">
+        <img class="profile-photo" src="/templates/PaperMod/static/images/favicon.png" alt="profile photo">
+    </div>
+
+    <div class="about-section">
+        <h2>About me:</h2>
+        <div class="about-content">
+            {{ meta_description | replace('\n', '<br />') | safe }}
+        </div>
+    </div>
+
+    <div class="links-section">
+        <a href="/contents/">Blog</a>
+        <a href="https://github.com/{{ github_name }}">GitHub</a>
+        <a href="https://x.com/{{ github_name }}">Twitter</a>
+    </div>
+
+    <div class="footer-note">
+        <p>@GeoQiao'blog</p>
+    </div>
+</div>
+{% endblock %}
