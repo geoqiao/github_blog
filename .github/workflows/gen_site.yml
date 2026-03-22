@@ -45,6 +45,7 @@ jobs:
         run: |
           mkdir -p _site
           cp -r contents _site/
+          cp -r templates _site/
           cp index.html robots.txt sitemap.xml _site/
           touch _site/.nojekyll
 
