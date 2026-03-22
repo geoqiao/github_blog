@@ -66,4 +66,44 @@
         window.addEventListener('scroll', updateProgress, { passive: true });
         updateProgress();
     }
+
+    // Code block: language label + copy button
+    document.querySelectorAll('.post-content pre').forEach(pre => {
+        const code = pre.querySelector('code');
+        if (!code) return;
+        const langClass = Array.from(code.classList).find(c => c.startsWith('language-'));
+        const lang = langClass ? langClass.replace('language-', '') : '';
+
+        const header = document.createElement('div');
+        header.className = 'code-header';
+
+        if (lang) {
+            const langSpan = document.createElement('span');
+            langSpan.className = 'code-lang';
+            langSpan.textContent = lang;
+            header.appendChild(langSpan);
+        }
+
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.type = 'button';
+        copyBtn.textContent = 'Copy';
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(code.textContent).then(() => {
+                copyBtn.textContent = 'Copied!';
+                copyBtn.classList.add('copied');
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy';
+                    copyBtn.classList.remove('copied');
+                }, 1500);
+            }).catch(() => {
+                copyBtn.textContent = 'Failed';
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy';
+                }, 1500);
+            });
+        });
+        header.appendChild(copyBtn);
+        pre.prepend(header);
+    });
 })();

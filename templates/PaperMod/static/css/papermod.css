@@ -512,6 +512,51 @@ html[data-theme='dark'] .post-content code {
     color: inherit;
 }
 
+/* Code block copy button and language label */
+.code-header {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.code-lang {
+    font-size: 0.75rem;
+    font-family: inherit;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.copy-btn {
+    font-size: 0.75rem;
+    font-family: inherit;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--divider);
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.post-content pre:hover .copy-btn {
+    opacity: 1;
+}
+
+.copy-btn:hover {
+    background: var(--muted-bg);
+    color: var(--text);
+}
+
+.copy-btn.copied {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
 /* Override Prism specifics inside posts for better contrast */
 .post-content pre[class*="language-"],
 .post-content code[class*="language-"] {
