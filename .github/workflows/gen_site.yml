@@ -9,17 +9,24 @@ on:
   push:
     branches:
       - main
-    paths:
-      - main.py
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  sync:
+  build:
     name: Generate Site
     runs-on: ubuntu-latest
-    if: github.repository_owner_id == github.event.issue.user.id || github.event_name == 'push'
+    if: github.event_name != 'issues' || github.repository_owner_id == github.event.issue.user.id
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -34,11 +41,26 @@ jobs:
         run: |
           uv run blog-gen ${{ secrets.G_T }} ${{ github.repository }}
 
-      - name: Push contents
+      - name: Prepare site
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          # 使用 -A 选项以确保删除不再存在的旧文件（如旧的数字 ID HTML）
-          git add -A contents robots.txt sitemap.xml index.html
-          git commit -m 'chore: update blog with new slug format and cleanup old files' || echo "nothing to commit"
-          git push || echo "nothing to push"
+          mkdir -p _site
+          cp -r contents _site/
+          cp index.html robots.txt sitemap.xml _site/
+          touch _site/.nojekyll
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
