@@ -175,3 +175,23 @@ class RenderService:
             meta_description=settings.blog.description,
             google_search_verification=settings.google_search_console.content,
         )
+
+    def render_tags_page(
+        self,
+        tags: list[str],
+        tag_counts: dict[str, int],
+    ) -> str:
+        template = self.env.get_template("tags.html")
+        tag_items = [{"name": tag, "count": tag_counts.get(tag, 0)} for tag in tags]
+        return template.render(
+            tags=tags,
+            tag_items=tag_items,
+            blog_title=settings.blog.title,
+            github_name=settings.github.name,
+            github_repo=settings.github.repo,
+            blog_url=str(settings.blog.url),
+            rss_atom_path=settings.blog.rss_atom_path,
+            author_name=settings.blog.author.name,
+            meta_description=settings.blog.description,
+            google_search_verification=settings.google_search_console.content,
+        )

@@ -143,6 +143,12 @@ class BlogGenerator:
 
         tag_dir = settings.blog.content_dir / "tag"
         tag_dir.mkdir(parents=True, exist_ok=True)
+
+        # 生成标签列表页面 (tag/index.html)
+        tag_counts = {tag: len(tag_index.get(tag, [])) for tag in tags}
+        tags_content = self.render.render_tags_page(tags, tag_counts)
+        (tag_dir / "index.html").write_text(tags_content, encoding="utf-8")
+
         for tag in tags:
             tag_issues = tag_index.get(tag, [])
             if tag_issues:
