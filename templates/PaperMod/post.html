@@ -16,6 +16,7 @@
 {% block twitter_description %}标签: {% for label in issue.labels %}{{ label.name }}{% if not loop.last %}, {% endif %}{% endfor %}{% endblock %}
 
 {% block content %}
+<div id="reading-progress"></div>
 <article class="post full-post">
     <aside class="toc">
         <h4>目录</h4>
