@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 from typing import Any
 
@@ -7,14 +8,25 @@ from jinja2 import Environment, FileSystemLoader
 from lxml.etree import CDATA  # type: ignore
 from marko import Markdown
 from marko.ext.gfm import GFM
+from marko.html_renderer import HTMLRenderer
+from marko.inline import Image
 
 from ..config import settings
+
+
+class LazyImageRenderer(HTMLRenderer):
+    """Marko HTML renderer that adds loading=\"lazy\" to all img tags."""
+
+    def render_image(self, element: Image) -> str:
+        result = super().render_image(element)
+        # Inject loading="lazy" into the <img> tag using regex for robustness
+        return re.sub(r"<img\b", '<img loading="lazy"', result, count=1)
 
 
 class RenderService:
     def __init__(self):
         self.env = Environment(loader=FileSystemLoader(str(settings.theme.path)))
-        self.markdown = Markdown(extensions=[GFM, "pangu"])
+        self.markdown = Markdown(extensions=[GFM, "pangu"], renderer=LazyImageRenderer)
 
     def markdown_to_html(self, md_str: str) -> str:
         return self.markdown.convert(md_str)

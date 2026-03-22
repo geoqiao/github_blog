@@ -57,3 +57,8 @@ def test_render_tag_page_contains_tag_name(render):
     issues = [_make_issue(title="Tagged Post")]
     html = render.render_tag_page("python", issues, tags=["python"], issue_slugs={1: "1-python"})
     assert "python" in html.lower()
+
+
+def test_image_has_lazy_loading(render):
+    html = render.markdown_to_html("![alt text](https://example.com/img.png)")
+    assert '<img loading="lazy"' in html
