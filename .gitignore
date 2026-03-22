@@ -169,3 +169,4 @@ backup/
 .ruff_cache/
 .trae/
 .superpowers/
+.claude/
