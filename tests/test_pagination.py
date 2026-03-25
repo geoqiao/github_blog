@@ -1,20 +1,22 @@
 def _paginate(issues, page_size):
     """Mirror of the pagination logic in cli.py._generate_index"""
-    pages = [issues[i:i + page_size] for i in range(0, len(issues), page_size)]
+    pages = [issues[i : i + page_size] for i in range(0, len(issues), page_size)]
     if not pages:
         pages = [[]]
     total_pages = max(1, len(pages))
     result = []
     for i, page_issues in enumerate(pages, start=1):
-        result.append({
-            "page": i,
-            "pages": total_pages,
-            "has_prev": i > 1,
-            "has_next": i < total_pages,
-            "prev_num": i - 1,
-            "next_num": i + 1,
-            "issues": page_issues,
-        })
+        result.append(
+            {
+                "page": i,
+                "pages": total_pages,
+                "has_prev": i > 1,
+                "has_next": i < total_pages,
+                "prev_num": i - 1,
+                "next_num": i + 1,
+                "issues": page_issues,
+            }
+        )
     return result
 
 
