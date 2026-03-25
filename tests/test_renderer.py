@@ -40,9 +40,24 @@ def test_render_post_contains_toc_element(render):
 
 
 def test_render_index_contains_issues(render):
-    issues = [_make_issue(number=1, title="Post One"), _make_issue(number=2, title="Post Two")]
-    pagination = {"page": 1, "pages": 1, "has_prev": False, "has_next": False, "prev_num": 0, "next_num": 2}
-    html = render.render_index(issues, tags=["python"], pagination=pagination, issue_slugs={1: "1-python", 2: "2-python"})
+    issues = [
+        _make_issue(number=1, title="Post One"),
+        _make_issue(number=2, title="Post Two"),
+    ]
+    pagination = {
+        "page": 1,
+        "pages": 1,
+        "has_prev": False,
+        "has_next": False,
+        "prev_num": 0,
+        "next_num": 2,
+    }
+    html = render.render_index(
+        issues,
+        tags=["python"],
+        pagination=pagination,
+        issue_slugs={1: "1-python", 2: "2-python"},
+    )
     assert "Post One" in html
     assert "Post Two" in html
 
@@ -55,7 +70,9 @@ def test_render_home_shows_latest_posts(render):
 
 def test_render_tag_page_contains_tag_name(render):
     issues = [_make_issue(title="Tagged Post")]
-    html = render.render_tag_page("python", issues, tags=["python"], issue_slugs={1: "1-python"})
+    html = render.render_tag_page(
+        "python", issues, tags=["python"], issue_slugs={1: "1-python"}
+    )
     assert "python" in html.lower()
 
 

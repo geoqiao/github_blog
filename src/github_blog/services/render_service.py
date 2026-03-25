@@ -25,7 +25,10 @@ class LazyImageRenderer(HTMLRenderer):
 
 class RenderService:
     def __init__(self):
-        self.env = Environment(loader=FileSystemLoader(str(settings.theme.path)))
+        self.env = Environment(
+            loader=FileSystemLoader(str(settings.theme.path)),
+            autoescape=True,
+        )
         self.markdown = Markdown(extensions=[GFM, "pangu"], renderer=LazyImageRenderer)
 
     def markdown_to_html(self, md_str: str) -> str:
@@ -138,7 +141,10 @@ class RenderService:
         self, issues: list[Issue], issue_slugs: dict[int, str], tags: list[str]
     ) -> str:
         # 显式加载 SEO 模板目录
-        seo_env = Environment(loader=FileSystemLoader("templates/seo"))
+        seo_env = Environment(
+            loader=FileSystemLoader("templates/seo"),
+            autoescape=True,
+        )
         template = seo_env.get_template("sitemap.xml.j2")
 
         blog_items = []
@@ -159,7 +165,10 @@ class RenderService:
         )
 
     def render_robots(self) -> str:
-        seo_env = Environment(loader=FileSystemLoader("templates/seo"))
+        seo_env = Environment(
+            loader=FileSystemLoader("templates/seo"),
+            autoescape=True,
+        )
         template = seo_env.get_template("robots.txt.j2")
         return template.render(base_url=str(settings.blog.url).rstrip("/"))
 

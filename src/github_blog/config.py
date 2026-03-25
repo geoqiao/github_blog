@@ -1,8 +1,11 @@
+import logging
 from pathlib import Path
 
 import yaml
 from pydantic import BaseModel, Field, HttpUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+logger = logging.getLogger(__name__)
 
 
 class AuthorConfig(BaseModel):
@@ -59,6 +62,7 @@ class Settings(BaseSettings):
 # 全局配置实例
 try:
     settings = Settings.load_from_yaml(Path("config.yaml"))
-except Exception:
-    # 允许测试或 CI 环境通过环境变量覆盖，若 yaml 不存在则跳过
-    pass
+except (FileNotFoundError, yaml.YAMLError) as e:
+    # 允许测试或 CI 环境通过环境变量覆盖, 若 yaml 不存在则跳过
+    logger.debug(f"Config load skipped: {e}")
+    settings = None  # type: ignore[misc,assignment]
