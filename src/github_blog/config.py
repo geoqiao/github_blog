@@ -61,8 +61,24 @@ class Settings(BaseSettings):
 
 # 全局配置实例
 try:
-    settings = Settings.load_from_yaml(Path("config.yaml"))
+    _settings = Settings.load_from_yaml(Path("config.yaml"))
 except (FileNotFoundError, yaml.YAMLError) as e:
     # 允许测试或 CI 环境通过环境变量覆盖, 若 yaml 不存在则跳过
     logger.debug(f"Config load skipped: {e}")
-    settings = None  # type: ignore[misc,assignment]
+    _settings = None
+
+
+def get_settings() -> Settings:
+    """获取应用配置。
+
+    Raises:
+        RuntimeError: 如果配置未加载成功。
+    """
+    if _settings is None:
+        msg = "Settings not loaded. Ensure config.yaml exists or set environment variables."
+        raise RuntimeError(msg)
+    return _settings
+
+
+# 向后兼容的导出
+settings = _settings

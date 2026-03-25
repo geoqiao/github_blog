@@ -4,7 +4,7 @@ from pathlib import Path
 import structlog
 from github.Issue import Issue
 
-from .config import settings
+from .config import Settings, get_settings
 from .services.github_service import GitHubService
 from .services.render_service import RenderService
 from .utils.slug import generate_slug
@@ -17,6 +17,7 @@ class BlogGenerator:
         self.gh = GitHubService(token)
         self.repo_name = repo_name
         self.render = RenderService()
+        self.settings: Settings = get_settings()
 
     def generate(self):
         logger.info("start_generation", repo=self.repo_name)
@@ -58,7 +59,7 @@ class BlogGenerator:
 
             # 生成 RSS
             rss_content = self.render.generate_rss(issues, issue_slugs)
-            (settings.blog.content_dir / settings.blog.rss_atom_path).write_text(
+            (self.settings.blog.content_dir / self.settings.blog.rss_atom_path).write_text(
                 rss_content, encoding="utf-8"
             )
 
@@ -72,7 +73,7 @@ class BlogGenerator:
 
             # 渲染 about 页面
             about_content = self.render.render_about()
-            (settings.blog.content_dir / "about.html").write_text(
+            (self.settings.blog.content_dir / "about.html").write_text(
                 about_content, encoding="utf-8"
             )
 
@@ -82,8 +83,8 @@ class BlogGenerator:
             sys.exit(2)
 
     def _init_dirs(self):
-        content_dir = settings.blog.content_dir
-        blog_dir = settings.blog.blog_dir
+        content_dir = self.settings.blog.content_dir
+        blog_dir = self.settings.blog.blog_dir
         if content_dir.exists():
             import shutil
 
@@ -92,7 +93,7 @@ class BlogGenerator:
         (content_dir / blog_dir).mkdir(parents=True)
 
     def _save_post(self, slug: str, content: str):
-        path = settings.blog.content_dir / settings.blog.blog_dir / f"{slug}.html"
+        path = self.settings.blog.content_dir / self.settings.blog.blog_dir / f"{slug}.html"
         path.write_text(content, encoding="utf-8")
 
     def _collect_tags(self, issues: list[Issue]) -> list[str]:
@@ -106,7 +107,7 @@ class BlogGenerator:
     def _generate_index(
         self, issues: list[Issue], tags: list[str], issue_slugs: dict[int, str]
     ):
-        page_size = settings.blog.page_size
+        page_size = self.settings.blog.page_size
         pages = [issues[i : i + page_size] for i in range(0, len(issues), page_size)]
         total_pages = max(1, len(pages))
 
@@ -123,11 +124,11 @@ class BlogGenerator:
                 page_issues, tags, pagination, issue_slugs
             )
             if i == 1:
-                (settings.blog.content_dir / "index.html").write_text(
+                (self.settings.blog.content_dir / "index.html").write_text(
                     content, encoding="utf-8"
                 )
 
-            page_dir = settings.blog.content_dir / "page"
+            page_dir = self.settings.blog.content_dir / "page"
             page_dir.mkdir(parents=True, exist_ok=True)
             (page_dir / f"{i}.html").write_text(content, encoding="utf-8")
 
@@ -143,7 +144,7 @@ class BlogGenerator:
                         tag_index[name] = []
                     tag_index[name].append(issue)
 
-        tag_dir = settings.blog.content_dir / "tag"
+        tag_dir = self.settings.blog.content_dir / "tag"
         tag_dir.mkdir(parents=True, exist_ok=True)
 
         # 生成标签列表页面 (tag/index.html)

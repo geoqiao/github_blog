@@ -11,7 +11,7 @@ from marko.ext.gfm import GFM
 from marko.html_renderer import HTMLRenderer
 from marko.inline import Image
 
-from ..config import settings
+from ..config import Settings, get_settings
 
 
 class LazyImageRenderer(HTMLRenderer):
@@ -25,8 +25,9 @@ class LazyImageRenderer(HTMLRenderer):
 
 class RenderService:
     def __init__(self):
+        self.settings: Settings = get_settings()
         self.env = Environment(
-            loader=FileSystemLoader(str(settings.theme.path)),
+            loader=FileSystemLoader(str(self.settings.theme.path)),
             autoescape=True,
         )
         self.markdown = Markdown(extensions=[GFM, "pangu"], renderer=LazyImageRenderer)
@@ -40,15 +41,15 @@ class RenderService:
             issue=issue,
             slug=slug,
             html_body=html_body,
-            blog_title=settings.blog.title,
-            github_name=settings.github.name,
-            github_repo=settings.github.repo,
-            author_name=settings.blog.author.name,
-            author_email=settings.blog.author.email,
-            blog_url=str(settings.blog.url),
-            rss_atom_path=settings.blog.rss_atom_path,
-            meta_description=settings.blog.description,
-            google_search_verification=settings.google_search_console.content,
+            blog_title=self.settings.blog.title,
+            github_name=self.settings.github.name,
+            github_repo=self.settings.github.repo,
+            author_name=self.settings.blog.author.name,
+            author_email=self.settings.blog.author.email,
+            blog_url=str(self.settings.blog.url),
+            rss_atom_path=self.settings.blog.rss_atom_path,
+            meta_description=self.settings.blog.description,
+            google_search_verification=self.settings.google_search_console.content,
         )
 
     def render_index(
@@ -64,14 +65,14 @@ class RenderService:
             issue_slugs=issue_slugs,
             tags=tags,
             pagination=pagination,
-            blog_title=settings.blog.title,
-            github_name=settings.github.name,
-            github_repo=settings.github.repo,
-            blog_url=str(settings.blog.url),
-            rss_atom_path=settings.blog.rss_atom_path,
-            author_name=settings.blog.author.name,
-            meta_description=settings.blog.description,
-            google_search_verification=settings.google_search_console.content,
+            blog_title=self.settings.blog.title,
+            github_name=self.settings.github.name,
+            github_repo=self.settings.github.repo,
+            blog_url=str(self.settings.blog.url),
+            rss_atom_path=self.settings.blog.rss_atom_path,
+            author_name=self.settings.blog.author.name,
+            meta_description=self.settings.blog.description,
+            google_search_verification=self.settings.google_search_console.content,
         )
 
     def render_home(self, issues: list[Issue], issue_slugs: dict[int, str]) -> str:
@@ -79,14 +80,14 @@ class RenderService:
         return template.render(
             issues=issues,
             issue_slugs=issue_slugs,
-            blog_title=settings.blog.title,
-            github_name=settings.github.name,
-            github_repo=settings.github.repo,
-            blog_url=str(settings.blog.url),
-            rss_atom_path=settings.blog.rss_atom_path,
-            author_name=settings.blog.author.name,
-            meta_description=settings.blog.description,
-            google_search_verification=settings.google_search_console.content,
+            blog_title=self.settings.blog.title,
+            github_name=self.settings.github.name,
+            github_repo=self.settings.github.repo,
+            blog_url=str(self.settings.blog.url),
+            rss_atom_path=self.settings.blog.rss_atom_path,
+            author_name=self.settings.blog.author.name,
+            meta_description=self.settings.blog.description,
+            google_search_verification=self.settings.google_search_console.content,
         )
 
     def render_tag_page(
@@ -102,31 +103,31 @@ class RenderService:
             issues=issues,
             issue_slugs=issue_slugs,
             tags=tags,
-            blog_title=settings.blog.title,
-            github_name=settings.github.name,
-            github_repo=settings.github.repo,
-            blog_url=str(settings.blog.url),
-            rss_atom_path=settings.blog.rss_atom_path,
-            author_name=settings.blog.author.name,
-            meta_description=settings.blog.description,
-            google_search_verification=settings.google_search_console.content,
+            blog_title=self.settings.blog.title,
+            github_name=self.settings.github.name,
+            github_repo=self.settings.github.repo,
+            blog_url=str(self.settings.blog.url),
+            rss_atom_path=self.settings.blog.rss_atom_path,
+            author_name=self.settings.blog.author.name,
+            meta_description=self.settings.blog.description,
+            google_search_verification=self.settings.google_search_console.content,
         )
 
     def generate_rss(self, issues: list[Issue], issue_slugs: dict[int, str]) -> str:
         fg = FeedGenerator()
-        fg.id(str(settings.blog.url))
-        fg.title(settings.blog.title)
+        fg.id(str(self.settings.blog.url))
+        fg.title(self.settings.blog.title)
         fg.author(
-            {"name": settings.blog.author.name, "email": settings.blog.author.email}
+            {"name": self.settings.blog.author.name, "email": self.settings.blog.author.email}
         )
-        fg.link(href=str(settings.blog.url), rel="alternate")
-        fg.description(settings.blog.description)
+        fg.link(href=str(self.settings.blog.url), rel="alternate")
+        fg.description(self.settings.blog.description)
 
         for issue in issues:
             slug = issue_slugs[issue.number]
             fe = fg.add_entry()
-            blog_dir_str = str(settings.blog.blog_dir).strip("/")
-            url = f"{str(settings.blog.url).rstrip('/')}/contents/{blog_dir_str}/{slug}.html"
+            blog_dir_str = str(self.settings.blog.blog_dir).strip("/")
+            url = f"{str(self.settings.blog.url).rstrip('/')}/contents/{blog_dir_str}/{slug}.html"
             fe.id(url)
             fe.title(issue.title)
             fe.link(href=url)
@@ -157,8 +158,8 @@ class RenderService:
             )
 
         return template.render(
-            base_url=str(settings.blog.url).rstrip("/"),
-            blog_dir=str(settings.blog.blog_dir).strip("/"),
+            base_url=str(self.settings.blog.url).rstrip("/"),
+            blog_dir=str(self.settings.blog.blog_dir).strip("/"),
             blog_items=blog_items,
             tags=tags,
             now=datetime.now().strftime("%Y-%m-%d"),
@@ -170,19 +171,19 @@ class RenderService:
             autoescape=True,
         )
         template = seo_env.get_template("robots.txt.j2")
-        return template.render(base_url=str(settings.blog.url).rstrip("/"))
+        return template.render(base_url=str(self.settings.blog.url).rstrip("/"))
 
     def render_about(self) -> str:
         template = self.env.get_template("about.html")
         return template.render(
-            blog_title=settings.blog.title,
-            github_name=settings.github.name,
-            github_repo=settings.github.repo,
-            blog_url=str(settings.blog.url),
-            rss_atom_path=settings.blog.rss_atom_path,
-            author_name=settings.blog.author.name,
-            meta_description=settings.blog.description,
-            google_search_verification=settings.google_search_console.content,
+            blog_title=self.settings.blog.title,
+            github_name=self.settings.github.name,
+            github_repo=self.settings.github.repo,
+            blog_url=str(self.settings.blog.url),
+            rss_atom_path=self.settings.blog.rss_atom_path,
+            author_name=self.settings.blog.author.name,
+            meta_description=self.settings.blog.description,
+            google_search_verification=self.settings.google_search_console.content,
         )
 
     def render_tags_page(
@@ -195,12 +196,12 @@ class RenderService:
         return template.render(
             tags=tags,
             tag_items=tag_items,
-            blog_title=settings.blog.title,
-            github_name=settings.github.name,
-            github_repo=settings.github.repo,
-            blog_url=str(settings.blog.url),
-            rss_atom_path=settings.blog.rss_atom_path,
-            author_name=settings.blog.author.name,
-            meta_description=settings.blog.description,
-            google_search_verification=settings.google_search_console.content,
+            blog_title=self.settings.blog.title,
+            github_name=self.settings.github.name,
+            github_repo=self.settings.github.repo,
+            blog_url=str(self.settings.blog.url),
+            rss_atom_path=self.settings.blog.rss_atom_path,
+            author_name=self.settings.blog.author.name,
+            meta_description=self.settings.blog.description,
+            google_search_verification=self.settings.google_search_console.content,
         )
