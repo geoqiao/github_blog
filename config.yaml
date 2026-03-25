@@ -25,4 +25,4 @@ GoogleSearchConsole:
   verify: true # 是否验证
 
 theme:
-  path: "templates/PaperMod"
+  path: "templates/PaperMint"

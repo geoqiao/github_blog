@@ -26,7 +26,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Template System
 
 Templates use Jinja2. Two themes available:
-- `templates/PaperMod/` - Default theme (Hugo PaperMod port)
+- `templates/PaperMint/` - Default theme (Hugo PaperMod inspired)
 - `templates/default_theme/` - Legacy theme
 
 Template path is configured in `config.yaml` under `theme.path`.
@@ -61,7 +61,7 @@ uv run python -m http.server 8000
 # Then open http://localhost:8000
 ```
 
-**Why:** The project uses absolute paths like `/templates/PaperMod/static/css/papermod.css` for CSS.
+**Why:** The project uses absolute paths like `/templates/PaperMint/static/css/papermint.css` for CSS.
 - The `templates/` directory is at the project root
 - `contents/` is just a subdirectory for blog posts
 - Starting from `contents/` would cause 404 errors for all static resources
@@ -128,7 +128,7 @@ GoogleSearchConsole:
   verify: true
 
 theme:
-  path: "templates/PaperMod"      # Theme directory
+  path: "templates/PaperMint"      # Theme directory
 ```
 
 ## Key Dependencies
@@ -153,7 +153,7 @@ theme:
 │   └── utils/               # Utilities
 │       └── slug.py
 ├── templates/               # Jinja2 templates
-│   ├── PaperMod/           # Default theme
+│   ├── PaperMint/          # Default theme
 │   ├── default_theme/      # Legacy theme
 │   └── seo/                # SEO templates (sitemap, robots)
 ├── tests/                   # Test files

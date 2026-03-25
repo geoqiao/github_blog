@@ -16,7 +16,7 @@
     <meta property="og:title" content="{% block og_title %}{{ blog_title }}{% endblock %}">
     <meta property="og:description" content="{% block og_description %}{{ meta_description }}{% endblock %}">
     <meta property="og:image"
-        content="{% block og_image %}{{ blog_url.rstrip('/') }}/templates/PaperMod/static/images/favicon.png{% endblock %}">
+        content="{% block og_image %}{{ blog_url.rstrip('/') }}{{ theme_path }}/static/images/favicon.png{% endblock %}">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary">
@@ -24,12 +24,12 @@
     <meta name="twitter:title" content="{% block twitter_title %}{{ blog_title }}{% endblock %}">
     <meta name="twitter:description" content="{% block twitter_description %}{{ meta_description }}{% endblock %}">
     <meta name="twitter:image"
-        content="{% block twitter_image %}{{ blog_url.rstrip('/') }}/templates/PaperMod/static/images/favicon.png{% endblock %}">
+        content="{% block twitter_image %}{{ blog_url.rstrip('/') }}{{ theme_path }}/static/images/favicon.png{% endblock %}">
 
-    <link rel="stylesheet" href="/templates/PaperMod/static/css/papermod.css">
-    <link rel="stylesheet" href="/templates/PaperMod/static/css/prism.css">
+    <link rel="stylesheet" href="{{ theme_path }}/static/css/papermint.css">
+    <link rel="stylesheet" href="{{ theme_path }}/static/css/prism.css">
     <link rel="alternate" type="application/atom+xml" title="RSS" href="/contents/{{ rss_atom_path }}">
-    <link rel="icon" type="image/png" href="/templates/PaperMod/static/images/favicon.png">
+    <link rel="icon" type="image/png" href="{{ theme_path }}/static/images/favicon.png">
     {% block extra_head %}{% endblock %}
 </head>
 
@@ -37,7 +37,7 @@
     <header class="pm-header">
         <nav class="container nav">
             <a href="/" class="logo">
-                <img class="logo-avatar" src="/templates/PaperMod/static/images/favicon.png" alt="{{ blog_title }}">
+                <img class="logo-avatar" src="{{ theme_path }}/static/images/favicon.png" alt="{{ blog_title }}">
                 <span>{{ blog_title }}</span>
             </a>
 
@@ -69,8 +69,8 @@
     </footer>
     {% endblock %}
 
-    <script src="/templates/PaperMod/static/js/papermod.js"></script>
-    <script src="/templates/PaperMod/static/js/prism.js"></script>
+    <script src="{{ theme_path }}/static/js/papermint.js"></script>
+    <script src="{{ theme_path }}/static/js/prism.js"></script>
 </body>
 
 </html>

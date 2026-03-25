@@ -1,16 +1,20 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ blog_title }}{% endblock %}
+{% block title %}标签: {{ tag_name }} - {{ blog_title }}{% endblock %}
 
 {% block canonical %}
-<link rel="canonical" href="{{ blog_url }}contents/index.html" />
+<link rel="canonical" href="{{ blog_url.rstrip('/') }}/contents/tag/{{ tag_name }}.html" />
 {% endblock %}
+
+{% block og_title %}标签: {{ tag_name }}{% endblock %}
+{% block og_url %}{{ blog_url.rstrip('/') }}/contents/tag/{{ tag_name }}.html{% endblock %}
+{% block twitter_title %}标签: {{ tag_name }}{% endblock %}
 
 {% block content %}
 <section class="content-grid">
     <aside class="sidebar">
         <section class="author-card">
-            <img src="/templates/PaperMod/static/images/favicon.png" alt="{{ blog_title }}"
+            <img src="{{ theme_path }}/static/images/favicon.png" alt="{{ blog_title }}"
                 style="width:80px;border-radius:50%">
             <h3>{{ author_name }}</h3>
             <p class="author-desc">{{ meta_description }}</p>
@@ -35,6 +39,8 @@
     </aside>
 
     <main class="posts-list">
+        <h1 class="post-title">标签: {{ tag_name }}</h1>
+        {% if issues %}
         {% for issue in issues %}
         <article class="post">
             {% set slug = issue_slugs[issue.number|string] %}
@@ -48,21 +54,8 @@
             <div class="post-summary">{{ issue.body|truncate(160)|safe }}</div>
         </article>
         {% endfor %}
-
-        {% if pagination and pagination.pages > 1 %}
-        <nav class="pagination">
-            {% if pagination.has_prev %}
-            <a class="pagination-prev" href="/contents/page/{{ pagination.prev_num }}.html">← Prev</a>
-            {% else %}
-            <span class="pagination-prev disabled">← Prev</span>
-            {% endif %}
-            <span class="pagination-status">{{ pagination.page }} / {{ pagination.pages }}</span>
-            {% if pagination.has_next %}
-            <a class="pagination-next" href="/contents/page/{{ pagination.next_num }}.html">Next →</a>
-            {% else %}
-            <span class="pagination-next disabled">Next →</span>
-            {% endif %}
-        </nav>
+        {% else %}
+        <p class="post-summary">该标签下暂无文章。</p>
         {% endif %}
     </main>
 </section>

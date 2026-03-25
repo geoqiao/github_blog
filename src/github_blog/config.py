@@ -37,6 +37,11 @@ class GoogleSearchConsoleConfig(BaseModel):
 class ThemeConfig(BaseModel):
     path: Path
 
+    @property
+    def url_path(self) -> str:
+        """将文件路径转换为 URL 路径（如 templates/PaperMint → /templates/PaperMint）。"""
+        return "/" + str(self.path).strip("/")
+
 
 class Settings(BaseSettings):
     blog: BlogConfig

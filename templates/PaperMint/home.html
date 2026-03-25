@@ -3,13 +3,13 @@
 {% block title %}{{ blog_title }}{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/templates/PaperMod/static/css/home.css">
+<link rel="stylesheet" href="{{ theme_path }}/static/css/home.css">
 {% endblock %}
 
 {% block content %}
 <div class="home-container">
     <div class="profile-section">
-        <img class="profile-photo" src="/templates/PaperMod/static/images/favicon.png" alt="profile photo">
+        <img class="profile-photo" src="{{ theme_path }}/static/images/favicon.png" alt="profile photo">
     </div>
 
     <div class="about-section">

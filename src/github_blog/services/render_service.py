@@ -32,6 +32,20 @@ class RenderService:
         )
         self.markdown = Markdown(extensions=[GFM, "pangu"], renderer=LazyImageRenderer)
 
+    def _get_common_context(self) -> dict[str, Any]:
+        """获取所有模板共用的上下文变量。"""
+        return {
+            "blog_title": self.settings.blog.title,
+            "github_name": self.settings.github.name,
+            "github_repo": self.settings.github.repo,
+            "blog_url": str(self.settings.blog.url),
+            "rss_atom_path": self.settings.blog.rss_atom_path,
+            "author_name": self.settings.blog.author.name,
+            "meta_description": self.settings.blog.description,
+            "google_search_verification": self.settings.google_search_console.content,
+            "theme_path": self.settings.theme.url_path,
+        }
+
     def markdown_to_html(self, md_str: str) -> str:
         return self.markdown.convert(md_str)
 
@@ -41,15 +55,8 @@ class RenderService:
             issue=issue,
             slug=slug,
             html_body=html_body,
-            blog_title=self.settings.blog.title,
-            github_name=self.settings.github.name,
-            github_repo=self.settings.github.repo,
-            author_name=self.settings.blog.author.name,
             author_email=self.settings.blog.author.email,
-            blog_url=str(self.settings.blog.url),
-            rss_atom_path=self.settings.blog.rss_atom_path,
-            meta_description=self.settings.blog.description,
-            google_search_verification=self.settings.google_search_console.content,
+            **self._get_common_context(),
         )
 
     def render_index(
@@ -65,14 +72,7 @@ class RenderService:
             issue_slugs=issue_slugs,
             tags=tags,
             pagination=pagination,
-            blog_title=self.settings.blog.title,
-            github_name=self.settings.github.name,
-            github_repo=self.settings.github.repo,
-            blog_url=str(self.settings.blog.url),
-            rss_atom_path=self.settings.blog.rss_atom_path,
-            author_name=self.settings.blog.author.name,
-            meta_description=self.settings.blog.description,
-            google_search_verification=self.settings.google_search_console.content,
+            **self._get_common_context(),
         )
 
     def render_home(self, issues: list[Issue], issue_slugs: dict[int, str]) -> str:
@@ -80,14 +80,7 @@ class RenderService:
         return template.render(
             issues=issues,
             issue_slugs=issue_slugs,
-            blog_title=self.settings.blog.title,
-            github_name=self.settings.github.name,
-            github_repo=self.settings.github.repo,
-            blog_url=str(self.settings.blog.url),
-            rss_atom_path=self.settings.blog.rss_atom_path,
-            author_name=self.settings.blog.author.name,
-            meta_description=self.settings.blog.description,
-            google_search_verification=self.settings.google_search_console.content,
+            **self._get_common_context(),
         )
 
     def render_tag_page(
@@ -103,14 +96,7 @@ class RenderService:
             issues=issues,
             issue_slugs=issue_slugs,
             tags=tags,
-            blog_title=self.settings.blog.title,
-            github_name=self.settings.github.name,
-            github_repo=self.settings.github.repo,
-            blog_url=str(self.settings.blog.url),
-            rss_atom_path=self.settings.blog.rss_atom_path,
-            author_name=self.settings.blog.author.name,
-            meta_description=self.settings.blog.description,
-            google_search_verification=self.settings.google_search_console.content,
+            **self._get_common_context(),
         )
 
     def generate_rss(self, issues: list[Issue], issue_slugs: dict[int, str]) -> str:
@@ -176,14 +162,7 @@ class RenderService:
     def render_about(self) -> str:
         template = self.env.get_template("about.html")
         return template.render(
-            blog_title=self.settings.blog.title,
-            github_name=self.settings.github.name,
-            github_repo=self.settings.github.repo,
-            blog_url=str(self.settings.blog.url),
-            rss_atom_path=self.settings.blog.rss_atom_path,
-            author_name=self.settings.blog.author.name,
-            meta_description=self.settings.blog.description,
-            google_search_verification=self.settings.google_search_console.content,
+            **self._get_common_context(),
         )
 
     def render_tags_page(
@@ -196,12 +175,5 @@ class RenderService:
         return template.render(
             tags=tags,
             tag_items=tag_items,
-            blog_title=self.settings.blog.title,
-            github_name=self.settings.github.name,
-            github_repo=self.settings.github.repo,
-            blog_url=str(self.settings.blog.url),
-            rss_atom_path=self.settings.blog.rss_atom_path,
-            author_name=self.settings.blog.author.name,
-            meta_description=self.settings.blog.description,
-            google_search_verification=self.settings.google_search_console.content,
+            **self._get_common_context(),
         )
