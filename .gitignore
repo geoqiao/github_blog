@@ -162,6 +162,7 @@ cython_debug/
 #.idea/
 
 # Generated site content (deployed via GitHub Actions)
+docs/
 contents/
 index.html
 robots.txt

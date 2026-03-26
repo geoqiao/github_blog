@@ -1,3 +1,4 @@
+import shutil
 import sys
 from pathlib import Path
 
@@ -32,7 +33,6 @@ class BlogGenerator:
                     [label.name for label in issue.labels] if issue.labels else []
                 )
                 slug = generate_slug(issue.number, issue_tags)
-                issue_slugs[issue.number] = slug
                 issue_slugs[str(issue.number)] = slug
 
             # 目录初始化
@@ -42,9 +42,9 @@ class BlogGenerator:
             for issue in issues:
                 html_body = self.render.markdown_to_html(issue.body or "")
                 content = self.render.render_post(
-                    issue, issue_slugs[issue.number], html_body
+                    issue, issue_slugs[str(issue.number)], html_body
                 )
-                self._save_post(issue_slugs[issue.number], content)
+                self._save_post(issue_slugs[str(issue.number)], content)
 
             # 渲染首页
             tags = self._collect_tags(issues)
@@ -59,9 +59,9 @@ class BlogGenerator:
 
             # 生成 RSS
             rss_content = self.render.generate_rss(issues, issue_slugs)
-            (self.settings.blog.content_dir / self.settings.blog.rss_atom_path).write_text(
-                rss_content, encoding="utf-8"
-            )
+            (
+                self.settings.blog.content_dir / self.settings.blog.rss_atom_path
+            ).write_text(rss_content, encoding="utf-8")
 
             # 生成 Sitemap
             sitemap_content = self.render.render_sitemap(issues, issue_slugs, tags)
@@ -86,14 +86,16 @@ class BlogGenerator:
         content_dir = self.settings.blog.content_dir
         blog_dir = self.settings.blog.blog_dir
         if content_dir.exists():
-            import shutil
-
             shutil.rmtree(content_dir)
         content_dir.mkdir(parents=True)
         (content_dir / blog_dir).mkdir(parents=True)
 
     def _save_post(self, slug: str, content: str):
-        path = self.settings.blog.content_dir / self.settings.blog.blog_dir / f"{slug}.html"
+        path = (
+            self.settings.blog.content_dir
+            / self.settings.blog.blog_dir
+            / f"{slug}.html"
+        )
         path.write_text(content, encoding="utf-8")
 
     def _collect_tags(self, issues: list[Issue]) -> list[str]:
@@ -105,11 +107,14 @@ class BlogGenerator:
         return sorted(tagset)
 
     def _generate_index(
-        self, issues: list[Issue], tags: list[str], issue_slugs: dict[int, str]
+        self, issues: list[Issue], tags: list[str], issue_slugs: dict[str, str]
     ):
         page_size = self.settings.blog.page_size
         pages = [issues[i : i + page_size] for i in range(0, len(issues), page_size)]
         total_pages = max(1, len(pages))
+
+        page_dir = self.settings.blog.content_dir / "page"
+        page_dir.mkdir(parents=True, exist_ok=True)
 
         for i, page_issues in enumerate(pages, start=1):
             pagination = {
@@ -128,12 +133,10 @@ class BlogGenerator:
                     content, encoding="utf-8"
                 )
 
-            page_dir = self.settings.blog.content_dir / "page"
-            page_dir.mkdir(parents=True, exist_ok=True)
             (page_dir / f"{i}.html").write_text(content, encoding="utf-8")
 
     def _generate_tag_pages(
-        self, issues: list[Issue], tags: list[str], issue_slugs: dict[int, str]
+        self, issues: list[Issue], tags: list[str], issue_slugs: dict[str, str]
     ):
         tag_index = {}
         for issue in issues:

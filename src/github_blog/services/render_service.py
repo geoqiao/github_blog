@@ -30,6 +30,10 @@ class RenderService:
             loader=FileSystemLoader(str(self.settings.theme.path)),
             autoescape=True,
         )
+        self.seo_env = Environment(
+            loader=FileSystemLoader("templates/seo"),
+            autoescape=True,
+        )
         self.markdown = Markdown(extensions=[GFM, "pangu"], renderer=LazyImageRenderer)
 
     def _get_common_context(self) -> dict[str, Any]:
@@ -64,7 +68,7 @@ class RenderService:
         issues: list[Issue],
         tags: list[str],
         pagination: dict[str, Any],
-        issue_slugs: dict[int, str],
+        issue_slugs: dict[str, str],
     ) -> str:
         template = self.env.get_template("index.html")
         return template.render(
@@ -75,7 +79,7 @@ class RenderService:
             **self._get_common_context(),
         )
 
-    def render_home(self, issues: list[Issue], issue_slugs: dict[int, str]) -> str:
+    def render_home(self, issues: list[Issue], issue_slugs: dict[str, str]) -> str:
         template = self.env.get_template("home.html")
         return template.render(
             issues=issues,
@@ -88,7 +92,7 @@ class RenderService:
         tag: str,
         issues: list[Issue],
         tags: list[str],
-        issue_slugs: dict[int, str],
+        issue_slugs: dict[str, str],
     ) -> str:
         template = self.env.get_template("tag.html")
         return template.render(
@@ -99,21 +103,25 @@ class RenderService:
             **self._get_common_context(),
         )
 
-    def generate_rss(self, issues: list[Issue], issue_slugs: dict[int, str]) -> str:
+    def generate_rss(self, issues: list[Issue], issue_slugs: dict[str, str]) -> str:
         fg = FeedGenerator()
         fg.id(str(self.settings.blog.url))
         fg.title(self.settings.blog.title)
         fg.author(
-            {"name": self.settings.blog.author.name, "email": self.settings.blog.author.email}
+            {
+                "name": self.settings.blog.author.name,
+                "email": self.settings.blog.author.email,
+            }
         )
         fg.link(href=str(self.settings.blog.url), rel="alternate")
         fg.description(self.settings.blog.description)
 
+        blog_dir_str = str(self.settings.blog.blog_dir).strip("/")
+        base_url = str(self.settings.blog.url).rstrip("/")
         for issue in issues:
-            slug = issue_slugs[issue.number]
+            slug = issue_slugs[str(issue.number)]
             fe = fg.add_entry()
-            blog_dir_str = str(self.settings.blog.blog_dir).strip("/")
-            url = f"{str(self.settings.blog.url).rstrip('/')}/contents/{blog_dir_str}/{slug}.html"
+            url = f"{base_url}/contents/{blog_dir_str}/{slug}.html"
             fe.id(url)
             fe.title(issue.title)
             fe.link(href=url)
@@ -125,23 +133,17 @@ class RenderService:
         return fg.atom_str(pretty=True).decode("utf-8")
 
     def render_sitemap(
-        self, issues: list[Issue], issue_slugs: dict[int, str], tags: list[str]
+        self, issues: list[Issue], issue_slugs: dict[str, str], tags: list[str]
     ) -> str:
-        # 显式加载 SEO 模板目录
-        seo_env = Environment(
-            loader=FileSystemLoader("templates/seo"),
-            autoescape=True,
-        )
-        template = seo_env.get_template("sitemap.xml.j2")
+        template = self.seo_env.get_template("sitemap.xml.j2")
 
-        blog_items = []
-        for issue in issues:
-            blog_items.append(
-                {
-                    "slug": issue_slugs[issue.number],
-                    "lastmod": issue.updated_at.strftime("%Y-%m-%d"),
-                }
-            )
+        blog_items = [
+            {
+                "slug": issue_slugs[str(issue.number)],
+                "lastmod": issue.updated_at.strftime("%Y-%m-%d"),
+            }
+            for issue in issues
+        ]
 
         return template.render(
             base_url=str(self.settings.blog.url).rstrip("/"),
@@ -152,11 +154,7 @@ class RenderService:
         )
 
     def render_robots(self) -> str:
-        seo_env = Environment(
-            loader=FileSystemLoader("templates/seo"),
-            autoescape=True,
-        )
-        template = seo_env.get_template("robots.txt.j2")
+        template = self.seo_env.get_template("robots.txt.j2")
         return template.render(base_url=str(self.settings.blog.url).rstrip("/"))
 
     def render_about(self) -> str:
