@@ -628,11 +628,3 @@ html[data-theme='dark'] .pm-footer {
 
     .sidebar {
         position: static;
-        margin-top: 0;
-        margin-bottom: 1.5rem
-    }
-
-    .toc {
-        display: none
-    }
-}

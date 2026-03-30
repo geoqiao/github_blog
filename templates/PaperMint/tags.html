@@ -41,11 +41,10 @@
     <main class="posts-list">
         <h1 class="post-title">All Tags</h1>
         {% if tag_items %}
-        <div class="tag-cloud">
+        <div class="tag-list">
             {% for item in tag_items %}
-            <a href="/contents/tag/{{ item.name }}.html" class="tag-item">
-                <span class="tag-name">{{ item.name }}</span>
-                <span class="tag-count">{{ item.count }}</span>
+            <a class="tag" href="/contents/tag/{{ item.name }}.html">
+                {{ item.name }} ({{ item.count }})
             </a>
             {% endfor %}
         </div>
