@@ -90,9 +90,10 @@ def test_blog_generator_integration(mock_get_settings, mock_gh_service_class, tm
             generator.generate()
 
         # Verify files were created in tmp_path/contents
+        # Note: Slugs are now generated from title (not tags) for stability
         blog_dir = content_dir / "blog"
-        assert (blog_dir / "1-python.html").exists()
-        assert (blog_dir / "2-python-web.html").exists()
+        assert (blog_dir / "1-post-one.html").exists()
+        assert (blog_dir / "2-post-two.html").exists()
         assert (content_dir / "index.html").exists()
         assert (content_dir / "tag" / "python.html").exists()
         assert (content_dir / "tag" / "web.html").exists()
@@ -103,9 +104,9 @@ def test_blog_generator_integration(mock_get_settings, mock_gh_service_class, tm
         assert (tmp_path / "sitemap.xml").exists()
         assert (tmp_path / "robots.txt").exists()
 
-        # Verify content of index.html for correct slugs
+        # Verify content of index.html for correct slugs (now title-based)
         index_content = (content_dir / "index.html").read_text()
-        assert "/contents/blog/1-python.html" in index_content
-        assert "/contents/blog/2-python-web.html" in index_content
+        assert "/contents/blog/1-post-one.html" in index_content
+        assert "/contents/blog/2-post-two.html" in index_content
     finally:
         os.chdir(old_cwd)

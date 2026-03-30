@@ -8,7 +8,7 @@ from github.Issue import Issue
 from .config import Settings, get_settings
 from .services.github_service import GitHubService
 from .services.render_service import RenderService
-from .utils.slug import generate_slug
+from .utils.slug import generate_slug_from_title
 
 logger = structlog.get_logger()
 
@@ -26,13 +26,10 @@ class BlogGenerator:
             repo = self.gh.get_repo(self.repo_name)
             issues = self.gh.get_user_issues(repo)
 
-            # 为每个 issue 生成 slug
+            # 为每个 issue 生成 slug (基于 title，稳定且可读)
             issue_slugs = {}
             for issue in issues:
-                issue_tags = (
-                    [label.name for label in issue.labels] if issue.labels else []
-                )
-                slug = generate_slug(issue.number, issue_tags)
+                slug = generate_slug_from_title(issue.number, issue.title)
                 issue_slugs[str(issue.number)] = slug
 
             # 目录初始化
