@@ -359,20 +359,65 @@ uv run blog-gen <TOKEN> <REPO> 2>&1 | jq .
 
 ---
 
+## Development Workflow (TDD)
+
+本项目采用 **测试驱动开发 (TDD)** 流程：
+
+### 1. 先写测试，再写代码
+
+```bash
+# 新功能/修改前，必须先写测试
+# 1. 编写测试（描述期望行为）
+# 2. 运行测试，确认失败
+# 3. 编写实现代码
+# 4. 运行测试，确认通过
+# 5. 重构优化，确保测试仍通过
+```
+
+### 2. 测试类型指南
+
+| 改动类型 | 测试文件 | 测试重点 |
+|---------|---------|---------|
+| 新增功能 | `tests/test_*.py` | 单元测试，覆盖边界条件 |
+| 修改模板 | `tests/test_template_integrity.py` | CSS 类一致性、文件存在性 |
+| 修复 Bug | 对应测试文件 | 先写复现测试，再修复 |
+| 重构代码 | `tests/test_cli.py` | 集成测试确保流程完整 |
+
+### 3. 运行测试
+
+```bash
+# 全部测试
+uv run pytest -v
+
+# 特定测试
+uv run pytest tests/test_template_integrity.py -v
+
+# 带覆盖率
+uv run pytest --cov=src --cov-report=term-missing
+```
+
+---
+
 ## Lessons Learned
 
 ### 2026-03-31 URL Slug 重构复盘
 
 **问题**：将 URL 从 `{number}-{tag}-{tag}` 改为 `{number}-{title}` 时，出现多个问题。
 
-**教训**：
-1. **查看历史**：改动前必须 `git log --oneline -- 文件`，了解历史变更
-2. **理解设计**：修改模板/CSS 前，对比原始设计 (`git diff HEAD~n`)
-3. **本地验证**：不要依赖测试通过就认为 UI 正常，必须本地运行查看
-4. **谨慎重构**：不要用绝对路径"修复"原本工作的相对路径
-5. **小步提交**：避免频繁 amend，方便回滚
+**根本原因**：
+1. **没有先写测试**：改动模板前没有添加模板完整性测试
+2. **测试覆盖不足**：原有测试只检查内容存在，不检查 CSS 类一致性
 
-**改进**：
-- 创建 `.claude/skills/my-coding-guidelines/SKILL.md` 作为检查清单
+**教训**：
+1. **TDD 优先**：任何改动前先写测试，用测试定义期望行为
+2. **查看历史**：改动前必须 `git log --oneline -- 文件`，了解历史变更
+3. **理解设计**：修改模板/CSS 前，对比原始设计 (`git diff HEAD~n`)
+4. **本地验证**：不要依赖测试通过就认为 UI 正常，必须本地运行查看
+5. **谨慎重构**：不要用绝对路径"修复"原本工作的相对路径
+6. **小步提交**：避免频繁 amend，方便回滚
+
+**改进措施**：
+- 创建 `.claude/skills/my-coding-guidelines/SKILL.md` 作为 TDD 检查清单
+- 添加 `tests/test_template_integrity.py` 防止 UI 回归
 - 添加 `.github/pull_request_template.md` 强制检查
-- 建立流程：看历史 → 问意图 → 本地验证 → 提交代码
+- 建立完整流程：**写测试 → 运行失败 → 写代码 → 运行通过 → 重构**
