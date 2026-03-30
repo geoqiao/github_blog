@@ -31,10 +31,8 @@ class RenderService:
             loader=FileSystemLoader(str(self.settings.theme.path)),
             autoescape=True,
         )
-        # SEO templates are relative to theme path (e.g., templates/seo)
-        seo_template_path = self.settings.theme.path.parent / "seo"
         self.seo_env = Environment(
-            loader=FileSystemLoader(str(seo_template_path)),
+            loader=FileSystemLoader(str(self.settings.theme.seo)),
             autoescape=True,
         )
         self.markdown = Markdown(extensions=[GFM, "pangu"], renderer=LazyImageRenderer)

@@ -36,6 +36,7 @@ class GoogleSearchConsoleConfig(BaseModel):
 
 class ThemeConfig(BaseModel):
     path: Path
+    seo: Path = Path("templates/seo")
 
     @property
     def url_path(self) -> str:

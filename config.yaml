@@ -26,3 +26,4 @@ GoogleSearchConsole:
 
 theme:
   path: "templates/PaperMint"
+  seo: "templates/seo"
