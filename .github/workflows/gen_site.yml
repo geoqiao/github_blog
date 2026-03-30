@@ -37,13 +37,6 @@ jobs:
       - name: Set up Python
         run: uv python install 3.11
 
-      - name: Debug - List files
-        run: |
-          pwd
-          ls -la
-          ls -la templates/
-          ls -la templates/PaperMint/
-
       - name: Generate contents
         run: |
           uv run blog-gen ${{ secrets.G_T }} ${{ github.repository }}
