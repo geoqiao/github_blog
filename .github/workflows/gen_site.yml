@@ -26,10 +26,10 @@ jobs:
     if: github.event_name != 'issues' || github.repository_owner_id == github.event.issue.user.id
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4  # v4 works with Node24, v5 available if needed
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6  # Updated to v6, latest is v8
         with:
           enable-cache: true
           version: "latest"
@@ -50,7 +50,7 @@ jobs:
           touch _site/.nojekyll
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v3  # v4 available but requires testing
         with:
           path: ./_site
 
