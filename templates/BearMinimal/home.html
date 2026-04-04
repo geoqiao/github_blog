@@ -17,6 +17,13 @@
             <time class="post-date">{{ issue.created_at.strftime('%Y-%m-%d') }}</time>
             <h3 class="post-title"><a href="/blog/{{ slug }}.html">{{ issue.title }}</a></h3>
         </div>
+        {% if issue.labels %}
+        <div class="post-tags">
+            {% for label in issue.labels %}
+            <a href="/tag/{{ label.name }}.html" class="tag">{{ label.name }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
     </article>
     {% endfor %}
 
