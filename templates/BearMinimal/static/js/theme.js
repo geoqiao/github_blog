@@ -50,8 +50,12 @@
         setStoredTheme(next);
     }
 
-    // Initialize
-    applyTheme(getCurrentTheme());
+    // Initialize - run immediately to prevent flash
+    (function initTheme() {
+        const theme = getCurrentTheme();
+        document.documentElement.setAttribute('data-theme', theme);
+        updateToggleButton(theme);
+    })();
 
     // Bind click event
     document.addEventListener('DOMContentLoaded', function() {

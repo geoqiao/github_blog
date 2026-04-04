@@ -9,16 +9,18 @@
   --link-hover: #1d4ed8;
   --border: #e5e5e5;
   --code-bg: #f5f5f5;
+  --code-text: #1a1a1a;
 }
 
 html[data-theme="dark"] {
   --bg: #1a1a1a;
-  --text: #e5e5e5;
-  --text-muted: #999;
-  --link: #60a5fa;
-  --link-hover: #93c5fd;
+  --text: #e8e8e8;
+  --text-muted: #888;
+  --link: #7dd3fc;
+  --link-hover: #38bdf8;
   --border: #333;
-  --code-bg: #2a2a2a;
+  --code-bg: #242424;
+  --code-text: #e8e8e8;
 }
 
 /* Base styles */
@@ -237,10 +239,12 @@ a:hover {
 
 .post-content pre {
   background-color: var(--code-bg);
+  color: var(--code-text);
   padding: 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow-x: auto;
   margin: 0 0 1.25rem;
+  border: 1px solid var(--border);
 }
 
 .post-content pre code {
@@ -248,6 +252,41 @@ a:hover {
   padding: 0;
   font-size: 0.85rem;
   line-height: 1.6;
+  color: var(--code-text);
+}
+
+/* Dark mode code block refinements */
+/* Only apply background to inline code, not code blocks */
+html[data-theme="dark"] .post-content :not(pre) > code {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #e8e8e8;
+}
+
+html[data-theme="dark"] .post-content pre {
+  box-shadow: none;
+}
+
+/* Remove text-shadow and fix selection in dark mode code blocks */
+html[data-theme="dark"] code[class*="language-"],
+html[data-theme="dark"] pre[class*="language-"] {
+  text-shadow: none !important;
+}
+
+/* Remove background from tokens that have it in light mode */
+html[data-theme="dark"] .token.operator,
+html[data-theme="dark"] .token.entity,
+html[data-theme="dark"] .token.url,
+html[data-theme="dark"] .language-css .token.string,
+html[data-theme="dark"] .style .token.string {
+  background: transparent !important;
+}
+
+html[data-theme="dark"] code[class*="language-"] ::selection,
+html[data-theme="dark"] code[class*="language-"]::selection,
+html[data-theme="dark"] pre[class*="language-"] ::selection,
+html[data-theme="dark"] pre[class*="language-"]::selection {
+  text-shadow: none;
+  background: rgba(125, 211, 252, 0.3);
 }
 
 .post-content blockquote {
@@ -484,4 +523,75 @@ footer a:hover {
     font-size: 0.8em;
     color: var(--text-muted);
   }
+}
+
+/* Dark mode code syntax highlighting overrides for Prism */
+html[data-theme="dark"] code[class*="language-"],
+html[data-theme="dark"] pre[class*="language-"] {
+  color: #e8e8e8;
+  text-shadow: none;
+}
+
+html[data-theme="dark"] pre[class*="language-"] {
+  background: #242424;
+}
+
+/* Token colors for dark mode - warmer, neutral palette */
+html[data-theme="dark"] .token.comment,
+html[data-theme="dark"] .token.prolog,
+html[data-theme="dark"] .token.doctype,
+html[data-theme="dark"] .token.cdata {
+  color: #6a737d;
+}
+
+html[data-theme="dark"] .token.punctuation {
+  color: #d1d5db;
+}
+
+html[data-theme="dark"] .token.namespace {
+  opacity: .7;
+}
+
+html[data-theme="dark"] .token.property,
+html[data-theme="dark"] .token.tag,
+html[data-theme="dark"] .token.boolean,
+html[data-theme="dark"] .token.number,
+html[data-theme="dark"] .token.constant,
+html[data-theme="dark"] .token.symbol,
+html[data-theme="dark"] .token.deleted {
+  color: #60a5fa;
+}
+
+html[data-theme="dark"] .token.selector,
+html[data-theme="dark"] .token.attr-name,
+html[data-theme="dark"] .token.string,
+html[data-theme="dark"] .token.char,
+html[data-theme="dark"] .token.builtin,
+html[data-theme="dark"] .token.inserted {
+  color: #a5f3fc;
+}
+
+html[data-theme="dark"] .token.operator,
+html[data-theme="dark"] .token.entity,
+html[data-theme="dark"] .token.url,
+html[data-theme="dark"] .language-css .token.string,
+html[data-theme="dark"] .style .token.string {
+  color: #d8b4fe;
+}
+
+html[data-theme="dark"] .token.atrule,
+html[data-theme="dark"] .token.attr-value,
+html[data-theme="dark"] .token.keyword {
+  color: #f472b6;
+}
+
+html[data-theme="dark"] .token.function,
+html[data-theme="dark"] .token.class-name {
+  color: #c084fc;
+}
+
+html[data-theme="dark"] .token.regex,
+html[data-theme="dark"] .token.important,
+html[data-theme="dark"] .token.variable {
+  color: #fbbf24;
 }
