@@ -214,6 +214,17 @@ Workflow (`.github/workflows/gen_site.yml`) triggers on:
 
 Requires `G_T` secret (GitHub Personal Access Token).
 
+## Web Development
+
+### Static Site Generator Guidelines
+
+When working with Jekyll/Hugo/static site generators, always verify that CSS/JS file paths match the actual directory structure after any file moves or renames. Run a local server and check browser dev tools for 404 errors before declaring task complete.
+
+Common pitfalls:
+- Theme files must be in `templates/{theme_name}/` subdirectory
+- Static assets use absolute paths: `/templates/{theme_name}/static/...`
+- After file moves, regenerate site and verify CSS/JS loads correctly
+
 ## Themes
 
 Two built-in themes available in `templates/`:
@@ -239,3 +250,15 @@ theme:
 5. **Mobile Comments**: Utterances comments have iOS Safari compatibility handling with specific error messages for "Disable Cross-Site Tracking" setting
 6. **Configuration**: Internal paths (`output/`, `blog/`, `atom.xml`) are now hardcoded; only customize site metadata and theme
 7. **Breaking Change**: This version has a simplified config format; migrate from old format by removing `home.*`, `about.sections`, `pagination.*`, `tags.*`
+
+## Task Execution
+
+For multi-step or subagent-driven tasks, provide progress updates every 2-3 minutes or after completing each major milestone. If looping on the same files without clear progress, explicitly state what you're stuck on and ask for direction.
+
+## Research and Data Tasks
+
+When a user request involves external data (stock prices, market data, real-time info), immediately attempt web search or available data tools. Do not provide template frameworks or refuse due to policy without first trying to fetch actual data and presenting it neutrally.
+
+## Skill Management
+
+Before installing skills or plugins, verify the exact name exists in the registry. If installation fails, suggest 2-3 verified alternatives rather than continuing with troubleshooting a non-existent resource.
