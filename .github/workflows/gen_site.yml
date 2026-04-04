@@ -23,8 +23,7 @@ jobs:
   build:
     name: Generate Site
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    # Only allow repository owner to trigger builds via issues (security)
     if: github.event_name != 'issues' || github.repository_owner_id == github.event.issue.user.id
     steps:
       - name: Checkout
@@ -51,7 +50,7 @@ jobs:
           touch _site/.nojekyll
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3  # v4 available but requires testing
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./_site
 

@@ -18,8 +18,9 @@ def _make_mock_issue(number, title, body="body", labels=None):
             m.name = l
             label_mocks.append(m)
     issue.labels = label_mocks
-    issue.created_at = datetime(2024, 1, 1, tzinfo=timezone.utc)
-    issue.updated_at = datetime(2024, 1, 1, tzinfo=timezone.utc)
+    # Use different timestamps to ensure stable sorting (newest first)
+    issue.created_at = datetime(2024, 1, number, tzinfo=timezone.utc)
+    issue.updated_at = datetime(2024, 1, number, tzinfo=timezone.utc)
     return issue
 
 
@@ -28,8 +29,14 @@ def _make_mock_issue(number, title, body="body", labels=None):
 def test_blog_generator_integration(mock_get_settings, mock_gh_service_class, tmp_path):
     # Get absolute path to the project root to find real templates
     project_root = Path(__file__).parent.parent.absolute()
-    real_template_path = project_root / "templates" / "PaperMint"
+    # Use BearMinimal theme (the current default) for integration test
+    real_template_path = project_root / "templates" / "BearMinimal"
     real_seo_path = project_root / "templates" / "seo"
+
+    # Ensure we're in the project root directory for config loading
+    old_cwd = os.getcwd()
+    if not Path("config.yaml").exists():
+        os.chdir(project_root)
 
     # Setup mock settings
     content_dir = tmp_path / "contents"
@@ -47,8 +54,9 @@ def test_blog_generator_integration(mock_get_settings, mock_gh_service_class, tm
     mock_settings.github.repo = "repo"
     # Use the absolute path to real templates
     mock_settings.theme.path = str(real_template_path)
-    mock_settings.theme.url_path = "/templates/PaperMint"
+    mock_settings.theme.url_path = "/templates/BearMinimal"
     mock_settings.google_search_console.content = ""
+    mock_settings.home.post_count = 10
     mock_get_settings.return_value = mock_settings
 
     # Setup mock GitHub service
@@ -79,7 +87,7 @@ def test_blog_generator_integration(mock_get_settings, mock_gh_service_class, tm
                 path_str = str(path)
                 if "templates/seo" in path_str:
                     return FileSystemLoader(str(real_seo_path))
-                if "templates/PaperMint" in path_str or "PaperMint" in path_str:
+                if "templates/BearMinimal" in path_str or "BearMinimal" in path_str:
                     return FileSystemLoader(str(real_template_path))
                 return FileSystemLoader(path)
 

@@ -358,12 +358,23 @@ html[data-theme="dark"] pre[class*="language-"]::selection {
   cursor: not-allowed;
 }
 
+.pagination-prev,
+.pagination-next {
+  color: var(--text);
+}
+
+.pagination-prev.disabled,
+.pagination-next.disabled {
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
 /* Tags page */
-.tags-list {
+.tag-list {
   margin: 2rem 0;
 }
 
-.tag-item {
+.tag-list .tag {
   display: inline-block;
   margin: 0.5rem 1rem 0.5rem 0;
 }
