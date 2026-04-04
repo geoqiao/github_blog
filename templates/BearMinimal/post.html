@@ -36,13 +36,30 @@
     </div>
 </article>
 
-<div class="comments">
+<div class="comments" id="comments-container">
     <script src="https://utteranc.es/client.js"
         repo="{{ github_repo }}"
         issue-number="{{ issue.number }}"
-        theme="preferred-color-scheme"
+        theme="github-light"
         crossorigin="anonymous"
         async>
     </script>
 </div>
+
+<script>
+// Ensure Utterances loads properly on mobile devices
+(function() {
+    'use strict';
+    var container = document.getElementById('comments-container');
+    if (!container) return;
+
+    // Check if iframe loaded after a delay
+    setTimeout(function() {
+        var iframe = container.querySelector('iframe');
+        if (!iframe) {
+            console.warn('Utterances iframe not found, may need to reload');
+        }
+    }, 3000);
+})();
+</script>
 {% endblock %}
