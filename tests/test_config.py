@@ -8,15 +8,10 @@ def test_settings_loads_from_yaml():
     assert settings.github.name
 
 
-def test_settings_has_content_dir():
+def test_settings_advanced_has_defaults():
     from github_blog.config import get_settings
 
     settings = get_settings()
-    assert settings.blog.content_dir is not None
-
-
-def test_settings_page_size_positive():
-    from github_blog.config import get_settings
-
-    settings = get_settings()
-    assert settings.blog.page_size > 0
+    assert settings.advanced.page_size > 0
+    assert settings.advanced.home_post_count > 0
+    assert settings.advanced.language

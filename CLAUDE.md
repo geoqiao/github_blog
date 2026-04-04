@@ -22,6 +22,27 @@ src/github_blog/
 └── utils/slug.py          # URL slug generator (Chinese→pinyin)
 ```
 
+### Configuration System
+
+Uses Pydantic models in `config.py` with `config.yaml` as the source. Follows **convention over configuration** principle with three-tier config:
+
+**Core configs** (required):
+- `BlogConfig` - title, description, url, author
+- `GithubConfig` - repo (username/repo format, username auto-parsed)
+- `AboutConfig` - bio and social links (personalized content)
+
+**Personalization configs** (optional, defaults provided):
+- `ThemeConfig` - name (maps to templates/{name}, default: BearMinimal)
+- `NavigationConfig` - custom nav items (defaults provided)
+
+**Advanced configs** (optional, rarely need to change):
+- `AdvancedConfig` - page_size, home_post_count, language
+
+**SEO configs** (optional):
+- `GoogleSearchConsoleConfig` - verification code
+
+Note: Internal paths (output/, blog/, atom.xml) are hardcoded.
+
 ### Data Flow
 
 1. `BlogGenerator.generate()` fetches issues via `GitHubService`
@@ -62,6 +83,21 @@ uv run blog-gen <TOKEN> <REPO>        # e.g., uv run blog-gen ghp_xxx geoqiao/ge
 uv run python -m http.server 8000
 ```
 
+### Local Preview Workflow
+
+```bash
+# 1. Generate site
+uv run blog-gen <TOKEN> <REPO>
+
+# 2. Copy theme static files to output (required for CSS/JS to work)
+cp -r templates/BearMinimal output/templates/
+
+# 3. Serve from project root (not output/)
+uv run python -m http.server 8000
+
+# 4. Access at http://localhost:8000/output/
+```
+
 ### Testing (TDD Required)
 
 ```bash
@@ -70,6 +106,12 @@ uv run pytest -v
 
 # Run specific test file
 uv run pytest tests/test_cli.py -v
+
+# Run specific test class
+uv run pytest tests/test_config.py::TestConfigLoading -v
+
+# Run specific test method
+uv run pytest tests/test_cli.py::test_blog_generator_integration -v
 
 # Run with coverage report
 uv run pytest --cov=src --cov-report=term-missing
@@ -90,23 +132,41 @@ uv run ty
 
 ## Key Configuration
 
-`config.yaml`:
+`config.yaml` (three-tier structure):
 
 ```yaml
+# ============================================
+# Core (required)
+# ============================================
 blog:
   title: "Blog Title"
+  description: Short description
   url: https://example.com
-  content_dir: "./output/"      # Build output path
-  blog_dir: "blog/"             # Article subdirectory
-  page_size: 10                 # Posts per page
+  author: Your Name
 
 github:
-  name: username
-  repo: user/repo
+  repo: username/repo
 
-theme:
-  path: "templates/PaperMint"   # Theme directory
-  seo: "templates/seo"          # SEO templates
+about:
+  bio: |
+    A short bio about yourself.
+  links:
+    - name: GitHub
+      url: https://github.com/username
+
+# ============================================
+# Personalization (optional)
+# ============================================
+# theme:
+#   name: BearMinimal
+
+# ============================================
+# Advanced (optional)
+# ============================================
+# advanced:
+#   page_size: 10
+#   home_post_count: 10
+#   language: en
 ```
 
 ## Important Patterns
@@ -130,10 +190,20 @@ URLs follow `{number}-{slugified-title}` format:
 Common context available in all templates (from `RenderService._get_common_context()`):
 - `{{ blog_title }}`, `{{ blog_url }}`, `{{ author_name }}`
 - `{{ github_name }}`, `{{ github_repo }}`
-- `{{ theme_path }}` - Use for static assets
+- `{{ theme_path }}` - Use for static assets (e.g., `/templates/BearMint`)
 - `{{ rss_atom_path }}` - RSS feed filename
 - `{{ meta_description }}` - Blog description
 - `{{ google_search_verification }}` - Google Search Console verification code
+
+### Theme Structure
+
+Themes in `templates/{theme_name}/` must include:
+- `base.html` - Base template with `{% block content %}`
+- `home.html`, `post.html`, `tags.html`, `tag.html`, `about.html`
+- `static/css/style.css` - Theme styles
+- `static/js/theme.js` - Dark mode toggle (BearMinimal)
+
+Static assets use absolute paths: `/templates/BearMinimal/static/css/style.css`
 
 ### GitHub Actions Deployment
 
@@ -144,9 +214,28 @@ Workflow (`.github/workflows/gen_site.yml`) triggers on:
 
 Requires `G_T` secret (GitHub Personal Access Token).
 
+## Themes
+
+Two built-in themes available in `templates/`:
+
+- **BearMinimal** (default) - Clean, minimal design with dark mode toggle
+- **PaperMint** - Original PaperMod-inspired theme
+
+Switch themes by updating `config.yaml`:
+```yaml
+theme:
+  path: "templates/BearMinimal"   # or "templates/PaperMint"
+```
+
 ## Critical Notes
 
-1. **Path Handling**: Use `config.yaml` paths, avoid `Path.resolve()` (breaks CI)
-2. **Static Assets**: Templates use absolute paths `/templates/PaperMint/static/...`
-3. **Security**: Jinja2 has `autoescape=True`, RSS uses CDATA
-4. **Local Preview**: Must start server from project root (not output/)
+1. **Static Assets**: Templates use absolute paths `/templates/{ThemeName}/static/...`
+2. **Security**: Jinja2 has `autoescape=True`, RSS uses CDATA
+3. **Local Preview**: Must start server from project root (not output/)
+4. **Theme Switching**: After switching themes in `config.yaml`, regenerate and copy static files:
+   ```bash
+   uv run blog-gen <TOKEN> <REPO> && cp -r templates/BearMinimal output/templates/
+   ```
+5. **Mobile Comments**: Utterances comments have iOS Safari compatibility handling with specific error messages for "Disable Cross-Site Tracking" setting
+6. **Configuration**: Internal paths (`output/`, `blog/`, `atom.xml`) are now hardcoded; only customize site metadata and theme
+7. **Breaking Change**: This version has a simplified config format; migrate from old format by removing `home.*`, `about.sections`, `pagination.*`, `tags.*`

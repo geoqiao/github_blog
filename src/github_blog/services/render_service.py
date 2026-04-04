@@ -44,13 +44,15 @@ class RenderService:
             "github_name": self.settings.github.name,
             "github_repo": self.settings.github.repo,
             "blog_url": str(self.settings.blog.url),
-            "rss_atom_path": self.settings.blog.rss_atom_path,
-            "author_name": self.settings.blog.author.name,
+            "rss_atom_path": "atom.xml",
+            "author_name": self.settings.blog.author,
             "meta_description": self.settings.blog.description,
             "google_search_verification": self.settings.google_search_console.content,
             "theme_path": self.settings.theme.url_path,
             "navigation": self.settings.navigation,
-            "pagination_config": self.settings.pagination,
+            "about_bio": self.settings.about.bio,
+            "about_expertise": self.settings.about.expertise,
+            "about_links": self.settings.about.links,
         }
 
     def markdown_to_html(self, md_str: str) -> str:
@@ -62,7 +64,6 @@ class RenderService:
             issue=issue,
             slug=slug,
             html_body=html_body,
-            author_email=self.settings.blog.author.email,
             **self._get_common_context(),
         )
 
@@ -87,7 +88,7 @@ class RenderService:
         return template.render(
             issues=issues,
             issue_slugs=issue_slugs,
-            home=self.settings.home,
+            home_post_count=self.settings.advanced.home_post_count,
             **self._get_common_context(),
         )
 
@@ -113,14 +114,13 @@ class RenderService:
         fg.title(self.settings.blog.title)
         fg.author(
             {
-                "name": self.settings.blog.author.name,
-                "email": self.settings.blog.author.email,
+                "name": self.settings.blog.author,
             }
         )
         fg.link(href=str(self.settings.blog.url), rel="alternate")
         fg.description(self.settings.blog.description)
 
-        blog_dir_str = str(self.settings.blog.blog_dir).strip("/")
+        blog_dir_str = "blog"
         base_url = str(self.settings.blog.url).rstrip("/")
         for issue in issues:
             slug = issue_slugs[str(issue.number)]
@@ -152,7 +152,7 @@ class RenderService:
 
         return template.render(
             base_url=str(self.settings.blog.url).rstrip("/"),
-            blog_dir=str(self.settings.blog.blog_dir).strip("/"),
+            blog_dir="blog",
             blog_items=blog_items,
             tags=tags,
             now=datetime.now().strftime("%Y-%m-%d"),
@@ -165,7 +165,6 @@ class RenderService:
     def render_about(self) -> str:
         template = self.env.get_template("about.html")
         return template.render(
-            about=self.settings.about,
             **self._get_common_context(),
         )
 
@@ -179,6 +178,5 @@ class RenderService:
         return template.render(
             tags=tags,
             tag_items=tag_items,
-            tags_config=self.settings.tags,
             **self._get_common_context(),
         )

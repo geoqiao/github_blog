@@ -1,90 +1,60 @@
-# 博客信息
+# ============================================
+# 核心配置（必填）
+# ============================================
 blog:
   title: geoqiao's Blog
   description: |
-    1. 目前是一名金融行业贷后策略分析师；这里是我的个人空间，记录一些想记录的。
-    2. 这个网页基于GitHub Pages & GitHub Actions 自动部署。
-    3. 主体 main.py 自己完成，前端主题由AI生成。
+    个人博客，记录技术与生活。
+    基于 GitHub Issues + Python + Jinja2 构建。
   url: https://geoqiao.github.io/
-  content_dir: "./output/"
-  blog_dir: "blog/"
-  rss_atom_path: "atom.xml"
-  author:
-    name: geoqiao
-    email: geoqiao@example.com
-  page_size: 10
+  author: geoqiao
 
-# GitHub 相关配置
 github:
-  name: geoqiao # GitHub 用户名
-  repo: geoqiao/geoqiao.github.io # GitHub 仓库名称
+  repo: geoqiao/geoqiao.github.io
 
-# Google Search Console
-GoogleSearchConsole:
-  content: DRggZlykSzc8M9TyaS0BPSRE7Kvw8W9hHt5pZrIMm3Y # Google Search Console ID
-  verify: true # 是否验证
-
-# 主题配置
-theme:
-  path: "templates/BearMinimal"
-  seo: "templates/seo"
-
-# 首页配置
-home:
-  intro_line1: "这是一个基于 GitHub Issues 的静态博客系统。"
-  intro_line2: "使用 Python + Jinja2 自动生成，通过 GitHub Actions 自动部署。"
-  source_code_text: "view source code →"
-  source_code_url: "https://github.com/geoqiao/geoqiao.github.io"
-  recent_posts_title: "Recent Posts"
-  view_all_text: "View all posts →"
-  post_count: 10
-
-# 关于页面配置
 about:
-  page_title: "About"
-  sections:
-    - title: "About Me"
-      type: "paragraphs"
-      content:
-        - "你好，我是 {{ author_name }}。"
-        - "一名金融行业的贷后策略分析师，喜欢折腾工具，也享受用代码解决重复性工作。"
-        - "工作之余，我喜欢记录生活中的碎片——可能是一杯成都茶馆的茶，也可能是对 AI 工具的折腾心得。"
-    - title: "Expertise"
-      type: "list"
-      content:
-        - "金融数据分析"
-        - "贷后策略与风控"
-        - "Python 自动化工具"
-    - title: "Contact"
-      type: "contact"
-      links:
-        - name: "GitHub"
-          display: "@{{ github_name }}"
-          url: "https://github.com/{{ github_name }}"
-        - name: "GitHub Pages"
-          display: "{{ blog_url }}"
-          url: "{{ blog_url }}"
-        - name: "Twitter/X"
-          display: "@geoqiao"
-          url: "https://twitter.com/geoqiao"
+  bio: |
+    你好，我是 geoqiao。
+    一名金融行业的贷后策略分析师，喜欢折腾工具，也享受用代码解决重复性工作。
+    工作之余，我喜欢记录生活中的碎片。
+  expertise:
+    - 金融数据分析
+    - 贷后策略与风控
+    - Python 自动化工具
+  links:
+    - name: GitHub
+      url: https://github.com/geoqiao
+    - name: Twitter/X
+      url: https://twitter.com/geoqiao
 
-# 导航配置
+# ============================================
+# 个性化配置（可选，有合理默认值）
+# ============================================
+theme:
+  name: BearMinimal
+
 navigation:
   items:
-    - name: "Blog"
-      url: "/blog/"
-    - name: "Tags"
-      url: "/tag/"
-    - name: "About"
-      url: "/about.html"
-    - name: "RSS"
-      url: "/atom.xml"
+    - name: Blog
+      url: /blog/
+    - name: Tags
+      url: /tag/
+    - name: About
+      url: /about.html
+    - name: RSS
+      url: /atom.xml
 
-# 分页配置
-pagination:
-  prev_text: "← Prev"
-  next_text: "Next →"
+# ============================================
+# 高级配置（可选，一般不需要修改）
+# ============================================
+advanced:
+  page_size: 10
+  home_post_count: 10
+  language: zh-CN
 
-# 标签页面配置
-tags:
-  page_title: "Tags"
+# ============================================
+# SEO 配置（可选）
+# ============================================
+GoogleSearchConsole:
+  content: DRggZlykSzc8M9TyaS0BPSRE7Kvw8W9hHt5pZrIMm3Y
+  verify: true

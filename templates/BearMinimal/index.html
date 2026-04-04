@@ -27,17 +27,17 @@
 {% if pagination and pagination.pages > 1 %}
 <nav class="pagination">
     {% if pagination.has_prev %}
-    <a href="/blog/page/{{ pagination.prev_num }}.html" class="pagination-prev">{{ pagination_config.prev_text }}</a>
+    <a href="/blog/page/{{ pagination.prev_num }}.html" class="pagination-prev">← Prev</a>
     {% else %}
-    <span class="pagination-prev disabled">{{ pagination_config.prev_text }}</span>
+    <span class="pagination-prev disabled">← Prev</span>
     {% endif %}
 
     <span>{{ pagination.page }} / {{ pagination.pages }}</span>
 
     {% if pagination.has_next %}
-    <a href="/blog/page/{{ pagination.next_num }}.html" class="pagination-next">{{ pagination_config.next_text }}</a>
+    <a href="/blog/page/{{ pagination.next_num }}.html" class="pagination-next">Next →</a>
     {% else %}
-    <span class="pagination-next disabled">{{ pagination_config.next_text }}</span>
+    <span class="pagination-next disabled">Next →</span>
     {% endif %}
 </nav>
 {% endif %}

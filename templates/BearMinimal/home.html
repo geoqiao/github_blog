@@ -2,20 +2,14 @@
 
 {% block content %}
 <div class="home-intro">
-    {% if home.intro_line1 %}
-    <p class="intro-line">{{ home.intro_line1 }}</p>
-    {% endif %}
-    {% if home.intro_line2 %}
-    <p class="intro-line">{{ home.intro_line2 }}</p>
-    {% endif %}
-    {% if home.source_code_text %}
-    <p class="intro-line source-link"><a href="{{ home.source_code_url }}">{{ home.source_code_text }}</a></p>
-    {% endif %}
+    <p class="intro-line">This is a static blog system based on GitHub Issues.</p>
+    <p class="intro-line">Generated with Python + Jinja2, deployed via GitHub Actions.</p>
+    <p class="intro-line source-link"><a href="https://github.com/geoqiao/github-blog">View source code →</a></p>
 </div>
 
 {% if issues %}
 <section class="recent-posts">
-    <h2>{{ home.recent_posts_title }}</h2>
+    <h2>Recent Posts</h2>
     {% for issue in issues %}
     {% set slug = issue_slugs[issue.number|string] %}
     <article class="post-item">
@@ -26,7 +20,7 @@
     </article>
     {% endfor %}
 
-    <p><a href="/blog/">{{ home.view_all_text }}</a></p>
+    <p><a href="/blog/">View all posts →</a></p>
 </section>
 {% endif %}
 {% endblock %}

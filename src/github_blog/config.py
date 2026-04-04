@@ -8,94 +8,106 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 logger = logging.getLogger(__name__)
 
 
-class AuthorConfig(BaseModel):
-    name: str
-    email: str
-
-
 class BlogConfig(BaseModel):
+    """核心博客配置（必填）"""
+
     title: str
     description: str
     url: HttpUrl
-    content_dir: Path
-    blog_dir: Path
-    rss_atom_path: str
-    author: AuthorConfig
-    page_size: int
+    author: str
 
 
 class GithubConfig(BaseModel):
-    name: str
+    """GitHub 配置（必填）"""
+
     repo: str
 
+    @property
+    def name(self) -> str:
+        """从 repo 解析用户名，如 'geoqiao/blog' -> 'geoqiao'"""
+        return self.repo.split("/")[0] if "/" in self.repo else self.repo
 
-class GoogleSearchConsoleConfig(BaseModel):
-    content: str
-    verify: bool
+
+class AboutLink(BaseModel):
+    """关于页面链接"""
+
+    name: str
+    url: str
+
+
+class AboutConfig(BaseModel):
+    """关于页面配置（必填）"""
+
+    bio: str
+    expertise: list[str] = Field(default_factory=list)
+    links: list[AboutLink]
 
 
 class ThemeConfig(BaseModel):
-    path: Path
-    seo: Path = Path("templates/seo")
+    """主题配置（可选，默认 BearMinimal）"""
+
+    name: str = "BearMinimal"
+
+    @property
+    def path(self) -> Path:
+        """主题路径，如 'BearMinimal' → templates/BearMinimal"""
+        return Path("templates") / self.name
+
+    @property
+    def seo(self) -> Path:
+        """SEO 模板路径"""
+        return Path("templates/seo")
 
     @property
     def url_path(self) -> str:
-        """将文件路径转换为 URL 路径（如 templates/PaperMint → /templates/PaperMint）。"""
-        return "/" + str(self.path).strip("/")
+        """URL 路径，如 /templates/BearMinimal"""
+        return f"/templates/{self.name}"
 
 
 class NavigationItem(BaseModel):
+    """导航项"""
+
     name: str
     url: str
 
 
 class NavigationConfig(BaseModel):
+    """导航配置（可选）"""
+
     items: list[NavigationItem] = Field(default_factory=list)
 
 
-class HomeConfig(BaseModel):
-    intro_line1: str = ""
-    intro_line2: str = ""
-    source_code_text: str = ""
-    source_code_url: str = ""
-    recent_posts_title: str = "Recent Posts"
-    view_all_text: str = "View all posts →"
-    post_count: int = 10
+class AdvancedConfig(BaseModel):
+    """高级配置（可选，一般不需要修改）"""
+
+    page_size: int = 10
+    home_post_count: int = 10
+    language: str = "en"
 
 
-class AboutSection(BaseModel):
-    title: str
-    type: str  # paragraphs, list, contact
-    content: list[str] = Field(default_factory=list)
-    links: list[dict[str, str]] = Field(default_factory=list)
+class GoogleSearchConsoleConfig(BaseModel):
+    """Google Search Console 配置（可选）"""
 
-
-class AboutConfig(BaseModel):
-    page_title: str = "About"
-    sections: list[AboutSection] = Field(default_factory=list)
-
-
-class PaginationConfig(BaseModel):
-    prev_text: str = "← Prev"
-    next_text: str = "Next →"
-
-
-class TagsConfig(BaseModel):
-    page_title: str = "Tags"
+    content: str = ""
+    verify: bool = False
 
 
 class Settings(BaseSettings):
+    """应用配置"""
+
+    # 核心配置（必填）
     blog: BlogConfig
     github: GithubConfig
-    google_search_console: GoogleSearchConsoleConfig = Field(
-        alias="GoogleSearchConsole"
-    )
-    theme: ThemeConfig
+    about: AboutConfig
+
+    # 可选配置
+    theme: ThemeConfig = Field(default_factory=ThemeConfig)
     navigation: NavigationConfig = Field(default_factory=NavigationConfig)
-    home: HomeConfig = Field(default_factory=HomeConfig)
-    about: AboutConfig = Field(default_factory=AboutConfig)
-    pagination: PaginationConfig = Field(default_factory=PaginationConfig)
-    tags: TagsConfig = Field(default_factory=TagsConfig)
+    advanced: AdvancedConfig = Field(default_factory=AdvancedConfig)
+    google_search_console: GoogleSearchConsoleConfig = Field(
+        default_factory=GoogleSearchConsoleConfig,
+        alias="GoogleSearchConsole",
+    )
 
     model_config = SettingsConfigDict(
         env_nested_delimiter="__",

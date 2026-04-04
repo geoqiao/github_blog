@@ -12,6 +12,11 @@ from .utils.slug import generate_slug_from_title
 
 logger = structlog.get_logger()
 
+# 固定的输出路径
+CONTENT_DIR = Path("output")
+BLOG_DIR = "blog"
+RSS_ATOM_PATH = "atom.xml"
+
 
 class BlogGenerator:
     def __init__(self, token: str, repo_name: str):
@@ -48,38 +53,28 @@ class BlogGenerator:
             self._generate_index(issues, tags, issue_slugs)
 
             # 渲染主页 (landing page) (放到 output/ 根目录)
-            post_count = self.settings.home.post_count
+            post_count = self.settings.advanced.home_post_count
             home_content = self.render.render_home(issues[:post_count], issue_slugs)
-            (self.settings.blog.content_dir / "index.html").write_text(
-                home_content, encoding="utf-8"
-            )
+            (CONTENT_DIR / "index.html").write_text(home_content, encoding="utf-8")
 
             # 渲染标签页
             self._generate_tag_pages(issues, tags, issue_slugs)
 
             # 生成 RSS (放到 output/ 根目录)
             rss_content = self.render.generate_rss(issues, issue_slugs)
-            (
-                self.settings.blog.content_dir / self.settings.blog.rss_atom_path
-            ).write_text(rss_content, encoding="utf-8")
+            (CONTENT_DIR / RSS_ATOM_PATH).write_text(rss_content, encoding="utf-8")
 
             # 生成 Sitemap (放到 output/ 根目录)
             sitemap_content = self.render.render_sitemap(issues, issue_slugs, tags)
-            (self.settings.blog.content_dir / "sitemap.xml").write_text(
-                sitemap_content, encoding="utf-8"
-            )
+            (CONTENT_DIR / "sitemap.xml").write_text(sitemap_content, encoding="utf-8")
 
             # 生成 Robots.txt (放到 output/ 根目录)
             robots_content = self.render.render_robots()
-            (self.settings.blog.content_dir / "robots.txt").write_text(
-                robots_content, encoding="utf-8"
-            )
+            (CONTENT_DIR / "robots.txt").write_text(robots_content, encoding="utf-8")
 
             # 渲染 about 页面 (放到 output/ 根目录)
             about_content = self.render.render_about()
-            (self.settings.blog.content_dir / "about.html").write_text(
-                about_content, encoding="utf-8"
-            )
+            (CONTENT_DIR / "about.html").write_text(about_content, encoding="utf-8")
 
             logger.info("generation_completed")
         except Exception as e:
@@ -87,21 +82,15 @@ class BlogGenerator:
             sys.exit(2)
 
     def _init_dirs(self):
-        content_dir = self.settings.blog.content_dir
-        blog_dir = self.settings.blog.blog_dir
-        if content_dir.exists():
-            shutil.rmtree(content_dir)
-        content_dir.mkdir(parents=True)
-        (content_dir / blog_dir).mkdir(parents=True)
-        (content_dir / blog_dir / "page").mkdir(parents=True)
-        (content_dir / "tag").mkdir(parents=True)
+        if CONTENT_DIR.exists():
+            shutil.rmtree(CONTENT_DIR)
+        CONTENT_DIR.mkdir(parents=True)
+        (CONTENT_DIR / BLOG_DIR).mkdir(parents=True)
+        (CONTENT_DIR / BLOG_DIR / "page").mkdir(parents=True)
+        (CONTENT_DIR / "tag").mkdir(parents=True)
 
     def _save_post(self, slug: str, content: str):
-        path = (
-            self.settings.blog.content_dir
-            / self.settings.blog.blog_dir
-            / f"{slug}.html"
-        )
+        path = CONTENT_DIR / BLOG_DIR / f"{slug}.html"
         path.write_text(content, encoding="utf-8")
 
     def _collect_tags(self, issues: list[Issue]) -> list[str]:
@@ -115,11 +104,11 @@ class BlogGenerator:
     def _generate_index(
         self, issues: list[Issue], tags: list[str], issue_slugs: dict[str, str]
     ):
-        page_size = self.settings.blog.page_size
+        page_size = self.settings.advanced.page_size
         pages = [issues[i : i + page_size] for i in range(0, len(issues), page_size)]
         total_pages = max(1, len(pages))
 
-        page_dir = self.settings.blog.content_dir / "page"
+        page_dir = CONTENT_DIR / "blog" / "page"
         page_dir.mkdir(parents=True, exist_ok=True)
 
         for i, page_issues in enumerate(pages, start=1):
@@ -135,11 +124,11 @@ class BlogGenerator:
                 page_issues, tags, pagination, issue_slugs
             )
             if i == 1:
-                (self.settings.blog.content_dir / self.settings.blog.blog_dir / "index.html").write_text(
+                (CONTENT_DIR / BLOG_DIR / "index.html").write_text(
                     content, encoding="utf-8"
                 )
 
-            (self.settings.blog.content_dir / self.settings.blog.blog_dir / "page" / f"{i}.html").write_text(content, encoding="utf-8")
+            (CONTENT_DIR / BLOG_DIR / "page" / f"{i}.html").write_text(content, encoding="utf-8")
 
     def _generate_tag_pages(
         self, issues: list[Issue], tags: list[str], issue_slugs: dict[str, str]
@@ -153,12 +142,10 @@ class BlogGenerator:
                         tag_index[name] = []
                     tag_index[name].append(issue)
 
-        tag_dir = self.settings.blog.content_dir / "tag"
-
         # 生成标签列表页面 (tag/index.html)
         tag_counts = {tag: len(tag_index.get(tag, [])) for tag in tags}
         tags_content = self.render.render_tags_page(tags, tag_counts)
-        (self.settings.blog.content_dir / "tag" / "index.html").write_text(tags_content, encoding="utf-8")
+        (CONTENT_DIR / "tag" / "index.html").write_text(tags_content, encoding="utf-8")
 
         for tag in tags:
             tag_issues = tag_index.get(tag, [])
@@ -166,7 +153,7 @@ class BlogGenerator:
                 content = self.render.render_tag_page(
                     tag, tag_issues, tags, issue_slugs
                 )
-                (self.settings.blog.content_dir / "tag" / f"{tag}.html").write_text(content, encoding="utf-8")
+                (CONTENT_DIR / "tag" / f"{tag}.html").write_text(content, encoding="utf-8")
 
 
 def run_cli():
