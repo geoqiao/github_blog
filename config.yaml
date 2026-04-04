@@ -33,7 +33,7 @@ theme:
 home:
   intro_line1: "这是一个基于 GitHub Issues 的静态博客系统。"
   intro_line2: "使用 Python + Jinja2 自动生成，通过 GitHub Actions 自动部署。"
-  source_code_text: "查看源码 →"
+  source_code_text: "view source code →"
   source_code_url: "https://github.com/geoqiao/geoqiao.github.io"
   recent_posts_title: "Recent Posts"
   view_all_text: "View all posts →"
