@@ -122,8 +122,8 @@ class RenderService:
         for issue in issues:
             slug = issue_slugs[str(issue.number)]
             fe = fg.add_entry()
-            content_dir_str = str(self.settings.blog.content_dir).strip("./").strip("/")
-            url = f"{base_url}/{content_dir_str}/{blog_dir_str}/{slug}.html"
+            # 新 URL 结构: /blog/{slug}.html
+            url = f"{base_url}/{blog_dir_str}/{slug}.html"
             fe.id(url)
             fe.title(issue.title)
             fe.link(href=url)

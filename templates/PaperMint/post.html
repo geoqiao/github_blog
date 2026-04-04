@@ -3,7 +3,7 @@
 {% block title %}{{ issue.title }} - {{ blog_title }}{% endblock %}
 
 {% block canonical %}
-<link rel="canonical" href="{{ blog_url.rstrip('/') }}/contents/blog/{{ slug }}.html" />
+<link rel="canonical" href="{{ blog_url.rstrip('/') }}/blog/{{ slug }}.html" />
 {% endblock %}
 
 {% block og_type %}article{% endblock %}
@@ -28,7 +28,7 @@ loop.last %}, {% endif %}{% endfor %}{% else %}{{ blog_title }}{% endif %}{% end
         <h1 class="post-title">{{ issue.title }}</h1>
         <div class="post-meta">发布于 {{ issue.created_at.strftime('%Y-%m-%d') }}
             {% if issue.labels %}
-            | Tags: {% for label in issue.labels %}<a href="/contents/tag/{{ label.name }}.html" class="tag">{{
+            | Tags: {% for label in issue.labels %}<a href="/tag/{{ label.name }}.html" class="tag">{{
                 label.name
                 }}</a>{% endfor %}
             {% endif %}

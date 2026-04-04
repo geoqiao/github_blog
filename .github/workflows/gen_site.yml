@@ -46,9 +46,8 @@ jobs:
       - name: Prepare site
         run: |
           mkdir -p _site
-          cp -r contents _site/
-          cp -r templates _site/
-          cp index.html robots.txt sitemap.xml _site/
+          cp -r output/* _site/          # 复制 output 内容到 _site 根目录
+          cp -r templates _site/         # 复制主题文件
           touch _site/.nojekyll
 
       - name: Upload artifact

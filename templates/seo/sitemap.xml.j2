@@ -9,7 +9,7 @@
 
   {# 博客首页 #}
   <url>
-    <loc>{{ base_url }}/contents/</loc>
+    <loc>{{ base_url }}/blog/</loc>
     <lastmod>{{ now }}</lastmod>
     <priority>0.8</priority>
   </url>
@@ -17,7 +17,7 @@
   {# 博客文章 #}
   {% for item in blog_items %}
   <url>
-    <loc>{{ base_url }}/contents/{{ blog_dir }}/{{ item.slug }}.html</loc>
+    <loc>{{ base_url }}/{{ blog_dir }}/{{ item.slug }}.html</loc>
     <lastmod>{{ item.lastmod }}</lastmod>
   </url>
   {% endfor %}
@@ -25,7 +25,7 @@
   {# 标签页 #}
   {% for tag in tags %}
   <url>
-    <loc>{{ base_url }}/contents/tag/{{ tag }}.html</loc>
+    <loc>{{ base_url }}/tag/{{ tag }}.html</loc>
     <lastmod>{{ now }}</lastmod>
   </url>
   {% endfor %}

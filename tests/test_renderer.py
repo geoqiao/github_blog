@@ -60,8 +60,8 @@ def test_render_index_contains_issues(render):
     )
     assert "Post One" in html
     assert "Post Two" in html
-    assert "/contents/blog/1-python.html" in html
-    assert "/contents/blog/2-python.html" in html
+    assert "/blog/1-python.html" in html
+    assert "/blog/2-python.html" in html
 
 
 def test_render_home_shows_latest_posts(render):
@@ -70,7 +70,7 @@ def test_render_home_shows_latest_posts(render):
         issues, issue_slugs={str(i): f"{i}-test" for i in range(1, 4)}
     )
     assert "Post 1" in html
-    assert "/contents/blog/1-test.html" in html
+    assert "/blog/1-test.html" in html
 
 
 def test_render_tag_page_contains_tag_name(render):
@@ -79,7 +79,7 @@ def test_render_tag_page_contains_tag_name(render):
         "python", issues, tags=["python"], issue_slugs={"1": "1-python"}
     )
     assert "python" in html.lower()
-    assert "/contents/blog/1-python.html" in html
+    assert "/blog/1-python.html" in html
 
 
 def test_image_has_lazy_loading(render):
@@ -104,7 +104,7 @@ def test_render_index_pagination(render):
         issue_slugs={str(i): f"{i}-test" for i in range(1, 11)},
     )
     assert 'class="pagination"' in html
-    assert 'href="/contents/page/2.html"' in html
+    assert 'href="/blog/page/2.html"' in html
     assert 'class="pagination-prev disabled"' in html
 
 
@@ -118,11 +118,11 @@ def test_render_rss_contains_slug(render):
     issues = [_make_issue(number=1)]
     issue_slugs = {"1": "1-test"}
     rss = render.generate_rss(issues, issue_slugs)
-    assert "/contents/blog/1-test.html" in rss
+    assert "/blog/1-test.html" in rss
 
 
 def test_render_sitemap_contains_slug(render):
     issues = [_make_issue(number=1)]
     issue_slugs = {"1": "1-test"}
     sitemap = render.render_sitemap(issues, issue_slugs, tags=["python"])
-    assert "/contents/blog/1-test.html" in sitemap
+    assert "/blog/1-test.html" in sitemap

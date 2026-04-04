@@ -3,7 +3,7 @@
 {% block title %}{{ blog_title }}{% endblock %}
 
 {% block canonical %}
-<link rel="canonical" href="{{ blog_url }}contents/index.html" />
+<link rel="canonical" href="{{ blog_url }}blog/index.html" />
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
             {% if tags %}
             <div class="tag-list">
                 {% for tag in tags %}
-                <a class="tag" href="/contents/tag/{{ tag }}.html">{{ tag }}</a>
+                <a class="tag" href="/tag/{{ tag }}.html">{{ tag }}</a>
                 {% endfor %}
             </div>
             {% else %}
@@ -30,7 +30,7 @@
         </section>
 
         <section class="about-link">
-            <a href="/contents/about.html">About →</a>
+            <a href="/about.html">About →</a>
         </section>
     </aside>
 
@@ -38,10 +38,10 @@
         {% for issue in issues %}
         <article class="post">
             {% set slug = issue_slugs[issue.number|string] %}
-            <h2 class="post-title"><a href="/contents/blog/{{ slug }}.html">{{ issue.title }}</a></h2>
+            <h2 class="post-title"><a href="/blog/{{ slug }}.html">{{ issue.title }}</a></h2>
             <div class="post-meta">发布于 {{ issue.created_at.strftime('%Y-%m-%d') }}
                 {% if issue.labels %}
-                | Tags: {% for label in issue.labels %}<a href="/contents/tag/{{ label.name }}.html" class="tag">{{
+                | Tags: {% for label in issue.labels %}<a href="/tag/{{ label.name }}.html" class="tag">{{
                     label.name }}</a>{% endfor %}
                 {% endif %}
             </div>
@@ -52,13 +52,13 @@
         {% if pagination and pagination.pages > 1 %}
         <nav class="pagination">
             {% if pagination.has_prev %}
-            <a class="pagination-prev" href="/contents/page/{{ pagination.prev_num }}.html">← Prev</a>
+            <a class="pagination-prev" href="/blog/page/{{ pagination.prev_num }}.html">← Prev</a>
             {% else %}
             <span class="pagination-prev disabled">← Prev</span>
             {% endif %}
             <span class="pagination-status">{{ pagination.page }} / {{ pagination.pages }}</span>
             {% if pagination.has_next %}
-            <a class="pagination-next" href="/contents/page/{{ pagination.next_num }}.html">Next →</a>
+            <a class="pagination-next" href="/blog/page/{{ pagination.next_num }}.html">Next →</a>
             {% else %}
             <span class="pagination-next disabled">Next →</span>
             {% endif %}

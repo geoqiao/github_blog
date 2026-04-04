@@ -99,14 +99,14 @@ def test_blog_generator_integration(mock_get_settings, mock_gh_service_class, tm
         assert (content_dir / "tag" / "web.html").exists()
         assert (content_dir / "atom.xml").exists()
 
-        # Verify project root files in tmp_path
-        assert (tmp_path / "index.html").exists()
-        assert (tmp_path / "sitemap.xml").exists()
-        assert (tmp_path / "robots.txt").exists()
+        # Verify output root files (now in content_dir, not tmp_path)
+        assert (content_dir / "index.html").exists()
+        assert (content_dir / "sitemap.xml").exists()
+        assert (content_dir / "robots.txt").exists()
 
-        # Verify content of index.html for correct slugs (now title-based)
+        # Verify content of index.html for correct slugs (now title-based, new URL structure)
         index_content = (content_dir / "index.html").read_text()
-        assert "/contents/blog/1-post-one.html" in index_content
-        assert "/contents/blog/2-post-two.html" in index_content
+        assert "/blog/1-post-one.html" in index_content
+        assert "/blog/2-post-two.html" in index_content
     finally:
         os.chdir(old_cwd)

@@ -3,7 +3,7 @@
 {% block title %}Tags: {{ tag_name }} - {{ blog_title }}{% endblock %}
 
 {% block canonical %}
-<link rel="canonical" href="{{ blog_url.rstrip('/') }}/contents/tag/{{ tag_name }}.html" />
+<link rel="canonical" href="{{ blog_url.rstrip('/') }}/tag/{{ tag_name }}.html" />
 {% endblock %}
 
 {% block og_title %}Tags: {{ tag_name }}{% endblock %}
@@ -25,7 +25,7 @@
             {% if tags %}
             <div class="tag-list">
                 {% for tag in tags %}
-                <a class="tag" href="/contents/tag/{{ tag }}.html">{{ tag }}</a>
+                <a class="tag" href="/tag/{{ tag }}.html">{{ tag }}</a>
                 {% endfor %}
             </div>
             {% else %}
@@ -34,7 +34,7 @@
         </section>
 
         <section class="about-link">
-            <a href="/contents/about.html">About →</a>
+            <a href="/about.html">About →</a>
         </section>
     </aside>
 
@@ -44,10 +44,10 @@
         {% for issue in issues %}
         <article class="post">
             {% set slug = issue_slugs[issue.number|string] %}
-            <h2 class="post-title"><a href="/contents/blog/{{ slug }}.html">{{ issue.title }}</a></h2>
+            <h2 class="post-title"><a href="/blog/{{ slug }}.html">{{ issue.title }}</a></h2>
             <div class="post-meta">发布于 {{ issue.created_at.strftime('%Y-%m-%d') }}
                 {% if issue.labels %}
-                | Tags: {% for label in issue.labels %}<a href="/contents/tag/{{ label.name }}.html" class="tag">{{
+                | Tags: {% for label in issue.labels %}<a href="/tag/{{ label.name }}.html" class="tag">{{
                     label.name }}</a>{% endfor %}
                 {% endif %}
             </div>

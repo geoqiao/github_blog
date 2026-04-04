@@ -28,7 +28,7 @@
 
     <link rel="stylesheet" href="{{ theme_path }}/static/css/papermint.css">
     <link rel="stylesheet" href="{{ theme_path }}/static/css/prism.css">
-    <link rel="alternate" type="application/atom+xml" title="RSS" href="/contents/{{ rss_atom_path }}">
+    <link rel="alternate" type="application/atom+xml" title="RSS" href="/{{ rss_atom_path }}">
     <link rel="icon" type="image/png" href="{{ theme_path }}/static/images/favicon.png">
     {% block extra_head %}{% endblock %}
 </head>
@@ -49,9 +49,9 @@
             </div>
 
             <ul class="nav-links">
-                <li><a href="/contents/">Blog</a></li>
-                <li><a href="/contents/tag">Tag</a></li>
-                <li><a href="/contents/about.html">About</a></li>
+                <li><a href="/blog/">Blog</a></li>
+                <li><a href="/tag">Tag</a></li>
+                <li><a href="/about.html">About</a></li>
                 <li><a href="/contents/{{ rss_atom_path }}">RSS</a></li>
             </ul>
         </nav>

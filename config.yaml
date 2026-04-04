@@ -6,7 +6,7 @@ blog:
     2. 这个网页基于GitHub Pages & GitHub Actions 自动部署。
     3. 主体 main.py 自己完成，前端主题由AI生成。
   url: https://geoqiao.github.io/
-  content_dir: "./contents/"
+  content_dir: "./output/"
   blog_dir: "blog/"
   rss_atom_path: "atom.xml"
   author:
