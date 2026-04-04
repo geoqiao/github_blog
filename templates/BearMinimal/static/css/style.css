@@ -486,13 +486,13 @@ footer a:hover {
   margin-top: 3rem;
   padding-top: 2rem;
   border-top: 1px solid var(--border);
-  min-height: 200px; /* Ensure space for Utterances iframe */
 }
 
-/* Utterances iframe responsive fix */
-.comments iframe {
-  width: 100% !important;
-  max-width: 100%;
+.comments-loading {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 2rem 0;
 }
 
 /* Mobile responsive */

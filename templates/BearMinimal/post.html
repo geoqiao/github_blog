@@ -37,6 +37,7 @@
 </article>
 
 <div class="comments" id="comments-container">
+    <p class="comments-loading">Loading comments...</p>
     <script src="https://utteranc.es/client.js"
         repo="{{ github_repo }}"
         issue-number="{{ issue.number }}"
@@ -47,19 +48,22 @@
 </div>
 
 <script>
-// Ensure Utterances loads properly on mobile devices
+// Hide loading message when Utterances loads
 (function() {
-    'use strict';
     var container = document.getElementById('comments-container');
-    if (!container) return;
+    var loadingMsg = container.querySelector('.comments-loading');
 
-    // Check if iframe loaded after a delay
-    setTimeout(function() {
-        var iframe = container.querySelector('iframe');
-        if (!iframe) {
-            console.warn('Utterances iframe not found, may need to reload');
+    // Hide loading message after iframe loads
+    window.addEventListener('message', function(e) {
+        if (e.origin === 'https://utteranc.es' && loadingMsg) {
+            loadingMsg.style.display = 'none';
         }
-    }, 3000);
+    });
+
+    // Fallback: hide after 5 seconds anyway
+    setTimeout(function() {
+        if (loadingMsg) loadingMsg.style.display = 'none';
+    }, 5000);
 })();
 </script>
 {% endblock %}
