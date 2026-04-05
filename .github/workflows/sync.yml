@@ -1,0 +1,34 @@
+name: Sync Trigger to Geoqiao Pages
+
+on:
+  push:
+    paths:
+      - '.github/workflows/trigger.yml'
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Push trigger.yml to geoqiao.github.io
+        env:
+          GH_TOKEN: ${{ secrets.G_T }}
+        run: |
+          # Clone geoqiao.github.io
+          git clone https://github.com/geoqiao/geoqiao.github.io.git _pages
+
+          # Copy trigger.yml
+          mkdir -p _pages/.github/workflows
+          cp .github/workflows/trigger.yml _pages/.github/workflows/
+
+          # Commit and push
+          cd _pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "sync: update trigger.yml from github-blog"
+          git push --force-with-lease
