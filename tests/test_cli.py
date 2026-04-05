@@ -30,7 +30,8 @@ def _make_mock_issue(number, title, body="body", labels=None):
 
 @patch("github_blog.cli.GitHubService")
 @patch("github_blog.cli.get_settings")
-def test_blog_generator_integration(mock_get_settings, mock_gh_service_class, tmp_path):
+@patch("github_blog.services.render_service.get_settings")
+def test_blog_generator_integration(mock_render_get_settings, mock_get_settings, mock_gh_service_class, tmp_path):
     # Get absolute path to the project root to find real templates
     project_root = Path(__file__).parent.parent.absolute()
     # Use BearMinimal theme (the current default) for integration test
@@ -44,23 +45,28 @@ def test_blog_generator_integration(mock_get_settings, mock_gh_service_class, tm
 
     # Setup mock settings
     mock_settings = MagicMock()
-    mock_settings.advanced.page_size = 2
-    mock_settings.advanced.home_post_count = 10
+    mock_settings.paths.page_size = 2
+    mock_settings.paths.home_post_count = 10
     mock_settings.blog.url = "https://example.com"
     mock_settings.blog.title = "Test Blog"
     mock_settings.blog.description = "Test Description"
     mock_settings.blog.author = "Author"
-    mock_settings.github.name = "user"
+    mock_settings.github.username = "user"
     mock_settings.github.repo = "user/repo"
     # Use the absolute path to real templates
-    mock_settings.theme.path = str(real_template_path)
-    mock_settings.theme.url_path = "/templates/BearMinimal"
-    mock_settings.google_search_console.content = ""
+    mock_settings.paths.theme_path = str(real_template_path)
+    mock_settings.paths.theme_url_path = "/templates/BearMinimal"
+    mock_settings.paths.seo_path = str(real_seo_path)
+    mock_settings.paths.blog = "blog"
+    mock_settings.paths.rss = "atom.xml"
+    mock_settings.seo.google_search_console = ""
     mock_settings.about.avatar = ""
     mock_settings.about.bio = "Test bio"
     mock_settings.about.expertise = ["Skill 1", "Skill 2"]
     mock_settings.about.links = []
+    mock_settings.navigation.items = []
     mock_get_settings.return_value = mock_settings
+    mock_render_get_settings.return_value = mock_settings
 
     # Setup mock GitHub service
     mock_gh_service = mock_gh_service_class.return_value
