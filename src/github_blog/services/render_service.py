@@ -59,6 +59,7 @@ class RenderService:
                 "powered_by_url": self.settings.branding.powered_by_url,
                 "show_intro": self.settings.branding.show_intro,
                 "intro_text": self.settings.branding.intro_text,
+                "intro_text2": self.settings.branding.intro_text2,
                 "source_link_text": self.settings.branding.source_link_text,
                 "source_link_url": self.settings.branding.source_link_url,
             },

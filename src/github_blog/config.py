@@ -100,6 +100,7 @@ class BrandingConfig(BaseModel):
     powered_by_url: str = "https://github.com/geoqiao/github-blog"
     show_intro: bool = False
     intro_text: str = ""
+    intro_text2: str = "Generated with Python + Jinja2, deployed via GitHub Actions."
     source_link_text: str = "View Source"
     source_link_url: str = ""
 
