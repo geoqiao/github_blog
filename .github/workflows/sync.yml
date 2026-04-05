@@ -18,19 +18,17 @@ jobs:
         env:
           G_T: ${{ secrets.G_T }}
         run: |
-          # Clone geoqiao.github.io using gh cli
-          printf '%s' "$G_T" | gh auth login --with-token
-          gh repo clone geoqiao/geoqiao.github.io _pages
+          # Clone geoqiao.github.io
+          git clone https://x-access-token:$G_T@github.com/geoqiao/geoqiao.github.io.git _pages
 
           # Copy trigger.yml
           mkdir -p _pages/.github/workflows
           cp .github/workflows/trigger.yml _pages/.github/workflows/
 
-          # Commit and push with token in URL
+          # Commit and push
           cd _pages
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:$G_T@github.com/geoqiao/geoqiao.github.io.git
           git add .
           git commit -m "sync: update trigger.yml from github-blog"
-          git push --force-with-lease
+          GIT_ASKPASS=echo git push https://x-access-token:$G_T@github.com/geoqiao/geoqiao.github.io.git
