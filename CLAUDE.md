@@ -235,7 +235,7 @@ Two built-in themes available in `templates/`:
 Switch themes by updating `config.yaml`:
 ```yaml
 theme:
-  path: "templates/BearMinimal"   # or "templates/PaperMint"
+  name: BearMinimal   # or PaperMint
 ```
 
 ## Critical Notes
@@ -243,11 +243,8 @@ theme:
 1. **Static Assets**: Templates use absolute paths `/templates/{ThemeName}/static/...`
 2. **Security**: Jinja2 has `autoescape=True`, RSS uses CDATA
 3. **Local Preview**: Must start server from project root (not output/)
-4. **Theme Switching**: After switching themes in `config.yaml`, regenerate and copy static files:
-   ```bash
-   uv run blog-gen <TOKEN> <REPO> && cp -r templates/BearMinimal output/templates/
-   ```
-5. **Mobile Comments**: Utterances comments have iOS Safari compatibility handling with specific error messages for "Disable Cross-Site Tracking" setting
+4. **Theme Switching**: After switching themes in `config.yaml`, regenerate and copy static files. See "Local Preview Workflow" above.
+5. **Mobile Comments**: Utterances comments (injected in `post.html` via `<script src="https://utteranc.es/client.js" ...>`) have iOS Safari compatibility handling with specific error messages for "Disable Cross-Site Tracking" setting
 6. **Configuration**: Internal paths (`output/`, `blog/`, `atom.xml`) are now hardcoded; only customize site metadata and theme
 7. **Breaking Change**: This version has a simplified config format; migrate from old format by removing `home.*`, `about.sections`, `pagination.*`, `tags.*`
 
