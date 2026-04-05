@@ -91,7 +91,7 @@ class BlogGenerator:
             shutil.rmtree(output)
         output.mkdir(parents=True)
         (output / self.settings.paths.blog).mkdir(parents=True)
-        (output / self.settings.paths.blog / "page").mkdir(parents=True)
+        (output / self.settings.paths.blog / self.settings.paths.page).mkdir(parents=True)
         (output / self.settings.paths.tag).mkdir(parents=True)
 
     def _save_post(self, slug: str, content: str):
@@ -113,7 +113,7 @@ class BlogGenerator:
         pages = [issues[i : i + page_size] for i in range(0, len(issues), page_size)]
         total_pages = max(1, len(pages))
 
-        page_dir = Path(self.settings.paths.output) / self.settings.paths.blog / "page"
+        page_dir = Path(self.settings.paths.output) / self.settings.paths.blog / self.settings.paths.page
         page_dir.mkdir(parents=True, exist_ok=True)
 
         for i, page_issues in enumerate(pages, start=1):
@@ -133,7 +133,7 @@ class BlogGenerator:
                     content, encoding="utf-8"
                 )
 
-            (Path(self.settings.paths.output) / self.settings.paths.blog / "page" / f"{i}.html").write_text(
+            (Path(self.settings.paths.output) / self.settings.paths.blog / self.settings.paths.page / f"{i}.html").write_text(
                 content, encoding="utf-8"
             )
 

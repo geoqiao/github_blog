@@ -114,6 +114,7 @@ class PathsConfig(BaseModel):
     tag: str = "tag"
     rss: str = "atom.xml"
     about: str = "about.html"
+    page: str = "page"
     page_size: int = 10
     home_post_count: int = 10
     language: str = "en"
