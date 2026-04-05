@@ -10,6 +10,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
+### Dual-Repository Architecture
+
+| Repository | Role | Contents |
+|-----------|------|----------|
+| `github_blog` | Code repository | Source code, workflows (gen_site.yml, trigger.yml), templates |
+| `geoqiao.github.io` | Content repository | Issues (blog posts), trigger.yml (received via sync) |
+
 ### Core Components
 
 ```
@@ -20,6 +27,16 @@ src/github_blog/
 │   ├── github_service.py  # GitHub API wrapper with tenacity retry
 │   └── render_service.py  # Jinja2 rendering, RSS/sitemap generation
 └── utils/slug.py          # URL slug generator (Chinese→pinyin)
+```
+
+### Deployment Flow
+
+```
+Issue 更新 → geoqiao.github.io/trigger.yml
+         → 发送 dispatch 到 github_blog
+         → github_blog/gen_site.yml 生成网站
+         → 直接 push 到 geoqiao.github.io main 分支
+         → GitHub Pages 从 branch 自动部署
 ```
 
 ### Configuration System
@@ -61,8 +78,8 @@ output/
 ├── index.html              # Landing page (home)
 ├── blog/
 │   ├── index.html          # Blog list page
-│   ├── page/1.html         # Paginated pages
-│   └── {slug}.html         # Individual posts
+│   ├── page/1.html        # Paginated pages
+│   └── {slug}.html        # Individual posts
 ├── tag/
 │   ├── index.html          # Tag list
 │   └── {tag}.html          # Tag pages
@@ -245,7 +262,7 @@ URLs follow `{number}-{slugified-title}` format:
 Common context available in all templates (from `RenderService._get_common_context()`):
 - `{{ blog_title }}`, `{{ blog_url }}`, `{{ author_name }}`
 - `{{ github_name }}`, `{{ github_repo }}`
-- `{{ theme_path }}` - Use for static assets (e.g., `/templates/BearMint`)
+- `{{ theme_path }}` - Use for static assets (e.g., `/templates/BearMinimal`)
 - `{{ rss_atom_path }}` - RSS feed filename
 - `{{ meta_description }}` - Blog description
 - `{{ google_search_verification }}` - Google Search Console verification code
@@ -262,35 +279,30 @@ Static assets use absolute paths: `/templates/BearMinimal/static/css/style.css`
 
 ### GitHub Actions Deployment
 
-Workflow (`.github/workflows/gen_site.yml`) triggers on:
-- Issue created/edited
-- Issue comment created/edited
-- Push to main
+**Dual-repo architecture**:
 
-Requires `G_T` secret (GitHub Personal Access Token).
+1. `trigger.yml` (in geoqiao.github.io):
+   - Listens for issue events (opened, edited, comment created/edited)
+   - Sends repository_dispatch to github_blog
 
-## Web Development
+2. `gen_site.yml` (in github_blog):
+   - Receives dispatch, generates site
+   - Pushes generated files to geoqiao.github.io main branch
 
-### Static Site Generator Guidelines
+**GitHub Pages deployment**:
+- Must be configured as "Deploy from a branch" (not workflow)
+- geoqiao.github.io Settings → Pages → Source: main branch, / (root)
 
-When working with Jekyll/Hugo/static site generators, always verify that CSS/JS file paths match the actual directory structure after any file moves or renames. Run a local server and check browser dev tools for 404 errors before declaring task complete.
-
-Common pitfalls:
-- Theme files must be in `templates/{theme_name}/` subdirectory
-- Static assets use absolute paths: `/templates/{theme_name}/static/...`
-- After file moves, regenerate site and verify CSS/JS loads correctly
+Requires `G_T` secret (GitHub Personal Access Token with `repo` and `workflow` scopes).
 
 ## Themes
 
-Two built-in themes available in `templates/`:
-
-- **BearMinimal** (default) - Clean, minimal design with dark mode toggle
-- **PaperMint** - Original PaperMod-inspired theme
+Single built-in theme: `BearMinimal` (clean, minimal design with dark mode toggle)
 
 Switch themes by updating `config.yaml`:
 ```yaml
 theme:
-  name: BearMinimal   # or PaperMint
+  name: BearMinimal
 ```
 
 ## Critical Notes
@@ -301,7 +313,7 @@ theme:
 4. **Theme Switching**: After switching themes in `config.yaml`, regenerate and copy static files. See "Local Preview Workflow" above.
 5. **Mobile Comments**: Utterances comments (injected in `post.html` via `<script src="https://utteranc.es/client.js" ...>`) have iOS Safari compatibility handling with specific error messages for "Disable Cross-Site Tracking" setting
 6. **Configuration**: Internal paths (`output/`, `blog/`, `atom.xml`) are now hardcoded; only customize site metadata and theme
-7. **Breaking Change**: This version has a simplified config format; migrate from old format by removing `home.*`, `about.sections`, `pagination.*`, `tags.*`
+7. **Dual-Repo**: Code lives in github_blog, content (Issues) lives in geoqiao.github.io
 
 ## Task Execution
 
