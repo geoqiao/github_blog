@@ -28,8 +28,7 @@ jobs:
     # Only allow repository owner to trigger builds via issues (security)
     if: github.event_name != 'issues' || github.repository_owner_id == github.event.issue.user.id
     outputs:
-      artifact_url: ${{ steps.upload.outputs.artifact_url }}
-      run_id: ${{ steps.upload.outputs.run_id }}
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -57,8 +56,9 @@ jobs:
 
       - name: Upload artifact
         id: upload
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
+          name: github-pages
           path: ./_site
 
   dispatch:
@@ -69,7 +69,7 @@ jobs:
       - name: Get artifact download URL
         id: artifact
         run: |
-          ARTIFACT_URL=$(gh api repos/geoqiao/github_blog/actions/runs/${{ needs.build.outputs.run_id }}/artifacts --jq '.artifacts[0].archive_download_url')
+          ARTIFACT_URL=$(gh api repos/geoqiao/github_blog/actions/artifacts/${{ needs.build.outputs.artifact_id }}/attempts/1 --jq '.artifacts[0].archive_download_url')
           echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.G_T }}
