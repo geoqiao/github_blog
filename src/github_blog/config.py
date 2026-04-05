@@ -149,6 +149,7 @@ class CommentsConfig(BaseModel):
     provider: str = "utterances"
     repo: str = ""
     theme: str = "github-light"
+    theme_mode: str = "auto"  # "auto" = follow blog theme, or specific theme name
 
 
 class SecurityConfig(BaseModel):

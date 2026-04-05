@@ -74,6 +74,7 @@ comments:
   provider: utterances
   repo: ""
   theme: github-light
+  theme_mode: auto  # "auto" = follow blog theme (github-light/photon-dark), or specific theme name
 
 # ============================================
 # 安全配置

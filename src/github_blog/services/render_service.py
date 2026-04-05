@@ -67,6 +67,7 @@ class RenderService:
                 "provider": self.settings.comments.provider,
                 "repo": self.settings.comments.repo or self.settings.github.repo,
                 "theme": self.settings.comments.theme,
+                "theme_mode": self.settings.comments.theme_mode,
             },
         }
 

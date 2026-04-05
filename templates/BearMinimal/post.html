@@ -53,12 +53,40 @@
     var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
+    // Theme configuration
+    var commentsTheme = '{{ comments.theme }}';
+    var commentsThemeMode = '{{ comments.theme_mode }}';
+    var LIGHT_THEME = 'github-light';
+    var DARK_THEME = 'photon-dark';
+
+    function getCurrentBlogTheme() {
+        return document.documentElement.getAttribute('data-theme') || 'light';
+    }
+
+    function getUtterancesTheme() {
+        if (commentsThemeMode === 'auto') {
+            return getCurrentBlogTheme() === 'dark' ? DARK_THEME : LIGHT_THEME;
+        }
+        return commentsTheme;
+    }
+
+    function updateUtterancesTheme() {
+        var iframe = container.querySelector('iframe');
+        if (iframe && iframe.contentWindow) {
+            var message = {
+                type: 'set-theme',
+                theme: getUtterancesTheme()
+            };
+            iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+        }
+    }
+
     // Load Utterances dynamically
     var script = document.createElement('script');
     script.src = 'https://utteranc.es/client.js';
     script.setAttribute('repo', '{{ comments.repo }}');
     script.setAttribute('issue-number', '{{ issue.number }}');
-    script.setAttribute('theme', '{{ comments.theme }}');
+    script.setAttribute('theme', getUtterancesTheme());
     script.setAttribute('crossorigin', 'anonymous');
     script.async = true;
 
@@ -73,6 +101,17 @@
         if (iframe && loadingMsg) {
             loadingMsg.style.display = 'none';
             clearInterval(checkInterval);
+            // Listen for theme changes if in auto mode
+            if (commentsThemeMode === 'auto') {
+                var observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.attributeName === 'data-theme') {
+                            updateUtterancesTheme();
+                        }
+                    });
+                });
+                observer.observe(document.documentElement, { attributes: true });
+            }
             return true;
         }
 
