@@ -84,7 +84,12 @@ class NavigationLink(BaseModel):
 class NavigationConfig(BaseModel):
     """Navigation configuration."""
 
-    items: list[NavigationLink] = Field(default_factory=list)
+    items: list[NavigationLink] = Field(default_factory=lambda: [
+        NavigationLink(name="Blog", url="/blog/"),
+        NavigationLink(name="Tags", url="/tag/"),
+        NavigationLink(name="About", url="/about.html"),
+        NavigationLink(name="RSS", url="/atom.xml"),
+    ])
 
 
 class BrandingConfig(BaseModel):
