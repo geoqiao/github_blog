@@ -24,9 +24,9 @@ TOKEN_ENV_VAR = "G_T"  # noqa: S105
 
 
 class BlogGenerator:
-    def __init__(self, token: str, repo_name: Optional[str] = None):
+    def __init__(self, token: str, repo_name: str):
         self.gh = GitHubService(token)
-        self.repo_name = repo_name
+        self.repo_name: str = repo_name
         # Initialize settings before RenderService, which also calls get_settings()
         self.settings: Settings = get_settings()
         self.render = RenderService()
@@ -59,7 +59,7 @@ class BlogGenerator:
             self._generate_index(issues, tags, issue_slugs)
 
             # 渲染主页 (landing page) (放到 output/ 根目录)
-            post_count = self.settings.advanced.home_post_count
+            post_count = self.settings.paths.home_post_count
             home_content = self.render.render_home(issues[:post_count], issue_slugs)
             (CONTENT_DIR / "index.html").write_text(home_content, encoding="utf-8")
 
@@ -110,7 +110,7 @@ class BlogGenerator:
     def _generate_index(
         self, issues: list[Issue], tags: list[str], issue_slugs: dict[str, str]
     ):
-        page_size = self.settings.advanced.page_size
+        page_size = self.settings.paths.page_size
         pages = [issues[i : i + page_size] for i in range(0, len(issues), page_size)]
         total_pages = max(1, len(pages))
 

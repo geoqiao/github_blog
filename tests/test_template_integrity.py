@@ -1,21 +1,28 @@
 """Template integrity tests for BearMinimal theme."""
 
-import pytest
 from datetime import datetime, timezone
 from pathlib import Path
+
+import pytest
 from jinja2 import Environment, FileSystemLoader
 
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
 THEME = "BearMinimal"
 
 REQUIRED_TEMPLATES = [
-    "base.html", "home.html", "post.html",
-    "index.html", "tag.html", "tags.html", "about.html"
+    "base.html",
+    "home.html",
+    "post.html",
+    "index.html",
+    "tag.html",
+    "tags.html",
+    "about.html",
 ]
 
 
 class MockNavigation:
     """Mock navigation object matching NavigationConfig structure."""
+
     def __init__(self):
         self.items = []
 
@@ -86,21 +93,45 @@ def test_all_templates_render(full_context):
     theme_path = PROJECT_ROOT / "templates" / THEME
     env = Environment(loader=FileSystemLoader(str(theme_path)), autoescape=True)
 
-    mock_issue = type('MockIssue', (), {
-        'number': 1, 'title': 'Test', 'body': 'Body',
-        'labels': [], 'created_at': datetime(2024, 1, 1, tzinfo=timezone.utc), 'updated_at': datetime(2024, 1, 1, tzinfo=timezone.utc),
-    })()
+    mock_issue = type(
+        "MockIssue",
+        (),
+        {
+            "number": 1,
+            "title": "Test",
+            "body": "Body",
+            "labels": [],
+            "created_at": datetime(2024, 1, 1, tzinfo=timezone.utc),
+            "updated_at": datetime(2024, 1, 1, tzinfo=timezone.utc),
+        },
+    )()
 
     for template_name in REQUIRED_TEMPLATES:
         template = env.get_template(template_name)
         ctx = dict(full_context)
 
         if template_name == "post.html":
-            ctx.update({"issue": mock_issue, "slug": "1-test", "html_body": "<p>Test</p>"})
+            ctx.update(
+                {"issue": mock_issue, "slug": "1-test", "html_body": "<p>Test</p>"}
+            )
         elif template_name in ["index.html", "tag.html"]:
-            ctx.update({"issues": [mock_issue], "issue_slugs": {"1": "1-test"}, "tags": ["python"], "pagination": {"page": 1, "pages": 1, "has_prev": False, "has_next": False}})
+            ctx.update(
+                {
+                    "issues": [mock_issue],
+                    "issue_slugs": {"1": "1-test"},
+                    "tags": ["python"],
+                    "pagination": {
+                        "page": 1,
+                        "pages": 1,
+                        "has_prev": False,
+                        "has_next": False,
+                    },
+                }
+            )
         elif template_name == "tags.html":
-            ctx.update({"tags": ["python"], "tag_items": [{"name": "python", "count": 1}]})
+            ctx.update(
+                {"tags": ["python"], "tag_items": [{"name": "python", "count": 1}]}
+            )
         elif template_name == "home.html":
             ctx.update({"issues": [mock_issue], "issue_slugs": {"1": "1-test"}})
 

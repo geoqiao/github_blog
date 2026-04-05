@@ -56,9 +56,9 @@
     // Load Utterances dynamically
     var script = document.createElement('script');
     script.src = 'https://utteranc.es/client.js';
-    script.setAttribute('repo', '{{ github_repo }}');
+    script.setAttribute('repo', '{{ comments.repo }}');
     script.setAttribute('issue-number', '{{ issue.number }}');
-    script.setAttribute('theme', 'github-light');
+    script.setAttribute('theme', '{{ comments.theme }}');
     script.setAttribute('crossorigin', 'anonymous');
     script.async = true;
 

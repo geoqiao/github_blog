@@ -23,7 +23,9 @@ def generate_slug(issue_number: int, tags: list[str]) -> str:
     return f"{issue_number}-{tags_slug}"
 
 
-def generate_slug_from_title(issue_number: int, title: str, max_length: int = 60) -> str:
+def generate_slug_from_title(
+    issue_number: int, title: str, max_length: int = 60
+) -> str:
     """
     Generate a SEO friendly slug from an issue number and title.
     Format: {issue_number}-{slugified-title}

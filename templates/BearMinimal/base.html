@@ -53,7 +53,7 @@
     {% block footer %}
     <footer>
         <div class="container">
-            <p>&copy; {{ author_name }} · powered by <a href="https://github.com/geoqiao/github-blog">github_blog</a></p>
+            <p>&copy; {{ author_name }}{% if branding.show_powered_by %} · powered by <a href="{{ branding.powered_by_url }}">{{ branding.powered_by_text }}</a>{% endif %}</p>
         </div>
     </footer>
     {% endblock %}

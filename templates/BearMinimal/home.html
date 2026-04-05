@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if branding.show_intro %}
 <div class="home-intro">
-    <p class="intro-line">This is a static blog system based on GitHub Issues.</p>
-    <p class="intro-line">Generated with Python + Jinja2, deployed via GitHub Actions.</p>
-    <p class="intro-line source-link"><a href="https://github.com/geoqiao/github-blog">View source code →</a></p>
+    <p class="intro-line">{{ branding.intro_text }}</p>
+    <p class="intro-line source-link">
+        <a href="{{ branding.source_link_url }}">{{ branding.source_link_text }}</a>
+    </p>
 </div>
+{% endif %}
 
 {% if issues %}
 <section class="recent-posts">

@@ -1,7 +1,7 @@
 from github_blog.utils.slug import generate_slug, generate_slug_from_title
 
-
 # ========== Tests for legacy generate_slug (backward compatibility) ==========
+
 
 def test_no_tags_returns_issue_number():
     assert generate_slug(42, []) == "42"
@@ -27,9 +27,13 @@ def test_special_chars_stripped():
 
 # ========== Tests for new generate_slug_from_title ==========
 
+
 def test_title_slug_basic():
     """Test basic title slug generation."""
-    assert generate_slug_from_title(1, "Python 数据分析入门") == "1-python-shu-ju-fen-xi-ru-men"
+    assert (
+        generate_slug_from_title(1, "Python 数据分析入门")
+        == "1-python-shu-ju-fen-xi-ru-men"
+    )
 
 
 def test_title_slug_ascii_only():
@@ -46,13 +50,19 @@ def test_title_slug_empty_title():
 
 def test_title_slug_no_cjk():
     """Test with title containing no CJK characters."""
-    assert generate_slug_from_title(6, "Getting Started with FastAPI") == "6-getting-started-with-fastapi"
+    assert (
+        generate_slug_from_title(6, "Getting Started with FastAPI")
+        == "6-getting-started-with-fastapi"
+    )
 
 
 def test_title_slug_special_chars():
     """Test that special characters are properly handled."""
     # Note: slugify removes & rather than converting to 'and'
-    assert generate_slug_from_title(7, "C++ Programming: Tips & Tricks!") == "7-c-programming-tips-tricks"
+    assert (
+        generate_slug_from_title(7, "C++ Programming: Tips & Tricks!")
+        == "7-c-programming-tips-tricks"
+    )
 
 
 def test_title_slug_max_length():
