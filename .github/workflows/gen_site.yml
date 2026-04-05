@@ -2,6 +2,8 @@ name: Generate Github_blog site
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [issue_update]
   issues:
     types: [opened, edited]
   issue_comment:
