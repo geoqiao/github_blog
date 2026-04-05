@@ -4,24 +4,28 @@ from github_blog.services.github_service import GitHubService
 
 
 def test_github_service_login_new_auth():
-    with patch("github_blog.services.github_service.Github") as mock_github:
-        with patch("github_blog.services.github_service.Auth") as mock_auth:
-            # Mock the presence of Auth.Token (modern PyGithub)
-            mock_auth.Token = MagicMock()
+    with (
+        patch("github_blog.services.github_service.Github") as mock_github,
+        patch("github_blog.services.github_service.Auth") as mock_auth,
+    ):
+        # Mock the presence of Auth.Token (modern PyGithub)
+        mock_auth.Token = MagicMock()
 
-            GitHubService("fake-token")
+        GitHubService("fake-token")
 
-            mock_auth.Token.assert_called_once_with("fake-token")
-            mock_github.assert_called_once()
+        mock_auth.Token.assert_called_once_with("fake-token")
+        mock_github.assert_called_once()
 
 
 def test_github_service_login_old_auth():
-    with patch("github_blog.services.github_service.Github") as mock_github:
-        with patch("github_blog.services.github_service.Auth", spec=[]) as mock_auth:
-            # Mock the absence of Auth.Token (older PyGithub)
-            GitHubService("fake-token")
+    with (
+        patch("github_blog.services.github_service.Github") as mock_github,
+        patch("github_blog.services.github_service.Auth", spec=[]),
+    ):
+        # Mock the absence of Auth.Token (older PyGithub)
+        GitHubService("fake-token")
 
-            mock_github.assert_called_once_with("fake-token")
+        mock_github.assert_called_once_with("fake-token")
 
 
 @patch("github_blog.services.github_service.Github")

@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
@@ -8,7 +9,39 @@ from github_blog.services.render_service import RenderService
 
 @pytest.fixture
 def render():
-    return RenderService()
+    project_root = Path(__file__).parent.parent.absolute()
+    settings = MagicMock()
+    settings.paths.theme_path = project_root / "templates" / "BearMinimal"
+    settings.paths.seo_path = project_root / "templates" / "seo"
+    settings.paths.theme_url_path = "/templates/BearMinimal"
+    settings.paths.rss = "atom.xml"
+    settings.paths.blog = "blog"
+    settings.paths.home_post_count = 10
+    settings.blog.title = "Test Blog"
+    settings.blog.url = "https://example.com"
+    settings.blog.author = "Author"
+    settings.blog.description = "Test Description"
+    settings.github.username = "user"
+    settings.github.repo = "user/repo"
+    settings.seo.google_search_console = ""
+    settings.about.avatar = ""
+    settings.about.bio = "Test bio"
+    settings.about.expertise = ["Skill 1", "Skill 2"]
+    settings.about.links = []
+    settings.navigation.items = []
+    settings.branding.show_powered_by = True
+    settings.branding.powered_by_text = "Powered by"
+    settings.branding.powered_by_url = "https://github.com/geoqiao/github-blog"
+    settings.branding.show_intro = False
+    settings.branding.intro_text = ""
+    settings.branding.intro_text2 = "Generated with Python + Jinja2, deployed via GitHub Actions."
+    settings.branding.source_link_text = "View Source"
+    settings.branding.source_link_url = ""
+    settings.comments.provider = "utterances"
+    settings.comments.repo = ""
+    settings.comments.theme = "github-light"
+    settings.comments.theme_mode = "auto"
+    return RenderService(settings)
 
 
 def _make_issue(number=1, title="Test Post", body="Hello **world**", labels=None):

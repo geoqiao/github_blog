@@ -11,7 +11,7 @@ from marko.ext.gfm import GFM
 from marko.html_renderer import HTMLRenderer
 from marko.inline import Image
 
-from ..config import Settings, get_settings
+from ..config import Settings
 
 
 class LazyImageRenderer(HTMLRenderer):
@@ -24,8 +24,8 @@ class LazyImageRenderer(HTMLRenderer):
 
 
 class RenderService:
-    def __init__(self):
-        self.settings: Settings = get_settings()
+    def __init__(self, settings: Settings):
+        self.settings = settings
         self.env = Environment(
             loader=FileSystemLoader(str(self.settings.paths.theme_path)),
             autoescape=True,

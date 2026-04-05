@@ -11,7 +11,6 @@ This module defines 8 independent configuration sections:
 - SecurityConfig: Security settings
 """
 
-import logging
 from pathlib import Path
 from typing import Optional
 
@@ -19,7 +18,7 @@ import yaml
 from pydantic import BaseModel, Field, HttpUrl, field_validator
 from pydantic_settings import SettingsConfigDict
 
-logger = logging.getLogger(__name__)
+TOKEN_ENV_VAR = "G_T"  # noqa: S105
 
 
 class GithubConfig(BaseModel):
@@ -155,7 +154,7 @@ class CommentsConfig(BaseModel):
 class SecurityConfig(BaseModel):
     """Security settings."""
 
-    token_env: str = "G_T"
+    token_env: str = TOKEN_ENV_VAR
 
 
 class Settings(BaseModel):
@@ -179,34 +178,3 @@ class Settings(BaseModel):
         with open(yaml_path, encoding="utf-8") as f:
             data = yaml.safe_load(f)
         return cls.model_validate(data)
-
-
-# Global settings instance
-_settings: Optional[Settings] = None
-
-
-def get_settings() -> Settings:
-    """Get the global settings instance.
-
-    Returns:
-        The global Settings instance.
-
-    Raises:
-        RuntimeError: If settings have not been loaded.
-    """
-    global _settings
-    if _settings is None:
-        load_settings()
-    assert _settings is not None
-    return _settings
-
-
-def load_settings() -> Settings:
-    """Load settings from config.yaml.
-
-    Returns:
-        The loaded Settings instance.
-    """
-    global _settings
-    _settings = Settings.load_from_yaml(Path("config.yaml"))
-    return _settings

@@ -29,19 +29,12 @@ def _make_mock_issue(number, title, body="body", labels=None):
 
 
 @patch("github_blog.cli.GitHubService")
-@patch("github_blog.cli.get_settings")
-@patch("github_blog.services.render_service.get_settings")
-def test_blog_generator_integration(mock_render_get_settings, mock_get_settings, mock_gh_service_class, tmp_path):
+def test_blog_generator_integration(mock_gh_service_class, tmp_path):
     # Get absolute path to the project root to find real templates
     project_root = Path(__file__).parent.parent.absolute()
     # Use BearMinimal theme (the current default) for integration test
     real_template_path = project_root / "templates" / "BearMinimal"
     real_seo_path = project_root / "templates" / "seo"
-
-    # Ensure we're in the project root directory for config loading
-    old_cwd = os.getcwd()
-    if not Path("config.yaml").exists():
-        os.chdir(project_root)
 
     # Setup mock settings
     mock_settings = MagicMock()
@@ -68,8 +61,18 @@ def test_blog_generator_integration(mock_render_get_settings, mock_get_settings,
     mock_settings.about.expertise = ["Skill 1", "Skill 2"]
     mock_settings.about.links = []
     mock_settings.navigation.items = []
-    mock_get_settings.return_value = mock_settings
-    mock_render_get_settings.return_value = mock_settings
+    mock_settings.branding.show_powered_by = True
+    mock_settings.branding.powered_by_text = "Powered by"
+    mock_settings.branding.powered_by_url = "https://github.com/geoqiao/github-blog"
+    mock_settings.branding.show_intro = False
+    mock_settings.branding.intro_text = ""
+    mock_settings.branding.intro_text2 = "Generated with Python + Jinja2, deployed via GitHub Actions."
+    mock_settings.branding.source_link_text = "View Source"
+    mock_settings.branding.source_link_url = ""
+    mock_settings.comments.provider = "utterances"
+    mock_settings.comments.repo = ""
+    mock_settings.comments.theme = "github-light"
+    mock_settings.comments.theme_mode = "auto"
 
     # Setup mock GitHub service
     mock_gh_service = mock_gh_service_class.return_value
@@ -108,7 +111,7 @@ def test_blog_generator_integration(mock_render_get_settings, mock_get_settings,
             mock_loader.side_effect = side_effect
 
             # Re-initialize to apply the mock during RenderService.__init__
-            generator = BlogGenerator("fake-token", "user/repo")
+            generator = BlogGenerator("fake-token", "user/repo", mock_settings)
             generator.generate()
 
         # Verify files were created in tmp_path/output
@@ -140,13 +143,26 @@ def test_blog_generator_integration(mock_render_get_settings, mock_get_settings,
 class TestNewCLI:
     """Tests for the new CLI behavior (token from G_T env, repo from config or --repo flag)."""
 
-    def test_cli_requires_token(self, monkeypatch, capsys):
-        """Exit if no G_T environment variable is set."""
+    def test_cli_requires_token(self, monkeypatch, tmp_path):
+        """Exit if the configured token environment variable is not set."""
         # Ensure G_T is not set
         monkeypatch.delenv("G_T", raising=False)
 
         # Set sys.argv to simulate CLI invocation
         monkeypatch.setattr(sys, "argv", ["blog-gen"])
+
+        # Create a fake config.yaml so settings can load
+        monkeypatch.chdir(tmp_path)
+        config_content = """github:
+  repo: user/repo
+blog:
+  title: Test Blog
+  url: https://example.com
+  author: Test
+about:
+  bio: Test bio
+"""
+        (tmp_path / "config.yaml").write_text(config_content)
 
         # Run CLI and expect SystemExit
         with pytest.raises(SystemExit) as exc_info:
@@ -185,8 +201,11 @@ about:
 
             run_cli()
 
-            # Verify BlogGenerator was called with the token from G_T
-            mock_generator_class.assert_called_once_with(test_token, "user/repo")
+            # Verify BlogGenerator was called with the token from G_T and settings
+            call_args = mock_generator_class.call_args
+            assert call_args.args[0] == test_token
+            assert call_args.args[1] == "user/repo"
+            assert call_args.args[2] is not None
             mock_generator.generate.assert_called_once()
 
     def test_cli_repo_from_config(self, monkeypatch, tmp_path):
@@ -221,7 +240,10 @@ about:
             run_cli()
 
             # Verify BlogGenerator was called with repo from config
-            mock_generator_class.assert_called_once_with(test_token, config_repo)
+            call_args = mock_generator_class.call_args
+            assert call_args.args[0] == test_token
+            assert call_args.args[1] == config_repo
+            assert call_args.args[2] is not None
             mock_generator.generate.assert_called_once()
 
     def test_cli_repo_cli_override(self, monkeypatch, tmp_path):
@@ -259,5 +281,8 @@ about:
             run_cli()
 
             # Verify BlogGenerator was called with CLI repo, not config repo
-            mock_generator_class.assert_called_once_with(test_token, cli_repo)
+            call_args = mock_generator_class.call_args
+            assert call_args.args[0] == test_token
+            assert call_args.args[1] == cli_repo
+            assert call_args.args[2] is not None
             mock_generator.generate.assert_called_once()

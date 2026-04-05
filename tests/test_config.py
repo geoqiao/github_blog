@@ -313,14 +313,14 @@ class TestSecurityConfig:
         from github_blog.config import SecurityConfig
 
         cfg = SecurityConfig()
-        assert cfg.token_env == "G_T"
+        assert cfg.token_env == "G_T"  # noqa: S105
 
     def test_token_env_can_be_customized(self):
         """token_env can be customized."""
         from github_blog.config import SecurityConfig
 
-        cfg = SecurityConfig(token_env="MY_TOKEN")
-        assert cfg.token_env == "MY_TOKEN"
+        cfg = SecurityConfig(token_env="MY_TOKEN")  # noqa: S106
+        assert cfg.token_env == "MY_TOKEN"  # noqa: S105
 
 
 class TestSettings:
@@ -350,28 +350,19 @@ about:
         assert settings.blog.title == "Test Blog"
         assert settings.github.repo == "testuser/testrepo"
 
-    def test_settings_singleton_get_settings(self):
-        """get_settings returns the global settings instance."""
-        from github_blog.config import get_settings
-
-        settings = get_settings()
-        assert settings is not None
-        assert hasattr(settings, "blog")
-        assert hasattr(settings, "github")
-
-    def test_settings_singleton_load_settings(self):
-        """load_settings reloads settings from config.yaml."""
-        from github_blog.config import load_settings
-
-        settings = load_settings()
-        assert settings is not None
-        assert hasattr(settings, "blog")
-
     def test_all_8_sections_present(self):
         """Settings has all 8 config sections."""
-        from github_blog.config import get_settings
+        from github_blog.config import Settings
 
-        settings = get_settings()
+        settings = Settings(
+            blog={
+                "title": "Test",
+                "url": "https://example.com",
+                "author": "Test",
+            },
+            github={"repo": "user/repo"},
+            about={"bio": "Test"},
+        )
         # Check all 8 sections exist
         assert hasattr(settings, "github")
         assert hasattr(settings, "blog")

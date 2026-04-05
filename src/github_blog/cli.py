@@ -2,32 +2,24 @@ import os
 import shutil
 import sys
 from pathlib import Path
-from typing import Optional
 
 import structlog
 from github.Issue import Issue
 
-from .config import Settings, get_settings, load_settings
+from .config import Settings
 from .services.github_service import GitHubService
 from .services.render_service import RenderService
 from .utils.slug import generate_slug_from_title
 
 logger = structlog.get_logger()
 
-# 从配置读取路径，不再硬编码
-# CONTENT_DIR, BLOG_DIR, RSS_ATOM_PATH 等都从 self.settings.paths 获取
-
-# Environment variable for GitHub token
-TOKEN_ENV_VAR = "G_T"  # noqa: S105
-
 
 class BlogGenerator:
-    def __init__(self, token: str, repo_name: str):
+    def __init__(self, token: str, repo_name: str, settings: Settings):
         self.gh = GitHubService(token)
         self.repo_name: str = repo_name
-        # Initialize settings before RenderService, which also calls get_settings()
-        self.settings: Settings = get_settings()
-        self.render = RenderService()
+        self.settings: Settings = settings
+        self.render = RenderService(settings)
 
     def generate(self):
         logger.info("start_generation", repo=self.repo_name)
@@ -81,9 +73,9 @@ class BlogGenerator:
             (Path(self.settings.paths.output) / self.settings.paths.about).write_text(about_content, encoding="utf-8")
 
             logger.info("generation_completed")
-        except Exception as e:
-            logger.error("generation_failed", error=str(e))
-            sys.exit(2)
+        except Exception:
+            logger.exception("generation_failed")
+            sys.exit(1)
 
     def _init_dirs(self):
         output = Path(self.settings.paths.output)
@@ -175,17 +167,17 @@ def run_cli():
     )
     args = parser.parse_args()
 
-    # Read token from G_T environment variable
-    token = os.environ.get(TOKEN_ENV_VAR)
-    if not token:
-        logger.error("missing_token", env_var=TOKEN_ENV_VAR)
-        sys.exit(1)
-
     # Load settings from config.yaml
-    settings = load_settings()
+    settings = Settings.load_from_yaml(Path("config.yaml"))
+
+    # Read token from the environment variable specified in config
+    token = os.environ.get(settings.security.token_env)
+    if not token:
+        logger.error("missing_token", env_var=settings.security.token_env)
+        sys.exit(1)
 
     # Use CLI repo if provided, otherwise use config repo
     repo_name = args.repo if args.repo else settings.github.repo
 
-    generator = BlogGenerator(token, repo_name)
+    generator = BlogGenerator(token, repo_name, settings)
     generator.generate()

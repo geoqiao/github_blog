@@ -1,83 +1,91 @@
-# 博客信息
+# ============================================
+# Core (required)
+# ============================================
 blog:
-  title: "Your Blog Title"
-  description: "A short description of your blog."
-  url: https://username.github.io/
-  content_dir: "./output/"
-  blog_dir: "blog/"
-  rss_atom_path: "atom.xml"
-  author:
-    name: Your Name
-    email: your.email@example.com
-  page_size: 10
+  title: "Blog Title"
+  description: Short description
+  url: https://example.com
+  author: Your Name
 
-# GitHub 相关配置
 github:
-  name: username  # GitHub 用户名
-  repo: username/username.github.io  # GitHub 仓库名称
+  repo: username/repo
 
-# Google Search Console (可选)
-GoogleSearchConsole:
-  content: ""
-  verify: false
-
-# 主题配置
-theme:
-  path: "templates/BearMinimal"
-  seo: "templates/seo"
-
-# 首页配置
-home:
-  intro_line1: "这是一个基于 GitHub Issues 的静态博客系统。"
-  intro_line2: "使用 Python + Jinja2 自动生成，通过 GitHub Actions 自动部署。"
-  source_code_text: "查看源码 →"
-  source_code_url: "https://github.com/username/username.github.io"
-  recent_posts_title: "Recent Posts"
-  view_all_text: "View all posts →"
-  post_count: 10
-
-# 关于页面配置
 about:
-  page_title: "About"
-  sections:
-    - title: "关于我"
-      type: "paragraphs"
-      content:
-        - "你好，我是 {{ author_name }}。"
-        - "这里写一段简短的个人介绍。"
-    - title: "专业领域"
-      type: "list"
-      content:
-        - "领域 1"
-        - "领域 2"
-        - "领域 3"
-    - title: "联系方式"
-      type: "contact"
-      links:
-        - name: "GitHub"
-          display: "@{{ github_name }}"
-          url: "https://github.com/{{ github_name }}"
-        - name: "Twitter/X"
-          display: "@yourname"
-          url: "https://twitter.com/yourname"
+  avatar: https://example.com/avatar.jpg
+  bio: |
+    A short bio about yourself.
+  expertise:
+    - Python
+    - DevOps
+  links:
+    - name: GitHub
+      url: https://github.com/username
 
-# 导航配置
-navigation:
-  items:
-    - name: "Blog"
-      url: "/blog/"
-    - name: "Tags"
-      url: "/tag/"
-    - name: "About"
-      url: "/about.html"
-    - name: "RSS"
-      url: "/atom.xml"
+# ============================================
+# Branding (optional)
+# ============================================
+# branding:
+#   show_powered_by: true
+#   powered_by_text: Powered by
+#   powered_by_url: https://github.com/geoqiao/github-blog
+#   show_intro: false
+#   intro_text: ""
+#   source_link_text: View Source
+#   source_link_url: ""
 
-# 分页配置
-pagination:
-  prev_text: "← Prev"
-  next_text: "Next →"
+# ============================================
+# Navigation (optional)
+# ============================================
+# navigation:
+#   items:
+#     - name: Blog
+#       url: /blog/
+#     - name: Tags
+#       url: /tag/
+#     - name: About
+#       url: /about.html
+#     - name: RSS
+#       url: /atom.xml
 
-# 标签页面配置
-tags:
-  page_title: "Tags"
+# ============================================
+# Theme (optional)
+# ============================================
+# theme:
+#   name: BearMinimal
+
+# ============================================
+# Paths (optional)
+# ============================================
+# paths:
+#   output: output
+#   theme: BearMinimal
+#   blog: blog
+#   tag: tag
+#   rss: atom.xml
+#   about: about.html
+#   page_size: 10
+#   home_post_count: 10
+#   language: en
+
+# ============================================
+# SEO (optional)
+# ============================================
+# seo:
+#   google_search_console: ""
+#   enable_sitemap: true
+#   enable_robots: true
+
+# ============================================
+# Comments (optional)
+# ============================================
+# comments:
+#   provider: utterances
+#   repo: username/repo
+#   theme: github-light
+#   theme_mode: auto
+
+# ============================================
+# Security (optional)
+# ============================================
+# security:
+#   token_env: G_T
