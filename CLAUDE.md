@@ -24,24 +24,28 @@ src/github_blog/
 
 ### Configuration System
 
-Uses Pydantic models in `config.py` with `config.yaml` as the source. Follows **convention over configuration** principle with three-tier config:
+Uses Pydantic models in `config.py` with `config.yaml` as the source. Follows **convention over configuration** principle with eight-section config:
 
 **Core configs** (required):
-- `BlogConfig` - title, description, url, author
-- `GithubConfig` - repo (username/repo format, username auto-parsed)
-- `AboutConfig` - bio and social links (personalized content)
+- `github` - repo (username/repo format), username (auto-parsed from repo)
+- `blog` - title, url, author
+- `about` - avatar, bio, expertise, links
 
 **Personalization configs** (optional, defaults provided):
-- `ThemeConfig` - name (maps to templates/{name}, default: BearMinimal)
-- `NavigationConfig` - custom nav items (defaults provided)
+- `branding` - show_powered_by, powered_by_text, powered_by_url, show_intro, intro_text, source_link_text, source_link_url
+- `theme` - name (maps to templates/{name}, default: BearMinimal)
 
-**Advanced configs** (optional, rarely need to change):
-- `AdvancedConfig` - page_size, home_post_count, language
+**Path configs** (optional, defaults provided):
+- `paths` - output, theme, blog, tag, rss, about, page_size, home_post_count, language
 
 **SEO configs** (optional):
-- `GoogleSearchConsoleConfig` - verification code
+- `seo` - google_search_console, enable_sitemap, enable_robots
 
-Note: Internal paths (output/, blog/, atom.xml) are hardcoded.
+**Comments config** (optional):
+- `comments` - provider, repo, theme
+
+**Security config** (optional):
+- `security` - token_env
 
 ### Data Flow
 
@@ -76,8 +80,14 @@ output/
 # Install dependencies
 uv sync
 
-# Run blog generator locally (requires GitHub Token)
-uv run blog-gen <TOKEN> <REPO>        # e.g., uv run blog-gen ghp_xxx geoqiao/geoqiao.github.io
+# Set GitHub Token (required)
+export G_T=ghp_xxxxx
+
+# Generate site (repo from config.yaml)
+uv run blog-gen
+
+# Override repo (optional)
+uv run blog-gen --repo username/other-repo
 
 # Start local server (run from project root, NOT output/)
 uv run python -m http.server 8000
@@ -86,16 +96,17 @@ uv run python -m http.server 8000
 ### Local Preview Workflow
 
 ```bash
-# 1. Generate site
-uv run blog-gen <TOKEN> <REPO>
+# 1. Set token
+export G_T=ghp_xxxxx
 
-# 2. Copy theme static files to output (required for CSS/JS to work)
+# 2. Generate site
+uv run blog-gen
+
+# 3. Copy theme static files
 cp -r templates/BearMinimal output/templates/
 
-# 3. Serve from project root (not output/)
+# 4. Serve
 uv run python -m http.server 8000
-
-# 4. Access at http://localhost:8000/output/
 ```
 
 ### Testing (TDD Required)
@@ -132,7 +143,7 @@ uv run ty
 
 ## Key Configuration
 
-`config.yaml` (three-tier structure):
+`config.yaml` (eight-section structure):
 
 ```yaml
 # ============================================
@@ -148,25 +159,69 @@ github:
   repo: username/repo
 
 about:
+  avatar: https://example.com/avatar.jpg
   bio: |
     A short bio about yourself.
+  expertise:
+    - Python
+    - DevOps
   links:
     - name: GitHub
       url: https://github.com/username
 
 # ============================================
-# Personalization (optional)
+# Branding (optional)
+# ============================================
+# branding:
+#   show_powered_by: true
+#   powered_by_text: Powered by
+#   powered_by_url: https://github.com
+#   show_intro: true
+#   intro_text: Welcome to my blog
+#   source_link_text: View Source
+#   source_link_url: https://github.com/username/username.github.io
+
+# ============================================
+# Theme (optional)
 # ============================================
 # theme:
 #   name: BearMinimal
 
 # ============================================
-# Advanced (optional)
+# Paths (optional)
 # ============================================
-# advanced:
+# paths:
+#   output: output
+#   theme: BearMinimal
+#   blog: blog
+#   tag: tag
+#   rss: atom.xml
+#   about: about.html
 #   page_size: 10
 #   home_post_count: 10
 #   language: en
+
+# ============================================
+# SEO (optional)
+# ============================================
+# seo:
+#   google_search_console: ""
+#   enable_sitemap: true
+#   enable_robots: true
+
+# ============================================
+# Comments (optional)
+# ============================================
+# comments:
+#   provider: utterances
+#   repo: username/repo
+#   theme: github-light
+
+# ============================================
+# Security (optional)
+# ============================================
+# security:
+#   token_env: G_T
 ```
 
 ## Important Patterns
