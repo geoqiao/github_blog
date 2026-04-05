@@ -18,8 +18,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.G_T }}
         run: |
-          # Clone geoqiao.github.io using token for authentication
-          git clone https://x-access-token:$GH_TOKEN@github.com/geoqiao/geoqiao.github.io.git _pages
+          # Clone geoqiao.github.io using gh cli
+          printf '%s' "$GH_TOKEN" | gh auth login --with-token
+          gh repo clone geoqiao/geoqiao.github.io _pages
 
           # Copy trigger.yml
           mkdir -p _pages/.github/workflows
