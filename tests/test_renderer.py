@@ -126,3 +126,29 @@ def test_render_sitemap_contains_slug(render):
     issue_slugs = {"1": "1-test"}
     sitemap = render.render_sitemap(issues, issue_slugs, tags=["python"])
     assert "/blog/1-test.html" in sitemap
+
+
+def test_branding_injected_to_context(render):
+    """Verify branding.xxx is in context."""
+    context = render._get_common_context()
+    assert "branding" in context
+    branding = context["branding"]
+    assert "show_powered_by" in branding
+    assert "powered_by_text" in branding
+    assert "powered_by_url" in branding
+    assert "show_intro" in branding
+    assert "intro_text" in branding
+    assert "source_link_text" in branding
+    assert "source_link_url" in branding
+
+
+def test_comments_uses_github_repo_when_empty(render):
+    """Verify comments.repo falls back to github.repo when empty."""
+    context = render._get_common_context()
+    assert "comments" in context
+    comments = context["comments"]
+    assert "provider" in comments
+    assert "repo" in comments
+    assert "theme" in comments
+    # repo should fall back to github.repo when comments.repo is empty
+    assert comments["repo"] == render.settings.github.repo

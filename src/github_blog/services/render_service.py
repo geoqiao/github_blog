@@ -28,11 +28,11 @@ class RenderService:
     def __init__(self):
         self.settings: Settings = get_settings()
         self.env = Environment(
-            loader=FileSystemLoader(str(self.settings.theme.path)),
+            loader=FileSystemLoader(str(self.settings.paths.theme_path)),
             autoescape=True,
         )
         self.seo_env = Environment(
-            loader=FileSystemLoader(str(self.settings.theme.seo)),
+            loader=FileSystemLoader(str(self.settings.paths.seo_path)),
             autoescape=True,
         )
         self.markdown = Markdown(extensions=[GFM, "pangu"], renderer=LazyImageRenderer)
@@ -41,19 +41,33 @@ class RenderService:
         """获取所有模板共用的上下文变量。"""
         return {
             "blog_title": self.settings.blog.title,
-            "github_name": self.settings.github.name,
+            "github_name": self.settings.github.username,
             "github_repo": self.settings.github.repo,
             "blog_url": str(self.settings.blog.url),
-            "rss_atom_path": "atom.xml",
+            "rss_atom_path": self.settings.paths.rss,
             "author_name": self.settings.blog.author,
             "meta_description": self.settings.blog.description,
-            "google_search_verification": self.settings.google_search_console.content,
-            "theme_path": self.settings.theme.url_path,
+            "google_search_verification": self.settings.seo.google_search_console,
+            "theme_path": self.settings.paths.theme_url_path,
             "navigation": self.settings.navigation,
             "about_avatar": self.settings.about.avatar,
             "about_bio": self.settings.about.bio,
             "about_expertise": self.settings.about.expertise,
             "about_links": self.settings.about.links,
+            "branding": {
+                "show_powered_by": self.settings.branding.show_powered_by,
+                "powered_by_text": self.settings.branding.powered_by_text,
+                "powered_by_url": self.settings.branding.powered_by_url,
+                "show_intro": self.settings.branding.show_intro,
+                "intro_text": self.settings.branding.intro_text,
+                "source_link_text": self.settings.branding.source_link_text,
+                "source_link_url": self.settings.branding.source_link_url,
+            },
+            "comments": {
+                "provider": self.settings.comments.provider,
+                "repo": self.settings.comments.repo or self.settings.github.repo,
+                "theme": self.settings.comments.theme,
+            },
         }
 
     def markdown_to_html(self, md_str: str) -> str:
@@ -89,7 +103,7 @@ class RenderService:
         return template.render(
             issues=issues,
             issue_slugs=issue_slugs,
-            home_post_count=self.settings.advanced.home_post_count,
+            home_post_count=self.settings.paths.home_post_count,
             **self._get_common_context(),
         )
 
@@ -121,7 +135,7 @@ class RenderService:
         fg.link(href=str(self.settings.blog.url), rel="alternate")
         fg.description(self.settings.blog.description)
 
-        blog_dir_str = "blog"
+        blog_dir_str = self.settings.paths.blog
         base_url = str(self.settings.blog.url).rstrip("/")
         for issue in issues:
             slug = issue_slugs[str(issue.number)]
@@ -153,7 +167,7 @@ class RenderService:
 
         return template.render(
             base_url=str(self.settings.blog.url).rstrip("/"),
-            blog_dir="blog",
+            blog_dir=self.settings.paths.blog,
             blog_items=blog_items,
             tags=tags,
             now=datetime.now().strftime("%Y-%m-%d"),

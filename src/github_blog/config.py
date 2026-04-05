@@ -55,6 +55,7 @@ class BlogConfig(BaseModel):
     title: str
     url: HttpUrl
     author: str
+    description: str = ""
 
 
 class AboutLink(BaseModel):
@@ -71,6 +72,19 @@ class AboutConfig(BaseModel):
     bio: str
     expertise: list[str] = Field(default_factory=list)
     links: list[AboutLink] = Field(default_factory=list)
+
+
+class NavigationLink(BaseModel):
+    """Link in the navigation section."""
+
+    name: str
+    url: str
+
+
+class NavigationConfig(BaseModel):
+    """Navigation configuration."""
+
+    items: list[NavigationLink] = Field(default_factory=list)
 
 
 class BrandingConfig(BaseModel):
@@ -143,6 +157,7 @@ class Settings(BaseModel):
     blog: BlogConfig
     about: AboutConfig
     branding: BrandingConfig = Field(default_factory=BrandingConfig)
+    navigation: NavigationConfig = Field(default_factory=NavigationConfig)
     paths: PathsConfig = Field(default_factory=PathsConfig)
     seo: SeoConfig = Field(default_factory=SeoConfig)
     comments: CommentsConfig = Field(default_factory=CommentsConfig)
