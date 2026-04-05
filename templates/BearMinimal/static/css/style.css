@@ -513,6 +513,12 @@ footer a:hover {
   font-size: 0.8rem;
 }
 
+.comments iframe {
+  width: 100%;
+  min-height: 220px;
+  border: 0;
+}
+
 /* Mobile responsive */
 @media (max-width: 600px) {
   body {
