@@ -1,5 +1,7 @@
 name: Trigger Deploy
 
+# Syncs to geoqiao.github.io via sync.yml
+
 on:
   issues:
     types: [opened, edited]
