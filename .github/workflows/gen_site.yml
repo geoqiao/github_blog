@@ -59,9 +59,9 @@ jobs:
           # Clone geoqiao.github.io
           git clone https://x-access-token:$G_T@github.com/geoqiao/geoqiao.github.io.git _deploy
 
-          # Remove old files (templates, .github, etc.) except .git
+          # Remove old files (templates, *.md, *.yaml) except .git and .github (workflows)
           cd _deploy
-          rm -rf templates .github *.md *.yaml 2>/dev/null || true
+          rm -rf templates *.md *.yaml 2>/dev/null || true
           find . -maxdepth 1 -type f ! -name '.git' -delete 2>/dev/null || true
 
           # Copy generated site contents
