@@ -1,19 +1,36 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}{{ tag_name }} - {{ blog_title }}{% endblock %}
+
+{% block canonical %}
+<link rel="canonical" href="{{ blog_url.rstrip('/') }}/tag/{{ tag_name }}.html" />
+{% endblock %}
+
+{% block og_title %}{{ tag_name }} - {{ blog_title }}{% endblock %}
 
 {% block content %}
-<section class="tag-page">
-    <h1>Posts tagged "{{ tag_name }}"</h1>
-    
+<div class="listHeader">
+    <h1>#{{ tag_name }}</h1>
+</div>
+
+<div class="postsList" role="list">
     {% for issue in issues %}
-    <article class="post-card">
-        <h2 class="post-title">
-            <a href="/blog/{{ issue_slugs[issue.number|string] }}.html">{{ issue.title }}</a>
-        </h2>
-        <div class="post-meta">
-            <span class="date">{{ issue.created_at.strftime('%Y-%m-%d') }}</span>
+    {% set slug = issue_slugs[issue.number|string] %}
+    <article class="postListItem" role="listitem">
+        <a class="postListLink" href="/blog/{{ slug }}.html">
+            <div class="postHeader">
+                <span class="postTitle">{{ issue.title }}</span>
+                <time class="postDate" datetime="{{ issue.created_at.strftime('%Y-%m-%d') }}">{{ issue.created_at.strftime('%Y-%m-%d') }}</time>
+            </div>
+        </a>
+        {% if issue.labels %}
+        <div class="postTags">
+            {% for label in issue.labels %}
+            <a href="/tag/{{ label.name }}.html" class="tag">{{ label.name }}</a>
+            {% endfor %}
         </div>
-        <p class="post-excerpt">{{ issue.body[:200] }}...</p>
+        {% endif %}
     </article>
     {% endfor %}
-</section>
+</div>
 {% endblock %}

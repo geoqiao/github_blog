@@ -1,18 +1,14 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block title %}About - {{ blog_title }}{% endblock %}
 
-{% block canonical %}
-<link rel="canonical" href="{{ blog_url }}about.html" />
-{% endblock %}
-
 {% block content %}
-<div class="postWrapper">
+<div class="about-content">
     <h1>About</h1>
 
     {% if about_avatar %}
-    <div class="authorImageWrapper aboutAvatar">
-        <img src="{{ about_avatar }}" alt="{{ author_name }}" class="size-l">
+    <div class="about-avatar">
+        <img src="{{ about_avatar }}" alt="{{ author_name }}" class="avatar-img">
     </div>
     {% endif %}
 
@@ -29,7 +25,7 @@
     {% if about_expertise %}
     <section class="about-section">
         <h2>Things I Do</h2>
-        <ul class="expertise-list">
+        <ul>
             {% for item in about_expertise %}
             <li>{{ item }}</li>
             {% endfor %}

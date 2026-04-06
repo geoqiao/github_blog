@@ -1,37 +1,49 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block canonical %}
+<link rel="canonical" href="{{ blog_url }}blog/" />
+{% endblock %}
 
 {% block content %}
-<section class="post-list">
-    <h1>All Posts</h1>
-    
+<div class="listHeader">
+    <h1>Blog</h1>
+</div>
+
+<div class="postsList" role="list">
     {% for issue in issues %}
-    <article class="post-card">
-        <h2 class="post-title">
-            <a href="/blog/{{ issue_slugs[issue.number|string] }}.html">{{ issue.title }}</a>
-        </h2>
-        <div class="post-meta">
-            <span class="date">{{ issue.created_at.strftime('%Y-%m-%d') }}</span>
-            {% if issue.labels %}
-            <span class="tags">
-                {% for label in issue.labels[:3] %}
-                <a class="tag" href="/tag/{{ label.name }}/">{{ label.name }}</a>
-                {% endfor %}
-            </span>
-            {% endif %}
+    {% set slug = issue_slugs[issue.number|string] %}
+    <article class="postListItem" role="listitem">
+        <a class="postListLink" href="/blog/{{ slug }}.html">
+            <div class="postHeader">
+                <span class="postTitle">{{ issue.title }}</span>
+                <time class="postDate" datetime="{{ issue.created_at.strftime('%Y-%m-%d') }}">{{ issue.created_at.strftime('%Y-%m-%d') }}</time>
+            </div>
+        </a>
+        {% if issue.labels %}
+        <div class="postTags">
+            {% for label in issue.labels %}
+            <a href="/tag/{{ label.name }}.html" class="tag">{{ label.name }}</a>
+            {% endfor %}
         </div>
-        <p class="post-excerpt">{{ issue.body[:200] }}...</p>
+        {% endif %}
     </article>
     {% endfor %}
-</section>
+</div>
 
 {% if pagination and pagination.pages > 1 %}
 <nav class="pagination">
     {% if pagination.has_prev %}
-    <a href="/blog/page/{{ pagination.prev_num }}/">← Previous</a>
+    <a href="/blog/page/{{ pagination.prev_num }}.html" class="pagination-prev">← prev</a>
+    {% else %}
+    <span class="pagination-prev disabled">← prev</span>
     {% endif %}
-    <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+
+    <span class="pagination-info">{{ pagination.page }} / {{ pagination.pages }}</span>
+
     {% if pagination.has_next %}
-    <a href="/blog/page/{{ pagination.next_num }}/">Next →</a>
+    <a href="/blog/page/{{ pagination.next_num }}.html" class="pagination-next">next →</a>
+    {% else %}
+    <span class="pagination-next disabled">next →</span>
     {% endif %}
 </nav>
 {% endif %}

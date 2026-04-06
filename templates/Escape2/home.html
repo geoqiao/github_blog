@@ -1,32 +1,37 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<section class="home-intro">
-    <h1>{{ blog_title }}</h1>
-    <p class="intro-text">{{ meta_description }}</p>
-</section>
+{% if branding.show_intro %}
+<div class="home-intro">
+    <p class="intro-line">{{ branding.intro_text }}</p>
+    <p class="intro-line">{{ branding.intro_text2 }}</p>
+    <p class="intro-line source-link">
+        <a href="{{ branding.source_link_url }}">{{ branding.source_link_text }}</a>
+    </p>
+</div>
+{% endif %}
 
+{% if issues %}
 <section class="recent-posts">
     <h2>Recent Posts</h2>
-    {% for issue in issues[:home_post_count] %}
-    <article class="post-card">
-        <h3 class="post-title">
-            <a href="/blog/{{ issue_slugs[issue.number|string] }}.html">{{ issue.title }}</a>
-        </h3>
-        <div class="post-meta">
-            <span class="date">{{ issue.created_at.strftime('%Y-%m-%d') }}</span>
-            {% if issue.labels %}
-            <span class="tags">
-                {% for label in issue.labels[:3] %}
-                <a class="tag" href="/tag/{{ label.name }}/">{{ label.name }}</a>
-                {% endfor %}
-            </span>
-            {% endif %}
+    {% for issue in issues %}
+    {% set slug = issue_slugs[issue.number|string] %}
+    <article class="home-post-item">
+        <div class="home-post-header">
+            <time class="home-post-date">{{ issue.created_at.strftime('%Y-%m-%d') }}</time>
+            <h3 class="home-post-title"><a href="/blog/{{ slug }}.html">{{ issue.title }}</a></h3>
         </div>
-        <p class="post-excerpt">{{ issue.body[:200] }}...</p>
+        {% if issue.labels %}
+        <div class="home-post-tags">
+            {% for label in issue.labels %}
+            <a href="/tag/{{ label.name }}.html" class="tag">{{ label.name }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
     </article>
     {% endfor %}
 
-    <a href="/blog/" class="view-all">View all posts →</a>
+    <p class="all-posts-link"><a href="/blog/">View all posts →</a></p>
 </section>
+{% endif %}
 {% endblock %}
