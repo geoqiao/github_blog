@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="about-page">
+    <h1>About</h1>
+    
+    <div class="about-header">
+        <img src="{{ about_avatar }}" alt="{{ author_name }}" class="avatar">
+        <div>
+            <h2>{{ author_name }}</h2>
+            <p class="bio">{{ about_bio }}</p>
+        </div>
+    </div>
+    
+    {% if about_expertise %}
+    <div class="expertise">
+        <h3>Expertise</h3>
+        <ul>
+            {% for item in about_expertise %}
+            <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    
+    {% if about_links %}
+    <div class="links">
+        <h3>Links</h3>
+        <ul>
+            {% for link in about_links %}
+            <li><a href="{{ link.url }}" target="_blank">{{ link.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
