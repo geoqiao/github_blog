@@ -33,11 +33,11 @@ class BlogGenerator:
                 slug = generate_slug_from_title(issue.number, issue.title)
                 issue_slugs[str(issue.number)] = slug
 
-            # 目录初始化 + 复制主题静态资源
+            # Initialize directories and copy theme static assets
             self._init_dirs()
             self._copy_theme_assets()
 
-            # 渲染文章
+            # Render posts
             for issue in issues:
                 html_body = self.render.markdown_to_html(issue.body or "")
                 content = self.render.render_post(
@@ -95,7 +95,7 @@ class BlogGenerator:
         """Copy theme static assets into output directory."""
         theme_name = self.settings.paths.theme
         output_dir = Path(self.settings.paths.output)
-        theme_src = Path("templates") / theme_name
+        theme_src = Path(self.settings.paths.theme_path)
 
         static_src = theme_src / "static"
         static_dst = output_dir / "templates" / theme_name / "static"

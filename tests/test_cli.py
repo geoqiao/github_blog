@@ -52,6 +52,7 @@ def test_blog_generator_integration(mock_gh_service_class, tmp_path):
     mock_settings.github.username = "user"
     mock_settings.github.repo = "user/repo"
     # Use the absolute path to real templates
+    mock_settings.paths.theme = "BearMinimal"
     mock_settings.paths.theme_path = str(real_template_path)
     mock_settings.paths.theme_url_path = "/templates/BearMinimal"
     mock_settings.paths.seo_path = str(real_seo_path)
@@ -132,6 +133,11 @@ def test_blog_generator_integration(mock_gh_service_class, tmp_path):
         index_content = (output_dir / "index.html").read_text()
         assert "/blog/1-post-one.html" in index_content
         assert "/blog/2-post-two.html" in index_content
+
+        # Verify theme static assets were copied into output
+        theme_static_dir = output_dir / "templates" / "BearMinimal" / "static"
+        assert theme_static_dir.exists(), "Theme static directory should be copied to output"
+        assert (theme_static_dir / "css" / "style.css").exists(), "Theme CSS should be present"
     finally:
         os.chdir(old_cwd)
         # Cleanup: remove the output directory if it exists in project root
