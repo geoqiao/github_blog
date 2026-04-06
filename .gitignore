@@ -180,3 +180,11 @@ backup/
 .claude/
 .claude.local.md
 .opencode/
+
+# AI / MCP / IDE tools
+.playwright-mcp/
+.cursor/
+.copilot/
+.aider*
+.codex/
+.gemini/
