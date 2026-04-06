@@ -49,7 +49,6 @@ jobs:
         run: |
           mkdir -p _site
           cp -r output/* _site/
-          cp -r templates _site/
           touch _site/.nojekyll
 
       - name: Clone and push to geoqiao.github.io
