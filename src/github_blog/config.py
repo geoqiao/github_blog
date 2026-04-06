@@ -133,6 +133,16 @@ class PathsConfig(BaseModel):
         """Return URL path for theme assets."""
         return f"/templates/{self.theme}"
 
+    @property
+    def theme_static_dst(self) -> Path:
+        """Return destination Path for theme static assets in output."""
+        return Path(self.output) / "templates" / self.theme / "static"
+
+    @property
+    def theme_images_dst(self) -> Path:
+        """Return destination Path for theme images in output."""
+        return Path(self.output) / "templates" / self.theme / "images"
+
 
 class SeoConfig(BaseModel):
     """SEO configuration."""

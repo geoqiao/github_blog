@@ -91,19 +91,19 @@ class BlogGenerator:
         path = Path(self.settings.paths.output) / self.settings.paths.blog / f"{slug}.html"
         path.write_text(content, encoding="utf-8")
 
-    def _copy_theme_assets(self):
+    def _copy_theme_assets(self) -> None:
         """Copy theme static assets into output directory."""
-        theme_name = self.settings.paths.theme
-        output_dir = Path(self.settings.paths.output)
         theme_src = Path(self.settings.paths.theme_path)
+        if not theme_src.exists():
+            raise FileNotFoundError(f"Theme directory not found: {theme_src}")
 
         static_src = theme_src / "static"
-        static_dst = output_dir / "templates" / theme_name / "static"
+        static_dst = Path(self.settings.paths.theme_static_dst)
         if static_src.exists():
             shutil.copytree(static_src, static_dst, dirs_exist_ok=True)
 
         images_src = theme_src / "images"
-        images_dst = output_dir / "templates" / theme_name / "images"
+        images_dst = Path(self.settings.paths.theme_images_dst)
         if images_src.exists():
             shutil.copytree(images_src, images_dst, dirs_exist_ok=True)
 

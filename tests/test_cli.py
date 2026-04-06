@@ -29,7 +29,7 @@ def _make_mock_issue(number, title, body="body", labels=None):
 
 
 @patch("github_blog.cli.GitHubService")
-def test_blog_generator_integration(mock_gh_service_class, tmp_path):
+def test_blog_generator_integration(mock_gh_service_class, tmp_path, monkeypatch):
     # Get absolute path to the project root to find real templates
     project_root = Path(__file__).parent.parent.absolute()
     # Use Escape1 theme (the current default) for integration test
@@ -53,8 +53,10 @@ def test_blog_generator_integration(mock_gh_service_class, tmp_path):
     mock_settings.github.repo = "user/repo"
     # Use the absolute path to real templates
     mock_settings.paths.theme = "Escape1"
-    mock_settings.paths.theme_path = str(real_template_path)
+    mock_settings.paths.theme_path = real_template_path
     mock_settings.paths.theme_url_path = "/templates/Escape1"
+    mock_settings.paths.theme_static_dst = Path("output/templates/Escape1/static")
+    mock_settings.paths.theme_images_dst = Path("output/templates/Escape1/images")
     mock_settings.paths.seo_path = str(real_seo_path)
     mock_settings.seo.google_search_console = ""
     mock_settings.about.avatar = ""
@@ -88,10 +90,8 @@ def test_blog_generator_integration(mock_gh_service_class, tmp_path):
 
     # Create a temporary output directory to avoid polluting project root
     output_dir = tmp_path / "output"
+    monkeypatch.chdir(tmp_path)
 
-    # Initialize and generate
-    old_cwd = os.getcwd()
-    os.chdir(tmp_path)
     try:
         # We need to mock RenderService because its __init__ hardcodes "templates/seo"
         # and it's called during BlogGenerator.__init__
@@ -138,8 +138,11 @@ def test_blog_generator_integration(mock_gh_service_class, tmp_path):
         theme_static_dir = output_dir / "templates" / "Escape1" / "static"
         assert theme_static_dir.exists(), "Theme static directory should be copied to output"
         assert (theme_static_dir / "css" / "style.css").exists(), "Theme CSS should be present"
+        # Escape1 images live under static/images, not a top-level images/ folder
+        theme_images_dir = output_dir / "templates" / "Escape1" / "images"
+        assert not theme_images_dir.exists(), "Top-level images dir should not be created when theme lacks it"
+        assert (theme_static_dir / "images" / "favicon.png").exists(), "Favicon inside static/images should be present"
     finally:
-        os.chdir(old_cwd)
         # Cleanup: remove the output directory if it exists in project root
         project_output = project_root / "output"
         if project_output.exists():
@@ -292,3 +295,31 @@ about:
             assert call_args.args[1] == cli_repo
             assert call_args.args[2] is not None
             mock_generator.generate.assert_called_once()
+
+
+def test_copy_theme_assets(tmp_path, monkeypatch):
+    """Unit test for _copy_theme_assets covering both static/ and images/ branches."""
+    from github_blog.cli import BlogGenerator
+
+    monkeypatch.chdir(tmp_path)
+
+    # Create a fake theme directory with static and images subdirectories
+    theme_dir = tmp_path / "templates" / "FakeTheme"
+    static_dir = theme_dir / "static"
+    static_dir.mkdir(parents=True)
+    (static_dir / "style.css").write_text("body {}")
+
+    images_dir = theme_dir / "images"
+    images_dir.mkdir(parents=True)
+    (images_dir / "favicon.png").write_text("fake png")
+
+    mock_settings = MagicMock()
+    mock_settings.paths.theme_path = theme_dir
+    mock_settings.paths.theme_static_dst = Path("output/templates/FakeTheme/static")
+    mock_settings.paths.theme_images_dst = Path("output/templates/FakeTheme/images")
+
+    generator = BlogGenerator("fake-token", "user/repo", mock_settings)
+    generator._copy_theme_assets()
+
+    assert (tmp_path / "output" / "templates" / "FakeTheme" / "static" / "style.css").exists()
+    assert (tmp_path / "output" / "templates" / "FakeTheme" / "images" / "favicon.png").exists()

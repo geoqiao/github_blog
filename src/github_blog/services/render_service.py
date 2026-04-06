@@ -48,6 +48,7 @@ class RenderService:
             "meta_description": self.settings.blog.description,
             "google_search_verification": self.settings.seo.google_search_console,
             "theme_path": self.settings.paths.theme_url_path,
+            "language": self.settings.paths.language,
             "navigation": self.settings.navigation,
             "about_avatar": self.settings.about.avatar,
             "about_bio": self.settings.about.bio,

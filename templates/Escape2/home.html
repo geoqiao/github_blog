@@ -18,7 +18,7 @@
     {% set slug = issue_slugs[issue.number|string] %}
     <article class="home-post-item">
         <div class="home-post-header">
-            <time class="home-post-date">{{ issue.created_at.strftime('%Y-%m-%d') }}</time>
+            <time class="home-post-date" datetime="{{ issue.created_at.strftime('%Y-%m-%d') }}">{{ issue.created_at.strftime('%Y-%m-%d') }}</time>
             <h3 class="home-post-title"><a href="/blog/{{ slug }}.html">{{ issue.title }}</a></h3>
         </div>
         {% if issue.labels %}

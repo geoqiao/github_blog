@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="{{ language }}" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +34,7 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body>
+    <a href="#main-content" class="skip-link">跳到主要内容</a>
     <div class="flexWrapper">
         <header class="headerWrapper">
             <div class="header">
@@ -41,8 +42,8 @@
                     <span>{{ github_name }}@escaping ~ $</span><span class="cursor">_</span>
                 </a>
                 <input class="side-menu" type="checkbox" id="side-menu">
-                <label class="hamb" for="side-menu" aria-label="Toggle menu"><span class="hamb-line"></span></label>
-                <nav class="headerLinks">
+                <label class="hamb" for="side-menu" aria-label="Toggle menu" aria-expanded="false" aria-controls="header-nav"><span class="hamb-line"></span></label>
+                <nav class="headerLinks" id="header-nav">
                     <ul>
                         {% for item in navigation.items %}
                         <li><a href="{{ item.url }}">~/{{ item.name }}</a></li>
@@ -53,7 +54,7 @@
         </header>
 
         <div class="content">
-            <main class="main">
+            <main class="main" id="main-content">
                 {% block content %}{% endblock %}
             </main>
         </div>
@@ -68,5 +69,16 @@
     </div>
 
     <script src="{{ theme_path }}/static/js/prism.js"></script>
+    <script>
+    (function() {
+        var checkbox = document.getElementById('side-menu');
+        var label = document.querySelector('.hamb');
+        if (checkbox && label) {
+            checkbox.addEventListener('change', function() {
+                label.setAttribute('aria-expanded', checkbox.checked ? 'true' : 'false');
+            });
+        }
+    })();
+    </script>
 </body>
 </html>
