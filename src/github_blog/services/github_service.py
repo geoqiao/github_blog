@@ -13,7 +13,7 @@ class GitHubService:
 
     def _login(self, token: str) -> Github:
         try:
-            # 兼容不同版本的 PyGithub
+            # Compatibility with different PyGithub versions
             if hasattr(Auth, "Token"):
                 return Github(auth=Auth.Token(token))
             return Github(token)

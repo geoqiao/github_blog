@@ -27,7 +27,7 @@ class BlogGenerator:
             repo = self.gh.get_repo(self.repo_name)
             issues = self.gh.get_user_issues(repo)
 
-            # 为每个 issue 生成 slug (基于 title，稳定且可读)  # noqa: RUF003
+            # Generate a slug for each issue (based on title, stable and readable)  # noqa: RUF003
             issue_slugs = {}
             for issue in issues:
                 slug = generate_slug_from_title(issue.number, issue.title)
@@ -45,31 +45,31 @@ class BlogGenerator:
                 )
                 self._save_post(issue_slugs[str(issue.number)], content)
 
-            # 渲染首页
+            # Render post index page
             tags = self._collect_tags(issues)
             self._generate_index(issues, tags, issue_slugs)
 
-            # 渲染主页 (landing page) (放到 output/ 根目录)
+            # Render landing page (placed in output/ root)
             post_count = self.settings.paths.home_post_count
             home_content = self.render.render_home(issues[:post_count], issue_slugs)
             (Path(self.settings.paths.output) / "index.html").write_text(home_content, encoding="utf-8")
 
-            # 渲染标签页
+            # Render tag pages
             self._generate_tag_pages(issues, tags, issue_slugs)
 
-            # 生成 RSS (放到 output/ 根目录)
+            # Generate RSS (placed in output/ root)
             rss_content = self.render.generate_rss(issues, issue_slugs)
             (Path(self.settings.paths.output) / self.settings.paths.rss).write_text(rss_content, encoding="utf-8")
 
-            # 生成 Sitemap (放到 output/ 根目录)
+            # Generate Sitemap (placed in output/ root)
             sitemap_content = self.render.render_sitemap(issues, issue_slugs, tags)
             (Path(self.settings.paths.output) / "sitemap.xml").write_text(sitemap_content, encoding="utf-8")
 
-            # 生成 Robots.txt (放到 output/ 根目录)
+            # Generate Robots.txt (placed in output/ root)
             robots_content = self.render.render_robots()
             (Path(self.settings.paths.output) / "robots.txt").write_text(robots_content, encoding="utf-8")
 
-            # 渲染 about 页面 (放到 output/ 根目录)
+            # Render about page (placed in output/ root)
             about_content = self.render.render_about()
             (Path(self.settings.paths.output) / self.settings.paths.about).write_text(about_content, encoding="utf-8")
 
@@ -158,7 +158,7 @@ class BlogGenerator:
                         tag_index[name] = []
                     tag_index[name].append(issue)
 
-        # 生成标签列表页面 (tag/index.html)
+        # Generate tag list page (tag/index.html)
         tag_counts = {tag: len(tag_index.get(tag, [])) for tag in tags}
         tags_content = self.render.render_tags_page(tags, tag_counts)
         (Path(self.settings.paths.output) / self.settings.paths.tag / "index.html").write_text(tags_content, encoding="utf-8")

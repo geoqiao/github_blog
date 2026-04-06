@@ -37,7 +37,7 @@ class RenderService:
         self.markdown = Markdown(extensions=[GFM, "pangu"], renderer=LazyImageRenderer)
 
     def _get_common_context(self) -> dict[str, Any]:
-        """获取所有模板共用的上下文变量。"""
+        """Return context variables shared by all templates."""
         return {
             "blog_title": self.settings.blog.title,
             "github_name": self.settings.github.username,
@@ -143,7 +143,7 @@ class RenderService:
         for issue in issues:
             slug = issue_slugs[str(issue.number)]
             fe = fg.add_entry()
-            # 新 URL 结构: /blog/{slug}.html
+            # New URL structure: /blog/{slug}.html
             url = f"{base_url}/{blog_dir_str}/{slug}.html"
             fe.id(url)
             fe.title(issue.title)
