@@ -3,7 +3,7 @@
 from pathlib import Path
 
 import pytest
-from pydantic import ValidationError
+from pydantic import HttpUrl, ValidationError
 
 
 class TestGithubConfig:
@@ -55,7 +55,7 @@ class TestBlogConfig:
 
         cfg = BlogConfig(
             title="My Blog",
-            url="https://example.com",
+            url=HttpUrl("https://example.com"),
             author="John Doe",
         )
         assert cfg.title == "My Blog"
@@ -68,7 +68,7 @@ class TestBlogConfig:
 
         cfg = BlogConfig(
             title="Test",
-            url="https://example.com",
+            url=HttpUrl("https://example.com"),
             author="Author",
         )
         assert cfg.url.scheme == "https"
@@ -352,16 +352,16 @@ about:
 
     def test_all_8_sections_present(self):
         """Settings has all 8 config sections."""
-        from github_blog.config import Settings
+        from github_blog.config import AboutConfig, BlogConfig, GithubConfig, Settings
 
         settings = Settings(
-            blog={
-                "title": "Test",
-                "url": "https://example.com",
-                "author": "Test",
-            },
-            github={"repo": "user/repo"},
-            about={"bio": "Test"},
+            blog=BlogConfig(
+                title="Test",
+                url=HttpUrl("https://example.com"),
+                author="Test",
+            ),
+            github=GithubConfig(repo="user/repo"),
+            about=AboutConfig(bio="Test"),
         )
         # Check all 8 sections exist
         assert hasattr(settings, "github")
