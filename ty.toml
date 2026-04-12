@@ -1,0 +1,6 @@
+[environment]
+python = ".venv"
+root = ["./src"]
+
+[analysis]
+replace-imports-with-any = ["jinja2.**"]
