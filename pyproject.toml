@@ -51,7 +51,11 @@ select = [
     "RUF", # ruff-specific rules
     "ANN", # flake8-annotations
 ]
-ignore = ["E501"] # 忽略行长限制
+ignore = [
+    "E501",   # 忽略行长限制
+    "ANN101", # self 类型注解是冗余的
+    "ANN102", # cls 类型注解是冗余的
+]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["S101"]  # Allow assert in tests
@@ -64,4 +68,21 @@ indent-style = "space"
 testpaths = ["tests"]
 python_files = "test_*.py"
 addopts = "--cov=src --cov-report=term-missing"
+
+[tool.ty.environment]
+python = ".venv"
+root = ["./src"]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+pythonVersion = "3.11"
+typeCheckingMode = "standard"
+reportAny = "none"
+reportMissingTypeStubs = "none"
+reportUnknownMemberType = "none"
+reportUnknownVariableType = "none"
+reportMissingParameterType = "warning"
+reportUnusedCallResult = "none"
+reportMissingTypeArgument = "warning"
 
