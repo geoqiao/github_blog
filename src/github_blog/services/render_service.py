@@ -24,7 +24,7 @@ class LazyImageRenderer(HTMLRenderer):
 
 
 class RenderService:
-    def __init__(self, settings: Settings):
+    def __init__(self, settings: Settings) -> None:
         self.settings = settings
         self.env = Environment(
             loader=FileSystemLoader(str(self.settings.paths.theme_path)),

@@ -9,28 +9,28 @@ from pydantic import HttpUrl, ValidationError
 class TestGithubConfig:
     """Tests for GithubConfig section."""
 
-    def test_repo_required(self):
+    def test_repo_required(self) -> None:
         """repo field is required."""
         from github_blog.config import GithubConfig
 
         cfg = GithubConfig(repo="geoqiao/blog")
         assert cfg.repo == "geoqiao/blog"
 
-    def test_username_auto_parsed(self):
+    def test_username_auto_parsed(self) -> None:
         """username is auto-parsed from repo."""
         from github_blog.config import GithubConfig
 
         cfg = GithubConfig(repo="geoqiao/blog")
         assert cfg.username == "geoqiao"
 
-    def test_resolve_username_method(self):
+    def test_resolve_username_method(self) -> None:
         """resolve_username returns username."""
         from github_blog.config import GithubConfig
 
         cfg = GithubConfig(repo="geoqiao/blog")
         assert cfg.resolve_username() == "geoqiao"
 
-    def test_repo_format_validation(self):
+    def test_repo_format_validation(self) -> None:
         """repo must contain a slash."""
         from github_blog.config import GithubConfig
 
@@ -38,7 +38,7 @@ class TestGithubConfig:
         cfg = GithubConfig(repo="geoqiao/geoqiao.github.io")
         assert "/" in cfg.repo
 
-    def test_github_config_invalid_repo(self):
+    def test_github_config_invalid_repo(self) -> None:
         """Test invalid repo format raises error."""
         from github_blog.config import GithubConfig
 
@@ -49,7 +49,7 @@ class TestGithubConfig:
 class TestBlogConfig:
     """Tests for BlogConfig section."""
 
-    def test_required_fields(self):
+    def test_required_fields(self) -> None:
         """title, url, and author are required."""
         from github_blog.config import BlogConfig
 
@@ -62,7 +62,7 @@ class TestBlogConfig:
         assert cfg.url.scheme == "https"
         assert cfg.author == "John Doe"
 
-    def test_url_is_htturl(self):
+    def test_url_is_htturl(self) -> None:
         """url is validated as HttpUrl."""
         from github_blog.config import BlogConfig
 
@@ -78,7 +78,7 @@ class TestBlogConfig:
 class TestAboutLink:
     """Tests for nested AboutLink model."""
 
-    def test_name_and_url(self):
+    def test_name_and_url(self) -> None:
         """AboutLink has name and url."""
         from github_blog.config import AboutLink
 
@@ -90,21 +90,21 @@ class TestAboutLink:
 class TestAboutConfig:
     """Tests for AboutConfig section."""
 
-    def test_required_bio(self):
+    def test_required_bio(self) -> None:
         """bio is required."""
         from github_blog.config import AboutConfig
 
         cfg = AboutConfig(bio="Hello world", links=[])
         assert cfg.bio == "Hello world"
 
-    def test_optional_avatar(self):
+    def test_optional_avatar(self) -> None:
         """avatar defaults to empty string."""
         from github_blog.config import AboutConfig
 
         cfg = AboutConfig(bio="Hello", links=[])
         assert cfg.avatar == ""
 
-    def test_avatar_can_be_set(self):
+    def test_avatar_can_be_set(self) -> None:
         """avatar can be set to a URL."""
         from github_blog.config import AboutConfig
 
@@ -115,14 +115,14 @@ class TestAboutConfig:
         )
         assert cfg.avatar == "https://github.com/user.png"
 
-    def test_expertise_defaults_to_empty_list(self):
+    def test_expertise_defaults_to_empty_list(self) -> None:
         """expertise defaults to empty list."""
         from github_blog.config import AboutConfig
 
         cfg = AboutConfig(bio="Hello", links=[])
         assert cfg.expertise == []
 
-    def test_expertise_can_be_list(self):
+    def test_expertise_can_be_list(self) -> None:
         """expertise can be a list of strings."""
         from github_blog.config import AboutConfig
 
@@ -133,7 +133,7 @@ class TestAboutConfig:
         )
         assert cfg.expertise == ["Python", "JavaScript"]
 
-    def test_links_as_list_of_aboutlink(self):
+    def test_links_as_list_of_aboutlink(self) -> None:
         """links is a list of AboutLink objects."""
         from github_blog.config import AboutConfig, AboutLink
 
@@ -151,7 +151,7 @@ class TestAboutConfig:
 class TestBrandingConfig:
     """Tests for BrandingConfig section."""
 
-    def test_defaults(self):
+    def test_defaults(self) -> None:
         """All branding fields have sensible defaults."""
         from github_blog.config import BrandingConfig
 
@@ -164,7 +164,7 @@ class TestBrandingConfig:
         assert cfg.source_link_text == "View Source"
         assert cfg.source_link_url == ""
 
-    def test_all_fields_can_be_set(self):
+    def test_all_fields_can_be_set(self) -> None:
         """All branding fields can be customized."""
         from github_blog.config import BrandingConfig
 
@@ -189,7 +189,7 @@ class TestBrandingConfig:
 class TestPathsConfig:
     """Tests for PathsConfig section."""
 
-    def test_defaults(self):
+    def test_defaults(self) -> None:
         """All path fields have defaults."""
         from github_blog.config import PathsConfig
 
@@ -204,7 +204,7 @@ class TestPathsConfig:
         assert cfg.home_post_count == 10
         assert cfg.language == "en"
 
-    def test_all_fields_can_be_set(self):
+    def test_all_fields_can_be_set(self) -> None:
         """All path fields can be customized."""
         from github_blog.config import PathsConfig
 
@@ -229,21 +229,21 @@ class TestPathsConfig:
         assert cfg.home_post_count == 15
         assert cfg.language == "zh-CN"
 
-    def test_theme_path_property(self):
+    def test_theme_path_property(self) -> None:
         """theme_path returns Path to theme directory."""
         from github_blog.config import PathsConfig
 
         cfg = PathsConfig(theme="Escape1")
         assert cfg.theme_path == Path("templates/Escape1")
 
-    def test_seo_path_property(self):
+    def test_seo_path_property(self) -> None:
         """seo_path returns Path to SEO templates."""
         from github_blog.config import PathsConfig
 
         cfg = PathsConfig()
         assert cfg.seo_path == Path("templates/seo")
 
-    def test_theme_url_path_property(self):
+    def test_theme_url_path_property(self) -> None:
         """theme_url_path returns URL path for theme assets."""
         from github_blog.config import PathsConfig
 
@@ -254,7 +254,7 @@ class TestPathsConfig:
 class TestSeoConfig:
     """Tests for SeoConfig section."""
 
-    def test_defaults(self):
+    def test_defaults(self) -> None:
         """SEO fields have sensible defaults."""
         from github_blog.config import SeoConfig
 
@@ -263,7 +263,7 @@ class TestSeoConfig:
         assert cfg.enable_sitemap is True
         assert cfg.enable_robots is True
 
-    def test_all_fields_can_be_set(self):
+    def test_all_fields_can_be_set(self) -> None:
         """All SEO fields can be customized."""
         from github_blog.config import SeoConfig
 
@@ -282,7 +282,7 @@ class TestSeoConfig:
 class TestCommentsConfig:
     """Tests for CommentsConfig section."""
 
-    def test_defaults(self):
+    def test_defaults(self) -> None:
         """Comments fields have sensible defaults."""
         from github_blog.config import CommentsConfig
 
@@ -291,7 +291,7 @@ class TestCommentsConfig:
         assert cfg.repo == ""
         assert cfg.theme == "github-light"
 
-    def test_all_fields_can_be_set(self):
+    def test_all_fields_can_be_set(self) -> None:
         """All comments fields can be customized."""
         from github_blog.config import CommentsConfig
 
@@ -308,14 +308,14 @@ class TestCommentsConfig:
 class TestSecurityConfig:
     """Tests for SecurityConfig section."""
 
-    def test_defaults(self):
+    def test_defaults(self) -> None:
         """Security fields have sensible defaults."""
         from github_blog.config import SecurityConfig
 
         cfg = SecurityConfig()
         assert cfg.token_env == "G_T"  # noqa: S105
 
-    def test_token_env_can_be_customized(self):
+    def test_token_env_can_be_customized(self) -> None:
         """token_env can be customized."""
         from github_blog.config import SecurityConfig
 
@@ -350,7 +350,7 @@ about:
         assert settings.blog.title == "Test Blog"
         assert settings.github.repo == "testuser/testrepo"
 
-    def test_all_8_sections_present(self):
+    def test_all_8_sections_present(self) -> None:
         """Settings has all 8 config sections."""
         from github_blog.config import AboutConfig, BlogConfig, GithubConfig, Settings
 

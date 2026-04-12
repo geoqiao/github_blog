@@ -15,13 +15,13 @@ logger = structlog.get_logger()
 
 
 class BlogGenerator:
-    def __init__(self, token: str, repo_name: str, settings: Settings):
+    def __init__(self, token: str, repo_name: str, settings: Settings) -> None:
         self.gh = GitHubService(token)
         self.repo_name: str = repo_name
         self.settings: Settings = settings
         self.render = RenderService(settings)
 
-    def generate(self):
+    def generate(self) -> None:
         logger.info("start_generation", repo=self.repo_name)
         try:
             repo = self.gh.get_repo(self.repo_name)
@@ -88,7 +88,7 @@ class BlogGenerator:
             logger.exception("generation_failed")
             sys.exit(1)
 
-    def _init_dirs(self):
+    def _init_dirs(self) -> None:
         output = Path(self.settings.paths.output)
         if output.exists():
             shutil.rmtree(output)
@@ -99,7 +99,7 @@ class BlogGenerator:
         )
         (output / self.settings.paths.tag).mkdir(parents=True)
 
-    def _save_post(self, slug: str, content: str):
+    def _save_post(self, slug: str, content: str) -> None:
         path = (
             Path(self.settings.paths.output) / self.settings.paths.blog / f"{slug}.html"
         )
@@ -131,7 +131,7 @@ class BlogGenerator:
 
     def _generate_index(
         self, issues: list[Issue], tags: list[str], issue_slugs: dict[str, str]
-    ):
+    ) -> None:
         page_size = self.settings.paths.page_size
         pages = [issues[i : i + page_size] for i in range(0, len(issues), page_size)]
         total_pages = max(1, len(pages))
@@ -171,7 +171,7 @@ class BlogGenerator:
 
     def _generate_tag_pages(
         self, issues: list[Issue], tags: list[str], issue_slugs: dict[str, str]
-    ):
+    ) -> None:
         tag_index = {}
         for issue in issues:
             if issue.labels:
@@ -201,7 +201,7 @@ class BlogGenerator:
                 ).write_text(content, encoding="utf-8")
 
 
-def run_cli():
+def run_cli() -> None:
     import argparse
 
     parser = argparse.ArgumentParser(description="GitHub Blog Generator")

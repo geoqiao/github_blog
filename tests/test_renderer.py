@@ -11,7 +11,7 @@ from github_blog.services.render_service import RenderService
 
 
 @pytest.fixture
-def render():
+def render() -> Any:  # noqa: ANN401
     project_root = Path(__file__).parent.parent.absolute()
     settings = MagicMock()
     settings.paths.theme_path = project_root / "templates" / "Escape1"
@@ -50,7 +50,7 @@ def render():
     return RenderService(settings)
 
 
-def _make_issue(number: int = 1, title: str = "Test Post", body: str = "Hello **world**", labels: list[str] | None = None) -> Any:
+def _make_issue(number: int = 1, title: str = "Test Post", body: str = "Hello **world**", labels: list[str] | None = None) -> Any:  # noqa: ANN401
     issue = MagicMock()
     issue.number = number
     issue.title = title

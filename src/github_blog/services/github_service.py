@@ -8,7 +8,7 @@ logger = structlog.get_logger()
 
 
 class GitHubService:
-    def __init__(self, token: str):
+    def __init__(self, token: str) -> None:
         self.gh = self._login(token)
 
     def _login(self, token: str) -> Github:

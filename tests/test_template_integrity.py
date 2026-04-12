@@ -23,12 +23,12 @@ REQUIRED_TEMPLATES = [
 class MockNavigation:
     """Mock navigation object matching NavigationConfig structure."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.items = []
 
 
 @pytest.fixture
-def full_context():
+def full_context() -> dict[str, object]:
     return {
         "blog_title": "Test Blog",
         "blog_url": "https://test.com",
@@ -63,7 +63,7 @@ def full_context():
     }
 
 
-def test_all_required_templates_exist():
+def test_all_required_templates_exist() -> None:
     """Verify all required templates exist."""
     theme_path = PROJECT_ROOT / "templates" / THEME
     for template in REQUIRED_TEMPLATES:
@@ -145,7 +145,7 @@ class TestEscape2Templates:
     """Template integrity tests for Escape2 theme."""
 
     @pytest.fixture
-    def full_context_e2(self):
+    def full_context_e2(self) -> dict[str, object]:
         return {
             "blog_title": "Test Blog",
             "blog_url": "https://test.com",
@@ -179,7 +179,7 @@ class TestEscape2Templates:
             },
         }
 
-    def test_all_required_templates_exist(self):
+    def test_all_required_templates_exist(self) -> None:
         theme_path = PROJECT_ROOT / "templates" / "Escape2"
         for template in REQUIRED_TEMPLATES:
             assert (theme_path / template).exists()

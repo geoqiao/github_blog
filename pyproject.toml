@@ -49,6 +49,7 @@ select = [
     "SIM", # flake8-simplify
     "S",   # flake8-bandit (security)
     "RUF", # ruff-specific rules
+    "ANN", # flake8-annotations
 ]
 ignore = ["E501"] # 忽略行长限制
 
@@ -64,26 +65,3 @@ testpaths = ["tests"]
 python_files = "test_*.py"
 addopts = "--cov=src --cov-report=term-missing"
 
-[tool.pyright]
-venvPath = "."
-venv = ".venv"
-pythonVersion = "3.11"
-typeCheckingMode = "standard"
-reportAny = "none"
-reportMissingTypeStubs = "none"
-reportUnknownMemberType = "none"
-reportUnknownVariableType = "none"
-reportMissingParameterType = "warning"
-reportUnusedCallResult = "none"
-reportMissingTypeArgument = "warning"
-
-[tool.basedpyright]
-pythonVersion = "3.11"
-typeCheckingMode = "standard"
-reportAny = "none"
-reportMissingTypeStubs = "none"
-reportUnknownMemberType = "none"
-reportUnknownVariableType = "none"
-reportMissingParameterType = "warning"
-reportUnusedCallResult = "none"
-reportMissingTypeArgument = "warning"

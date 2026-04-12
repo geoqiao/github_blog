@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 from github_blog.services.github_service import GitHubService
 
 
-def test_github_service_login_new_auth():
+def test_github_service_login_new_auth() -> None:
     with (
         patch("github_blog.services.github_service.Github") as mock_github,
         patch("github_blog.services.github_service.Auth") as mock_auth,
@@ -17,7 +17,7 @@ def test_github_service_login_new_auth():
         mock_github.assert_called_once()
 
 
-def test_github_service_login_old_auth():
+def test_github_service_login_old_auth() -> None:
     with (
         patch("github_blog.services.github_service.Github") as mock_github,
         patch("github_blog.services.github_service.Auth", spec=[]),
