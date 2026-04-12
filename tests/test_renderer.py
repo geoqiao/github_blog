@@ -35,7 +35,9 @@ def render():
     settings.branding.powered_by_url = "https://github.com/geoqiao/github-blog"
     settings.branding.show_intro = False
     settings.branding.intro_text = ""
-    settings.branding.intro_text2 = "Generated with Python + Jinja2, deployed via GitHub Actions."
+    settings.branding.intro_text2 = (
+        "Generated with Python + Jinja2, deployed via GitHub Actions."
+    )
     settings.branding.source_link_text = "View Source"
     settings.branding.source_link_url = ""
     settings.comments.provider = "utterances"
@@ -126,7 +128,9 @@ def test_markdown_to_html_strips_tag_new_issue_links(render):
     html = render.markdown_to_html(md)
     assert "#blog" in html
     assert "#python" in html
-    assert '<a href="https://github.com/geoqiao/geoqiao.github.io/issues/new' not in html
+    assert (
+        '<a href="https://github.com/geoqiao/geoqiao.github.io/issues/new' not in html
+    )
     assert "<a" not in html
 
 
@@ -135,7 +139,9 @@ def test_markdown_to_html_keeps_normal_links(render):
     html = render.markdown_to_html(md)
     assert '<a href="https://github.com/mitsuhiko/rye">rye</a>' in html
     assert "#blog" in html
-    assert '<a href="https://github.com/geoqiao/geoqiao.github.io/issues/new' not in html
+    assert (
+        '<a href="https://github.com/geoqiao/geoqiao.github.io/issues/new' not in html
+    )
 
 
 def test_render_index_pagination(render):

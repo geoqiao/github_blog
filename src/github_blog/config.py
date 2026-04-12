@@ -11,8 +11,9 @@ This module defines 8 independent configuration sections:
 - SecurityConfig: Security settings
 """
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Optional
 
 import yaml
 from pydantic import BaseModel, Field, HttpUrl, field_validator
@@ -25,7 +26,7 @@ class GithubConfig(BaseModel):
     """GitHub repository configuration."""
 
     repo: str
-    _username: Optional[str] = None
+    _username: str | None = None
 
     @field_validator("repo")
     @classmethod
@@ -83,12 +84,14 @@ class NavigationLink(BaseModel):
 class NavigationConfig(BaseModel):
     """Navigation configuration."""
 
-    items: list[NavigationLink] = Field(default_factory=lambda: [
-        NavigationLink(name="Blog", url="/blog/"),
-        NavigationLink(name="Tags", url="/tag/"),
-        NavigationLink(name="About", url="/about.html"),
-        NavigationLink(name="RSS", url="/atom.xml"),
-    ])
+    items: list[NavigationLink] = Field(
+        default_factory=lambda: [
+            NavigationLink(name="Blog", url="/blog/"),
+            NavigationLink(name="Tags", url="/tag/"),
+            NavigationLink(name="About", url="/about.html"),
+            NavigationLink(name="RSS", url="/atom.xml"),
+        ]
+    )
 
 
 class BrandingConfig(BaseModel):
@@ -183,7 +186,7 @@ class Settings(BaseModel):
     model_config = SettingsConfigDict(extra="ignore")
 
     @classmethod
-    def load_from_yaml(cls, yaml_path: Path) -> "Settings":
+    def load_from_yaml(cls, yaml_path: Path) -> Settings:
         """Load settings from a YAML file."""
         with open(yaml_path, encoding="utf-8") as f:
             data = yaml.safe_load(f)

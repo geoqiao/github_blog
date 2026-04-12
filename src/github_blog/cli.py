@@ -27,7 +27,7 @@ class BlogGenerator:
             repo = self.gh.get_repo(self.repo_name)
             issues = self.gh.get_user_issues(repo)
 
-            # Generate a slug for each issue (based on title, stable and readable)  # noqa: RUF003
+            # Generate a slug for each issue (based on title, stable and readable)
             issue_slugs = {}
             for issue in issues:
                 slug = generate_slug_from_title(issue.number, issue.title)
@@ -52,26 +52,36 @@ class BlogGenerator:
             # Render landing page (placed in output/ root)
             post_count = self.settings.paths.home_post_count
             home_content = self.render.render_home(issues[:post_count], issue_slugs)
-            (Path(self.settings.paths.output) / "index.html").write_text(home_content, encoding="utf-8")
+            (Path(self.settings.paths.output) / "index.html").write_text(
+                home_content, encoding="utf-8"
+            )
 
             # Render tag pages
             self._generate_tag_pages(issues, tags, issue_slugs)
 
             # Generate RSS (placed in output/ root)
             rss_content = self.render.generate_rss(issues, issue_slugs)
-            (Path(self.settings.paths.output) / self.settings.paths.rss).write_text(rss_content, encoding="utf-8")
+            (Path(self.settings.paths.output) / self.settings.paths.rss).write_text(
+                rss_content, encoding="utf-8"
+            )
 
             # Generate Sitemap (placed in output/ root)
             sitemap_content = self.render.render_sitemap(issues, issue_slugs, tags)
-            (Path(self.settings.paths.output) / "sitemap.xml").write_text(sitemap_content, encoding="utf-8")
+            (Path(self.settings.paths.output) / "sitemap.xml").write_text(
+                sitemap_content, encoding="utf-8"
+            )
 
             # Generate Robots.txt (placed in output/ root)
             robots_content = self.render.render_robots()
-            (Path(self.settings.paths.output) / "robots.txt").write_text(robots_content, encoding="utf-8")
+            (Path(self.settings.paths.output) / "robots.txt").write_text(
+                robots_content, encoding="utf-8"
+            )
 
             # Render about page (placed in output/ root)
             about_content = self.render.render_about()
-            (Path(self.settings.paths.output) / self.settings.paths.about).write_text(about_content, encoding="utf-8")
+            (Path(self.settings.paths.output) / self.settings.paths.about).write_text(
+                about_content, encoding="utf-8"
+            )
 
             logger.info("generation_completed")
         except Exception:
@@ -84,11 +94,15 @@ class BlogGenerator:
             shutil.rmtree(output)
         output.mkdir(parents=True)
         (output / self.settings.paths.blog).mkdir(parents=True)
-        (output / self.settings.paths.blog / self.settings.paths.page).mkdir(parents=True)
+        (output / self.settings.paths.blog / self.settings.paths.page).mkdir(
+            parents=True
+        )
         (output / self.settings.paths.tag).mkdir(parents=True)
 
     def _save_post(self, slug: str, content: str):
-        path = Path(self.settings.paths.output) / self.settings.paths.blog / f"{slug}.html"
+        path = (
+            Path(self.settings.paths.output) / self.settings.paths.blog / f"{slug}.html"
+        )
         path.write_text(content, encoding="utf-8")
 
     def _copy_theme_assets(self) -> None:
@@ -122,7 +136,11 @@ class BlogGenerator:
         pages = [issues[i : i + page_size] for i in range(0, len(issues), page_size)]
         total_pages = max(1, len(pages))
 
-        page_dir = Path(self.settings.paths.output) / self.settings.paths.blog / self.settings.paths.page
+        page_dir = (
+            Path(self.settings.paths.output)
+            / self.settings.paths.blog
+            / self.settings.paths.page
+        )
         page_dir.mkdir(parents=True, exist_ok=True)
 
         for i, page_issues in enumerate(pages, start=1):
@@ -138,13 +156,18 @@ class BlogGenerator:
                 page_issues, tags, pagination, issue_slugs
             )
             if i == 1:
-                (Path(self.settings.paths.output) / self.settings.paths.blog / "index.html").write_text(
-                    content, encoding="utf-8"
-                )
+                (
+                    Path(self.settings.paths.output)
+                    / self.settings.paths.blog
+                    / "index.html"
+                ).write_text(content, encoding="utf-8")
 
-            (Path(self.settings.paths.output) / self.settings.paths.blog / self.settings.paths.page / f"{i}.html").write_text(
-                content, encoding="utf-8"
-            )
+            (
+                Path(self.settings.paths.output)
+                / self.settings.paths.blog
+                / self.settings.paths.page
+                / f"{i}.html"
+            ).write_text(content, encoding="utf-8")
 
     def _generate_tag_pages(
         self, issues: list[Issue], tags: list[str], issue_slugs: dict[str, str]
@@ -161,7 +184,9 @@ class BlogGenerator:
         # Generate tag list page (tag/index.html)
         tag_counts = {tag: len(tag_index.get(tag, [])) for tag in tags}
         tags_content = self.render.render_tags_page(tags, tag_counts)
-        (Path(self.settings.paths.output) / self.settings.paths.tag / "index.html").write_text(tags_content, encoding="utf-8")
+        (
+            Path(self.settings.paths.output) / self.settings.paths.tag / "index.html"
+        ).write_text(tags_content, encoding="utf-8")
 
         for tag in tags:
             tag_issues = tag_index.get(tag, [])
@@ -169,9 +194,11 @@ class BlogGenerator:
                 content = self.render.render_tag_page(
                     tag, tag_issues, tags, issue_slugs
                 )
-                (Path(self.settings.paths.output) / self.settings.paths.tag / f"{tag}.html").write_text(
-                    content, encoding="utf-8"
-                )
+                (
+                    Path(self.settings.paths.output)
+                    / self.settings.paths.tag
+                    / f"{tag}.html"
+                ).write_text(content, encoding="utf-8")
 
 
 def run_cli():

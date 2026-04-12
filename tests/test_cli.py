@@ -1,4 +1,3 @@
-import os
 import shutil
 import sys
 from datetime import datetime, timezone
@@ -69,7 +68,9 @@ def test_blog_generator_integration(mock_gh_service_class, tmp_path, monkeypatch
     mock_settings.branding.powered_by_url = "https://github.com/geoqiao/github-blog"
     mock_settings.branding.show_intro = False
     mock_settings.branding.intro_text = ""
-    mock_settings.branding.intro_text2 = "Generated with Python + Jinja2, deployed via GitHub Actions."
+    mock_settings.branding.intro_text2 = (
+        "Generated with Python + Jinja2, deployed via GitHub Actions."
+    )
     mock_settings.branding.source_link_text = "View Source"
     mock_settings.branding.source_link_url = ""
     mock_settings.comments.provider = "utterances"
@@ -136,12 +137,20 @@ def test_blog_generator_integration(mock_gh_service_class, tmp_path, monkeypatch
 
         # Verify theme static assets were copied into output
         theme_static_dir = output_dir / "templates" / "Escape1" / "static"
-        assert theme_static_dir.exists(), "Theme static directory should be copied to output"
-        assert (theme_static_dir / "css" / "style.css").exists(), "Theme CSS should be present"
+        assert theme_static_dir.exists(), (
+            "Theme static directory should be copied to output"
+        )
+        assert (theme_static_dir / "css" / "style.css").exists(), (
+            "Theme CSS should be present"
+        )
         # Escape1 images live under static/images, not a top-level images/ folder
         theme_images_dir = output_dir / "templates" / "Escape1" / "images"
-        assert not theme_images_dir.exists(), "Top-level images dir should not be created when theme lacks it"
-        assert (theme_static_dir / "images" / "favicon.png").exists(), "Favicon inside static/images should be present"
+        assert not theme_images_dir.exists(), (
+            "Top-level images dir should not be created when theme lacks it"
+        )
+        assert (theme_static_dir / "images" / "favicon.png").exists(), (
+            "Favicon inside static/images should be present"
+        )
     finally:
         # Cleanup: remove the output directory if it exists in project root
         project_output = project_root / "output"
@@ -321,5 +330,9 @@ def test_copy_theme_assets(tmp_path, monkeypatch):
     generator = BlogGenerator("fake-token", "user/repo", mock_settings)
     generator._copy_theme_assets()
 
-    assert (tmp_path / "output" / "templates" / "FakeTheme" / "static" / "style.css").exists()
-    assert (tmp_path / "output" / "templates" / "FakeTheme" / "images" / "favicon.png").exists()
+    assert (
+        tmp_path / "output" / "templates" / "FakeTheme" / "static" / "style.css"
+    ).exists()
+    assert (
+        tmp_path / "output" / "templates" / "FakeTheme" / "images" / "favicon.png"
+    ).exists()
