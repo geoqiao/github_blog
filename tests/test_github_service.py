@@ -29,7 +29,7 @@ def test_github_service_login_old_auth():
 
 
 @patch("github_blog.services.github_service.Github")
-def test_github_service_get_repo(mock_github_class):
+def test_github_service_get_repo(mock_github_class: MagicMock) -> None:
     mock_github_instance = mock_github_class.return_value
     service = GitHubService("fake-token")
 
@@ -39,7 +39,7 @@ def test_github_service_get_repo(mock_github_class):
 
 
 @patch("github_blog.services.github_service.Github")
-def test_github_service_get_user_issues(mock_github_class):
+def test_github_service_get_user_issues(mock_github_class: MagicMock) -> None:
     mock_github_instance = mock_github_class.return_value
     mock_github_instance.get_user.return_value.login = "me"
 

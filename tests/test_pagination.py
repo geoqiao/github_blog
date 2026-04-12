@@ -1,4 +1,7 @@
-def _paginate(issues, page_size):
+from typing import Any
+
+
+def _paginate(issues: list[object], page_size: int) -> list[dict[str, Any]]:
     """Mirror of the pagination logic in cli.py._generate_index"""
     pages = [issues[i : i + page_size] for i in range(0, len(issues), page_size)]
     if not pages:

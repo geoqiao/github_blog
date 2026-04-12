@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import shutil
 import sys
 from datetime import datetime, timezone
@@ -9,7 +11,7 @@ import pytest
 from github_blog.cli import BlogGenerator, run_cli
 
 
-def _make_mock_issue(number, title, body="body", labels=None):
+def _make_mock_issue(number: int, title: str, body: str = "body", labels: list[str] | None = None) -> MagicMock:
     issue = MagicMock()
     issue.number = number
     issue.title = title
@@ -28,7 +30,7 @@ def _make_mock_issue(number, title, body="body", labels=None):
 
 
 @patch("github_blog.cli.GitHubService")
-def test_blog_generator_integration(mock_gh_service_class, tmp_path, monkeypatch):
+def test_blog_generator_integration(mock_gh_service_class: MagicMock, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     # Get absolute path to the project root to find real templates
     project_root = Path(__file__).parent.parent.absolute()
     # Use Escape1 theme (the current default) for integration test
@@ -101,7 +103,7 @@ def test_blog_generator_integration(mock_gh_service_class, tmp_path, monkeypatch
         ) as mock_loader:
             from jinja2 import FileSystemLoader
 
-            def side_effect(path):
+            def side_effect(path: str | Path) -> FileSystemLoader:
                 # Ensure we handle both string and Path objects
                 path_str = str(path)
                 if "templates/seo" in path_str:
@@ -161,7 +163,7 @@ def test_blog_generator_integration(mock_gh_service_class, tmp_path, monkeypatch
 class TestNewCLI:
     """Tests for the new CLI behavior (token from G_T env, repo from config or --repo flag)."""
 
-    def test_cli_requires_token(self, monkeypatch, tmp_path):
+    def test_cli_requires_token(self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
         """Exit if the configured token environment variable is not set."""
         # Ensure G_T is not set
         monkeypatch.delenv("G_T", raising=False)
@@ -189,7 +191,7 @@ about:
         # Should exit with code 1 (no token)
         assert exc_info.value.code == 1
 
-    def test_cli_uses_g_t_env_token(self, monkeypatch, tmp_path):
+    def test_cli_uses_g_t_env_token(self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
         """Token is read from G_T environment variable."""
         test_token = "ghp_testtoken123"  # noqa: S105
 
@@ -226,7 +228,7 @@ about:
             assert call_args.args[2] is not None
             mock_generator.generate.assert_called_once()
 
-    def test_cli_repo_from_config(self, monkeypatch, tmp_path):
+    def test_cli_repo_from_config(self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
         """Repo is read from config.yaml when not provided via CLI."""
         test_token = "ghp_testtoken456"  # noqa: S105
 
@@ -264,7 +266,7 @@ about:
             assert call_args.args[2] is not None
             mock_generator.generate.assert_called_once()
 
-    def test_cli_repo_cli_override(self, monkeypatch, tmp_path):
+    def test_cli_repo_cli_override(self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
         """--repo CLI flag overrides repo from config.yaml."""
         test_token = "ghp_testtoken789"  # noqa: S105
 
@@ -306,7 +308,7 @@ about:
             mock_generator.generate.assert_called_once()
 
 
-def test_copy_theme_assets(tmp_path, monkeypatch):
+def test_copy_theme_assets(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """Unit test for _copy_theme_assets covering both static/ and images/ branches."""
     from github_blog.cli import BlogGenerator
 

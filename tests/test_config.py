@@ -326,7 +326,7 @@ class TestSecurityConfig:
 class TestSettings:
     """Tests for Settings class."""
 
-    def test_load_from_yaml(self, tmp_path):
+    def test_load_from_yaml(self, tmp_path: Path) -> None:
         """Settings can load from a YAML file."""
         from github_blog.config import Settings
 
@@ -373,7 +373,7 @@ about:
         assert hasattr(settings, "comments")
         assert hasattr(settings, "security")
 
-    def test_extra_fields_ignored(self, tmp_path):
+    def test_extra_fields_ignored(self, tmp_path: Path) -> None:
         """Extra fields in YAML are ignored."""
         from github_blog.config import Settings
 

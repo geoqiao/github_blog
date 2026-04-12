@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 from unittest.mock import MagicMock
 
 import pytest
@@ -47,7 +50,7 @@ def render():
     return RenderService(settings)
 
 
-def _make_issue(number=1, title="Test Post", body="Hello **world**", labels=None):
+def _make_issue(number: int = 1, title: str = "Test Post", body: str = "Hello **world**", labels: list[str] | None = None) -> Any:
     issue = MagicMock()
     issue.number = number
     issue.title = title
@@ -58,24 +61,24 @@ def _make_issue(number=1, title="Test Post", body="Hello **world**", labels=None
     return issue
 
 
-def test_markdown_to_html_renders_bold(render):
+def test_markdown_to_html_renders_bold(render: RenderService) -> None:
     html = render.markdown_to_html("Hello **world**")
     assert "<strong>world</strong>" in html
 
 
-def test_render_post_contains_title(render):
+def test_render_post_contains_title(render: RenderService) -> None:
     issue = _make_issue(title="My Great Post")
     html = render.render_post(issue, slug="1-test", html_body="<p>body</p>")
     assert "My Great Post" in html
 
 
-def test_render_post_contains_toc_element(render):
+def test_render_post_contains_toc_element(render: RenderService) -> None:
     issue = _make_issue()
     html = render.render_post(issue, slug="1-test", html_body="<p>body</p>")
     assert 'id="toc"' in html
 
 
-def test_render_index_contains_issues(render):
+def test_render_index_contains_issues(render: RenderService) -> None:
     issues = [
         _make_issue(number=1, title="Post One"),
         _make_issue(number=2, title="Post Two"),
@@ -100,7 +103,7 @@ def test_render_index_contains_issues(render):
     assert "/blog/2-python.html" in html
 
 
-def test_render_home_shows_latest_posts(render):
+def test_render_home_shows_latest_posts(render: RenderService) -> None:
     issues = [_make_issue(number=i, title=f"Post {i}") for i in range(1, 4)]
     html = render.render_home(
         issues, issue_slugs={str(i): f"{i}-test" for i in range(1, 4)}
@@ -109,7 +112,7 @@ def test_render_home_shows_latest_posts(render):
     assert "/blog/1-test.html" in html
 
 
-def test_render_tag_page_contains_tag_name(render):
+def test_render_tag_page_contains_tag_name(render: RenderService) -> None:
     issues = [_make_issue(title="Tagged Post")]
     html = render.render_tag_page(
         "python", issues, tags=["python"], issue_slugs={"1": "1-python"}
@@ -118,12 +121,12 @@ def test_render_tag_page_contains_tag_name(render):
     assert "/blog/1-python.html" in html
 
 
-def test_image_has_lazy_loading(render):
+def test_image_has_lazy_loading(render: RenderService) -> None:
     html = render.markdown_to_html("![alt text](https://example.com/img.png)")
     assert '<img loading="lazy"' in html
 
 
-def test_markdown_to_html_strips_tag_new_issue_links(render):
+def test_markdown_to_html_strips_tag_new_issue_links(render: RenderService) -> None:
     md = "Tags: [#blog](https://github.com/geoqiao/geoqiao.github.io/issues/new#blog) [#python](https://github.com/geoqiao/geoqiao.github.io/issues/new?label=python)"
     html = render.markdown_to_html(md)
     assert "#blog" in html
@@ -134,7 +137,7 @@ def test_markdown_to_html_strips_tag_new_issue_links(render):
     assert "<a" not in html
 
 
-def test_markdown_to_html_keeps_normal_links(render):
+def test_markdown_to_html_keeps_normal_links(render: RenderService) -> None:
     md = "See [rye](https://github.com/mitsuhiko/rye) and [#blog](https://github.com/geoqiao/geoqiao.github.io/issues/new#blog)"
     html = render.markdown_to_html(md)
     assert '<a href="https://github.com/mitsuhiko/rye">rye</a>' in html
@@ -144,7 +147,7 @@ def test_markdown_to_html_keeps_normal_links(render):
     )
 
 
-def test_render_index_pagination(render):
+def test_render_index_pagination(render: RenderService) -> None:
     issues = [_make_issue(number=i) for i in range(1, 11)]
     pagination = {
         "page": 1,
@@ -165,27 +168,27 @@ def test_render_index_pagination(render):
     assert 'class="pagination-prev disabled"' in html
 
 
-def test_render_post_no_labels(render):
+def test_render_post_no_labels(render: RenderService) -> None:
     issue = _make_issue(labels=[])
     html = render.render_post(issue, slug="1-test", html_body="<p>body</p>")
     assert "Tags:" not in html
 
 
-def test_render_rss_contains_slug(render):
+def test_render_rss_contains_slug(render: RenderService) -> None:
     issues = [_make_issue(number=1)]
     issue_slugs = {"1": "1-test"}
     rss = render.generate_rss(issues, issue_slugs)
     assert "/blog/1-test.html" in rss
 
 
-def test_render_sitemap_contains_slug(render):
+def test_render_sitemap_contains_slug(render: RenderService) -> None:
     issues = [_make_issue(number=1)]
     issue_slugs = {"1": "1-test"}
     sitemap = render.render_sitemap(issues, issue_slugs, tags=["python"])
     assert "/blog/1-test.html" in sitemap
 
 
-def test_branding_injected_to_context(render):
+def test_branding_injected_to_context(render: RenderService) -> None:
     """Verify branding.xxx is in context."""
     context = render._get_common_context()
     assert "branding" in context
@@ -199,7 +202,7 @@ def test_branding_injected_to_context(render):
     assert "source_link_url" in branding
 
 
-def test_comments_uses_github_repo_when_empty(render):
+def test_comments_uses_github_repo_when_empty(render: RenderService) -> None:
     """Verify comments.repo falls back to github.repo when empty."""
     context = render._get_common_context()
     assert "comments" in context

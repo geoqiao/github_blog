@@ -1,0 +1,12 @@
+{
+  "pythonVersion": "3.11",
+  "typeCheckingMode": "standard",
+  "reportAny": "none",
+  "reportMissingTypeStubs": "none",
+  "reportUnknownMemberType": "none",
+  "reportUnknownVariableType": "none",
+  "reportMissingParameterType": "warning",
+  "reportUnusedCallResult": "none",
+  "reportMissingTypeArgument": "warning",
+  "include": ["src", "tests"]
+}

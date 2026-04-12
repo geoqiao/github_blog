@@ -70,7 +70,7 @@ def test_all_required_templates_exist():
         assert (theme_path / template).exists()
 
 
-def test_base_template_has_branding_footer(full_context):
+def test_base_template_has_branding_footer(full_context: dict[str, object]) -> None:
     """Verify base.html uses branding variables."""
     theme_path = PROJECT_ROOT / "templates" / THEME
     env = Environment(loader=FileSystemLoader(str(theme_path)), autoescape=True)
@@ -79,7 +79,7 @@ def test_base_template_has_branding_footer(full_context):
     assert "github_blog" in html
 
 
-def test_home_template_has_branding_intro(full_context):
+def test_home_template_has_branding_intro(full_context: dict[str, object]) -> None:
     """Verify home.html uses branding variables."""
     theme_path = PROJECT_ROOT / "templates" / THEME
     env = Environment(loader=FileSystemLoader(str(theme_path)), autoescape=True)
@@ -90,7 +90,7 @@ def test_home_template_has_branding_intro(full_context):
     assert "github_blog" in html
 
 
-def test_all_templates_render(full_context):
+def test_all_templates_render(full_context: dict[str, object]) -> None:
     """Verify all templates render without errors."""
     theme_path = PROJECT_ROOT / "templates" / THEME
     env = Environment(loader=FileSystemLoader(str(theme_path)), autoescape=True)
@@ -184,14 +184,14 @@ class TestEscape2Templates:
         for template in REQUIRED_TEMPLATES:
             assert (theme_path / template).exists()
 
-    def test_base_template_has_branding_footer(self, full_context_e2):
+    def test_base_template_has_branding_footer(self, full_context_e2: dict[str, object]) -> None:
         theme_path = PROJECT_ROOT / "templates" / "Escape2"
         env = Environment(loader=FileSystemLoader(str(theme_path)), autoescape=True)
         template = env.get_template("base.html")
         html = template.render(**full_context_e2)
         assert "github_blog" in html
 
-    def test_home_template_has_branding_intro(self, full_context_e2):
+    def test_home_template_has_branding_intro(self, full_context_e2: dict[str, object]) -> None:
         theme_path = PROJECT_ROOT / "templates" / "Escape2"
         env = Environment(loader=FileSystemLoader(str(theme_path)), autoescape=True)
         template = env.get_template("home.html")
@@ -200,7 +200,7 @@ class TestEscape2Templates:
         html = template.render(**full_context_e2)
         assert "github_blog" in html
 
-    def test_all_templates_render(self, full_context_e2):
+    def test_all_templates_render(self, full_context_e2: dict[str, object]) -> None:
         theme_path = PROJECT_ROOT / "templates" / "Escape2"
         env = Environment(loader=FileSystemLoader(str(theme_path)), autoescape=True)
 
